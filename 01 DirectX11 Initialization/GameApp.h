@@ -1,4 +1,4 @@
-#ifndef GAMEAPP_H
+ï»¿#ifndef GAMEAPP_H
 #define GAMEAPP_H
 #include "d3dApp.h"
 #include "TextureRender.h"
@@ -14,7 +14,7 @@ public:
 		static const D3D11_INPUT_ELEMENT_DESC inputLayout[2];
 	};
 
-	struct ConstantBuffer
+	struct CB
 	{
 		DirectX::XMMATRIX world;
 		DirectX::XMMATRIX view;
@@ -36,15 +36,19 @@ private:
 
 private:
 	std::unique_ptr<TextureRender> m_pGameContent;
+	std::unique_ptr<TextureRender> m_pRayTracingContent;
 
-	ComPtr<ID3D11InputLayout> m_pVertexLayout;	    // ¶¥µãÊäÈë²¼¾Ö
-	ComPtr<ID3D11Buffer> m_pVertexBuffer;			// ¶¥µã»º³åÇø
-	ComPtr<ID3D11Buffer> m_pIndexBuffer;			// Ë÷Òı»º³åÇø
-	ComPtr<ID3D11Buffer> m_pConstantBuffer;		    // ³£Á¿»º³åÇø
+	ComPtr<ID3D11InputLayout> m_pVertexLayout;	    // é¡¶ç‚¹è¾“å…¥å¸ƒå±€
+	VertexBuffer<VertexPosColor>		m_pVertexBuffer;
+	IndexBuffer<DWORD>				m_pIndexBuffer;
+	ConstantBuffer<CB>		m_pConstantBuffer;
+// 	ComPtr<ID3D11Buffer> m_pVertexBuffer;			// é¡¶ç‚¹ç¼“å†²åŒº
+// 	ComPtr<ID3D11Buffer> m_pIndexBuffer;			// ç´¢å¼•ç¼“å†²åŒº
+// 	ComPtr<ID3D11Buffer> m_pConstantBuffer;		    // å¸¸é‡ç¼“å†²åŒº
 
-	ComPtr<ID3D11VertexShader> m_pVertexShader;	    // ¶¥µã×ÅÉ«Æ÷
-	ComPtr<ID3D11PixelShader> m_pPixelShader;		// ÏñËØ×ÅÉ«Æ÷
-	ConstantBuffer m_CBuffer;	                    // ÓÃÓÚĞŞ¸ÄGPU³£Á¿»º³åÇøµÄ±äÁ¿
+	ComPtr<ID3D11VertexShader> m_pVertexShader;	    // é¡¶ç‚¹ç€è‰²å™¨
+	ComPtr<ID3D11PixelShader> m_pPixelShader;		// åƒç´ ç€è‰²å™¨
+	CB m_CBuffer;	                    // ç”¨äºä¿®æ”¹GPUå¸¸é‡ç¼“å†²åŒºçš„å˜é‡
 
 };
 

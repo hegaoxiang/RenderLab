@@ -6,6 +6,7 @@
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 #include "GameTimer.h"
+#include "Graphics/Buffer.h"
 
 // 添加所有要引用的库
 #pragma comment(lib, "d3d11.lib")
