@@ -4,7 +4,7 @@
 #include <sstream>
 #include "GUI/GUI.h"
 
-
+#include <IMGUI/imgui.h>
 namespace
 {
 	// This is just used to forward Windows messages from a global window
@@ -76,6 +76,7 @@ int D3DApp::Run()
 
 	m_Timer.Reset();
 
+	ImGuiIO& io = ImGui::GetIO();
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
@@ -84,8 +85,8 @@ int D3DApp::Run()
 			DispatchMessage(&msg);
 			continue;
 		}
-		//CalculateFrameStats();
-		UpdateScene(m_Timer.DeltaTime());
+		CalculateFrameStats();
+		UpdateScene(io.DeltaTime);
 		DrawScene();
 	//	else
 		{
