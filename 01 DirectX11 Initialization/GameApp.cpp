@@ -78,16 +78,17 @@ void GameApp::DrawScene()
 
 	GUI::Get().BeginGUI();
 	{
+		
 
-		static bool show_demo_window = true;
-		if (show_demo_window)
-			ImGui::ShowDemoWindow(&show_demo_window);
+		
+		//if (show_demo_window)
+			;//	ImGui::ShowDemoWindow(&show_demo_window);
 		static int counter = 0;
 
 		ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
 		ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-		ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+		//ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
 		//ImGui::Checkbox("Another Window", &show_another_window);
 
 		//ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
@@ -102,7 +103,7 @@ void GameApp::DrawScene()
 		ImGui::End();
 
 		ImGui::Begin("Game");
-		ImGuiIO& io = ImGui::GetIO();
+		//ImGuiIO& io = ImGui::GetIO();
 		;
 		ImGui::Image(m_pGameContent->GetOutputTexture(), ImGui::GetContentRegionAvail());
 		ImGui::End();
@@ -118,7 +119,6 @@ void GameApp::DrawScene()
 
 	HR(m_pSwapChain->Present(0, 0));
 }
-
 
 
 bool GameApp::InitEffect()
@@ -164,7 +164,7 @@ bool GameApp::InitResource()
 		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
 		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
 	};
-	m_pVertexBuffer.Create(m_pd3dDevice.Get(), vertices, _countof(vertices));
+	m_pVertexBuffer.Create(m_pd3dDevice.Get(), vertices,sizeof(vertices), _countof(vertices));
 
 	DWORD indices[] = {
 		// 正面
@@ -186,7 +186,7 @@ bool GameApp::InitResource()
 		4, 0, 3,
 		3, 7, 4
 	};
-	m_pIndexBuffer.Create(m_pd3dDevice.Get(), indices, _countof(indices));
+	m_pIndexBuffer.Create(m_pd3dDevice.Get(), indices,_countof(indices), DXGI_FORMAT_R32_UINT);
 
 	m_pd3dImmediateContext->IASetIndexBuffer(m_pIndexBuffer.GetBuffer(), DXGI_FORMAT_R32_UINT, 0);
 

@@ -39,8 +39,8 @@ private:
 	std::unique_ptr<TextureRender> m_pRayTracingContent;
 
 	ComPtr<ID3D11InputLayout> m_pVertexLayout;	    // 顶点输入布局
-	VertexBuffer<VertexPosColor>		m_pVertexBuffer;
-	IndexBuffer<DWORD>				m_pIndexBuffer;
+	VertexBuffer		m_pVertexBuffer;
+	IndexBuffer				m_pIndexBuffer;
 	ConstantBuffer<CB>		m_pConstantBuffer;
 // 	ComPtr<ID3D11Buffer> m_pVertexBuffer;			// 顶点缓冲区
 // 	ComPtr<ID3D11Buffer> m_pIndexBuffer;			// 索引缓冲区

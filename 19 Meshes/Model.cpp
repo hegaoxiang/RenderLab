@@ -93,7 +93,6 @@ void Model::SetModel(ID3D11Device * device, const ObjReader & model)
 		modelParts[i].material = part.material;
 	}
 
-
 }
 
 void Model::SetMesh(ID3D11Device * device, const void * vertices, UINT vertexSize, UINT vertexCount, const void * indices, UINT indexCount, DXGI_FORMAT indexFormat)

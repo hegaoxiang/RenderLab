@@ -15,5 +15,7 @@ public:
 
 private:
 	GUI();
+
+	void Dock();
 };
 

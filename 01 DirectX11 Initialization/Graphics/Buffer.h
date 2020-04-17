@@ -34,16 +34,16 @@ public:
 protected:
 	ComPtr<ID3D11Buffer> m_Buffer;
 };
-template<typename T>
+
 class VertexBuffer :public Buffer
 {
 public:
-	void Create(ID3D11Device* device, void* vertices, uint32_t size)
+	void Create(ID3D11Device* device,const void* vertices, UINT vertexSize, UINT vertexCount)
 	{
 		D3D11_BUFFER_DESC vbd;
 		ZeroMemory(&vbd, sizeof(vbd));
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;
-		vbd.ByteWidth = sizeof(T) * size;
+		vbd.ByteWidth = vertexSize * vertexCount;
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		// 新建顶点缓冲区
@@ -53,16 +53,23 @@ public:
 		HR(device->CreateBuffer(&vbd, &InitData, m_Buffer.GetAddressOf()));
 	}
 };
-template<typename T = WORD>
+
 class IndexBuffer :public Buffer
 {
 public:
-	void Create(ID3D11Device* device, void* indices, uint32_t size)
+	void Create(ID3D11Device* device, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)
 	{
 		D3D11_BUFFER_DESC ibd;
 		ZeroMemory(&ibd, sizeof(ibd));
 		ibd.Usage = D3D11_USAGE_IMMUTABLE;
-		ibd.ByteWidth = sizeof(T) * size;
+		if (indexFormat == DXGI_FORMAT_R16_UINT)
+		{
+			ibd.ByteWidth = indexCount * (UINT)sizeof(WORD);
+		}
+		else
+		{
+			ibd.ByteWidth = indexCount * (UINT)sizeof(DWORD);
+		}
 		ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		ibd.CPUAccessFlags = 0;
 		// 新建索引缓冲区
@@ -71,7 +78,7 @@ public:
 		InitData.pSysMem = indices;
 		HR(device->CreateBuffer(&ibd, &InitData, m_Buffer.GetAddressOf()));
 
-		m_EleCount = size;
+		m_EleCount = indexCount;
 	}
 
 	
