@@ -1,6 +1,11 @@
 #pragma once
 #include "../d3dUtil.h"
 #include <IMGUI/imgui.h>
+class IDisplay
+{
+public:
+	virtual void OnGUI() = 0;
+};
 class GUI
 {
 public:

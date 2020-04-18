@@ -64,7 +64,6 @@ public:
 private:
 	Model m_Model;												// 模型
 	DirectX::XMFLOAT4X4 m_WorldMatrix;							// 世界矩阵
-
 };
 
 

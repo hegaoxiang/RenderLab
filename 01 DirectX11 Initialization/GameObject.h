@@ -1,4 +1,45 @@
-// #pragma once
+Ôªø #pragma once
+#include "Graphics/Buffer.h"
+#include "Graphics/Geometry.h"
+#include "Graphics/Effects.h"
+
+class GameObject
+{
+public:
+	struct ModelPart
+	{
+		VertexBuffer vertexBuffer;
+		IndexBuffer indexBuffer;
+		UINT vertexCount;
+		UINT indexCount;
+		DXGI_FORMAT indexFormat;
+
+		UINT vertexStride;
+	};
+	
+	template<class VertexType, class IndexType>
+	void SetMesh(ID3D11Device* device, const Geometry::MeshData<VertexType, IndexType>& meshData);
+
+	template<class VertexType, class IndexType>
+	void SetMesh(ID3D11Device* device, const std::vector<VertexType>& vertices, const std::vector<IndexType>& indices);
+
+	void SetMesh(ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount,
+		const void* indices, UINT indexCount, DXGI_FORMAT indexFormat);
+
+	void SetWorldMatrix(const DirectX::XMFLOAT4X4& world);
+	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX world);
+
+
+	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect);
+
+
+	void SetDebugName(const std::string& name);
+
+	std::string Name;
+private:
+	ModelPart m_Model;
+	DirectX::XMFLOAT4X4 m_WorldMatrix;							// ‰∏ñÁïåÁü©Èòµ
+};
 // #include <string>
 // #include <vector>
 // #include "Graphics/Buffer.h"
@@ -110,7 +151,7 @@
 // 	world->model[id].indexCount = indexCount;
 // 	world->model[id].indexFormat = indexFormat;
 // 
-// 	// ≥ı ºªØ≥£¡øª∫≥Â«¯µƒ÷µ
+// 	// ÂàùÂßãÂåñÂ∏∏ÈáèÁºìÂÜ≤Âå∫ÁöÑÂÄº
 // 	world->constantBuffer[id].Create(device); 
 // 	
 // }
@@ -124,7 +165,7 @@
 // 		if ((item & RENDER_MASK) == RENDER_MASK)
 // 		{
 // 			CB m_CBuffer;
-// 			m_CBuffer.world = XMMatrixIdentity();	// µ•Œªæÿ’Ûµƒ◊™÷√ «À¸±æ…Ì
+// 			m_CBuffer.world = XMMatrixIdentity();	// Âçï‰ΩçÁü©ÈòµÁöÑËΩ¨ÁΩÆÊòØÂÆÉÊú¨Ë∫´
 // 			m_CBuffer.view = XMMatrixTranspose(XMMatrixLookAtLH(
 // 				XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
 // 				XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
@@ -140,3 +181,21 @@
 // 		i++;
 // 	}
 // }
+
+template<class VertexType, class IndexType>
+inline void GameObject::SetMesh(ID3D11Device* device, const Geometry::MeshData<VertexType, IndexType>& meshData)
+{
+	SetMesh(device, meshData.vertexVec, meshData.indexVec);
+}
+
+template<class VertexType, class IndexType>
+inline void GameObject::SetMesh(ID3D11Device* device, const std::vector<VertexType>& vertices, const std::vector<IndexType>& indices)
+{
+	static_assert(sizeof(IndexType) == 2 || sizeof(IndexType) == 4, "The size of IndexType must be 2 bytes or 4 bytes!");
+	static_assert(std::is_unsigned<IndexType>::value, "IndexType must be unsigned integer!");
+
+	SetMesh(device,
+		vertices.data(), sizeof(VertexType), (UINT)vertices.size(),
+		indices.data(), (UINT)indices.size(),
+		(sizeof(IndexType) == 2) ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT);
+}

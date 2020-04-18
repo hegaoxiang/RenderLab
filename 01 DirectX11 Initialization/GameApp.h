@@ -3,6 +3,8 @@
 #include "d3dApp.h"
 #include "TextureRender.h"
 #include <memory>
+#include "GameObject.h"
+#include "Scene.h"
 class GameApp : public D3DApp
 {
 public:
@@ -35,19 +37,10 @@ private:
 	bool InitResource();
 
 private:
-	std::unique_ptr<TextureRender> m_pGameContent;
-	std::unique_ptr<TextureRender> m_pRayTracingContent;
-
-	ComPtr<ID3D11InputLayout> m_pVertexLayout;	    // 顶点输入布局
-	VertexBuffer		m_pVertexBuffer;
-	IndexBuffer				m_pIndexBuffer;
-	ConstantBuffer<CB>		m_pConstantBuffer;
-// 	ComPtr<ID3D11Buffer> m_pVertexBuffer;			// 顶点缓冲区
-// 	ComPtr<ID3D11Buffer> m_pIndexBuffer;			// 索引缓冲区
-// 	ComPtr<ID3D11Buffer> m_pConstantBuffer;		    // 常量缓冲区
-
-	ComPtr<ID3D11VertexShader> m_pVertexShader;	    // 顶点着色器
-	ComPtr<ID3D11PixelShader> m_pPixelShader;		// 像素着色器
+	std::unique_ptr<TextureRender>	m_pGameContent;
+	std::unique_ptr<TextureRender>	m_pRayTracingContent;
+	std::unique_ptr<Scene>			m_pScene;
+	
 	CB m_CBuffer;	                    // 用于修改GPU常量缓冲区的变量
 
 };

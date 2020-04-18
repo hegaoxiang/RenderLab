@@ -27,9 +27,9 @@ public:
 	{
 		return m_Buffer.GetAddressOf();
 	}
-	void SetBufferName(const std::string& name)
+	virtual void SetBufferName(const std::string& name)const
 	{
-		D3D11SetDebugObjectName(m_Buffer.Get(), name);
+		D3D11SetDebugObjectName(m_Buffer.Get(), name);	
 	}
 protected:
 	ComPtr<ID3D11Buffer> m_Buffer;
@@ -51,6 +51,10 @@ public:
 		ZeroMemory(&InitData, sizeof(InitData));
 		InitData.pSysMem = vertices;
 		HR(device->CreateBuffer(&vbd, &InitData, m_Buffer.GetAddressOf()));
+	}
+	void SetBufferName(const std::string& name)const override
+	{
+		SetBufferName( name + "VertexBuffer");
 	}
 };
 
@@ -81,7 +85,10 @@ public:
 		m_EleCount = indexCount;
 	}
 
-	
+	void SetBufferName(const std::string& name)const override
+	{
+		SetBufferName(name + "IndexBuffer");
+	}
 	uint32_t GetCount()const
 	{
 		return m_EleCount;
