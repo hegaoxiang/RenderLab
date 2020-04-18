@@ -3,7 +3,7 @@
 #include "d3dApp.h"
 #include "TextureRender.h"
 #include <memory>
-#include "GameObject.h"
+
 #include "Scene.h"
 class GameApp : public D3DApp
 {
@@ -39,7 +39,7 @@ private:
 private:
 	std::unique_ptr<TextureRender>	m_pGameContent;
 	std::unique_ptr<TextureRender>	m_pRayTracingContent;
-	std::unique_ptr<Scene>			m_pScene;
+	std::shared_ptr<Scene>			m_pScene;
 	
 	CB m_CBuffer;	                    // 用于修改GPU常量缓冲区的变量
 

@@ -16,6 +16,7 @@ public:
 	Buffer(Buffer const&) = delete;
 	Buffer& operator= (Buffer const&) = delete;
 
+
 	virtual ~Buffer() { m_Buffer.Reset(); }
 	
 	// Looks up the underlying D3D buffer.

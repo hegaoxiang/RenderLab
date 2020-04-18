@@ -60,9 +60,6 @@
     <ClCompile Include="TextureRender.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\Buffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -76,6 +73,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\RenderStates.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Logic\LogicSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,9 +101,6 @@
     <ClInclude Include="TextureRender.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\Buffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -123,6 +120,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\RenderStates.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\LogicSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,5 @@
 ﻿ #pragma once
-#include "Graphics/Buffer.h"
-#include "Graphics/Geometry.h"
-#include "Graphics/Effects.h"
+
 
 class GameObject
 {
@@ -30,14 +28,13 @@ public:
 	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX world);
 
 
-	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect);
-
+	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
 
 	void SetDebugName(const std::string& name);
 
 	std::string Name;
-private:
 	ModelPart m_Model;
+private:
 	DirectX::XMFLOAT4X4 m_WorldMatrix;							// 世界矩阵
 };
 // #include <string>

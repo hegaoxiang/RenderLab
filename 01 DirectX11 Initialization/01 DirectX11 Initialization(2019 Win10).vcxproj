@@ -97,6 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -109,6 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,6 +125,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -139,6 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -153,10 +157,10 @@
     <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="DXTrace.cpp" />
     <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="Graphics\RenderStates.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
+    <ClCompile Include="Logic\LogicSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TextureRender.cpp" />
@@ -174,13 +178,13 @@
     <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="DXTrace.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="Graphics\EffectHelper.h" />
     <ClInclude Include="Graphics\Effects.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\RenderStates.h" />
     <ClInclude Include="GUI\GUI.h" />
+    <ClInclude Include="Logic\LogicSystem.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="TextureRender.h" />
     <ClInclude Include="Graphics\Vertex.h" />

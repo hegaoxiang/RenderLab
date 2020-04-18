@@ -3,6 +3,7 @@
 #include "DXTrace.h"
 #include "GUI/GUI.h"
 #include "Graphics/Effects.h"
+#include "Logic/LogicSystem.h"
 
 using namespace DirectX;
 
@@ -18,6 +19,7 @@ GameApp::GameApp(HINSTANCE hInstance)
 	m_pRayTracingContent(new TextureRender()),
 	m_pScene(new Scene())
 {
+	LogicSystem::Get().SetScene(m_pScene);
 }
 
 GameApp::~GameApp()
@@ -48,12 +50,7 @@ void GameApp::OnResize()
 
 void GameApp::UpdateScene(float dt)
 {
-	
-	static float phi = 0.0f, theta = 0.0f;
-	phi += 0.0001f, theta += 0.00015f;
-	m_CBuffer.world = (XMMatrixRotationX(phi) * XMMatrixRotationY(theta));
-
-	m_pScene->m_AllItem[0]->SetWorldMatrix(m_CBuffer.world);
+	LogicSystem::Get().Update(dt);
 
 	BasicEffect::Get().SetViewMatrix(m_CBuffer.view);
 	BasicEffect::Get().SetProjMatrix(m_CBuffer.proj);
@@ -61,9 +58,6 @@ void GameApp::UpdateScene(float dt)
 
 void GameApp::DrawScene()
 {
-	static float f[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-
-	
 	assert(m_pd3dImmediateContext);
 	assert(m_pSwapChain);
 	static float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };	// RGBA = (0,0,255,255)
@@ -76,7 +70,7 @@ void GameApp::DrawScene()
 
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 
-	m_pGameContent->Begin(m_pd3dImmediateContext.Get(), f);
+	m_pGameContent->Begin(m_pd3dImmediateContext.Get(), blue);
 
 	m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
 
@@ -94,6 +88,27 @@ void GameApp::DrawScene()
 		ImGui::End();
 
 		ImGui::Begin("RayTracing");
+
+		ImGui::End();
+		ImGui::Begin("test");
+
+		if (ImGui::Button("remove 0"))
+		{
+			m_pScene->RemoveComponent(0,COMPONENT_ROTATE);
+		}
+		if (ImGui::Button("remove 1"))
+		{
+			m_pScene->RemoveComponent(1, COMPONENT_ROTATE);
+		}
+
+		if (ImGui::Button("add 0"))
+		{
+			m_pScene->AddComponent(0, COMPONENT_ROTATE);
+		}
+		if (ImGui::Button("add 1"))
+		{
+			m_pScene->AddComponent(1, COMPONENT_ROTATE);
+		}
 
 		ImGui::End();
 	}
@@ -118,52 +133,14 @@ bool GameApp::InitResource()
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	
-	// ******************
-	// 设置立方体顶点
-	//    5________ 6
-	//    /|      /|
-	//   /_|_____/ |
-	//  1|4|_ _ 2|_|7
-	//   | /     | /
-	//   |/______|/
-	//  0       3
-	std::vector<VertexPosColor>vertices =
-	{
-		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-		{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
-	};
 
-	std::vector<DWORD> indices = {
-		// 正面
-		0, 1, 2,
-		2, 3, 0,
-		// 左面
-		4, 5, 1,
-		1, 0, 4,
-		// 顶面
-		1, 5, 6,
-		6, 2, 1,
-		// 背面
-		7, 6, 5,
-		5, 4, 7,
-		// 右面
-		3, 2, 6,
-		6, 7, 3,
-		// 底面
-		4, 0, 3,
-		3, 7, 4
-	};
-	std::shared_ptr<GameObject> test = std::make_shared<GameObject>();
-	m_pScene->Add(test);
-	test->SetMesh<VertexPosColor, DWORD>(m_pd3dDevice.Get(),vertices, indices);
-	test->Name = "test";
-	test->SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+	m_pScene->CreateBox(m_pd3dDevice.Get());
+	
+	m_pScene->CreateBox(m_pd3dDevice.Get());
+
+	m_pScene->AddComponent(0, COMPONENT_ROTATE);
+
+
 	m_CBuffer.world = XMMatrixIdentity();	// 单位矩阵的转置是它本身
 	m_CBuffer.view = (XMMatrixLookAtLH(
 		XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),

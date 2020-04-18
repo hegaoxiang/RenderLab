@@ -14,31 +14,10 @@ void GameObject::SetMesh(ID3D11Device* device, const void* vertices, UINT vertex
 	m_Model.vertexCount = vertexCount;
 	m_Model.indexCount = indexCount;
 	m_Model.indexFormat = indexFormat;
-// 	m_Model
-// 	m_Model.material.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-// 	m_Model.material.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-// 	m_Model.material.specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_Model.vertexBuffer.Create(device, vertices, vertexSize, vertexCount);
 
 	m_Model.indexBuffer.Create(device, indices, indexCount, indexFormat);
-	// 设置索引缓冲区描述
-// 	D3D11_BUFFER_DESC ibd;
-// 	ZeroMemory(&ibd, sizeof(ibd));
-// 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-// 	if (indexFormat == DXGI_FORMAT_R16_UINT)
-// 	{
-// 		ibd.ByteWidth = indexCount * (UINT)sizeof(WORD);
-// 	}
-// 	else
-// 	{
-// 		ibd.ByteWidth = indexCount * (UINT)sizeof(DWORD);
-// 	}
-// 	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-// 	ibd.CPUAccessFlags = 0;
-// 	// 新建索引缓冲区
-// 	InitData.pSysMem = indices;
-// 	HR(device->CreateBuffer(&ibd, &InitData, modelParts[0].indexBuffer.ReleaseAndGetAddressOf()));
 }
 
 void GameObject::SetWorldMatrix(const DirectX::XMFLOAT4X4& world)
@@ -52,7 +31,7 @@ void XM_CALLCONV GameObject::SetWorldMatrix(DirectX::FXMMATRIX world)
 }
 
 
-void GameObject::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)
+void GameObject::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
 {
 	UINT strides = m_Model.vertexStride;
 	UINT offsets = 0;
