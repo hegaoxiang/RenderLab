@@ -5,7 +5,7 @@
 #include <string>
 #include <d3d11_1.h>
 #include <DirectXMath.h>
-#include "GameTimer.h"
+#include "DXOthers/GameTimer.h"
 #include "Graphics/Buffer.h"
 
 // 添加所有要引用的库

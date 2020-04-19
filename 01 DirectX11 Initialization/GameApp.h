@@ -1,7 +1,7 @@
 ﻿#ifndef GAMEAPP_H
 #define GAMEAPP_H
 #include "d3dApp.h"
-#include "TextureRender.h"
+#include "Graphics/TextureRender.h"
 #include <memory>
 
 #include "Scene.h"

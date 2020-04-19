@@ -2,6 +2,7 @@
 #include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_win32.h>
 #include <IMGUI/imgui_impl_dx11.h>
+#include "IMGUI/ImGuizmo.h"
 
 
 GUI& GUI::Get()
@@ -63,6 +64,8 @@ void GUI::BeginGUI()
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
+
+	ImGuizmo::BeginFrame();
 
 	Dock();
 }

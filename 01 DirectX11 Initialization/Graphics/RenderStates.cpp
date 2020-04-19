@@ -1,6 +1,6 @@
 #include "RenderStates.h"
-#include "../d3dUtil.h"
-#include "../DXTrace.h"
+#include "DXOthers/d3dUtil.h"
+#include "DXOthers/DXTrace.h"
 using namespace Microsoft::WRL;
 
 ComPtr<ID3D11RasterizerState> RenderStates::RSNoCull			= nullptr;

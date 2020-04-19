@@ -1,5 +1,5 @@
 #pragma once
-#include "../d3dUtil.h"
+#include "DXOthers/d3dUtil.h"
 #include <IMGUI/imgui.h>
 class IDisplay
 {

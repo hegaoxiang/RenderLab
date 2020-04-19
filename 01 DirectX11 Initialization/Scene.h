@@ -38,6 +38,7 @@ public:
 		masks(Num)
 	{}
 
+	friend class Editor;
 	friend class LogicSystem;
 
 	void SetMesh(int i,ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount,
@@ -66,14 +67,19 @@ public:
 
 	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
 
-	UINT SelectedID = -1;
+
 	
 	UINT CreateBox(ID3D11Device* device);
 	// data
-	string& Name(UINT i) { return names[i]; }
+	//string& Name(UINT i) { return names[i]; }
 
+	
 	void AddComponent(UINT i, Component c) { masks[i] |= c; };
-	void RemoveComponent(UINT i, Component c) { masks[i] &= ~c;	}
+	void RemoveComponent(UINT i, Component c) { masks[i] &= ~c; }
+
+public:
+	UINT SelectedID = -1;
+
 
 private:
 	vector<XMFLOAT4X4> worldMats;

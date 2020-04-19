@@ -1,6 +1,6 @@
 ﻿#include "GameApp.h"
-#include "d3dUtil.h"
-#include "DXTrace.h"
+#include "DXOthers/d3dUtil.h"
+#include "DXOthers/DXTrace.h"
 #include "GUI/GUI.h"
 #include "Graphics/Effects.h"
 #include "Logic/LogicSystem.h"

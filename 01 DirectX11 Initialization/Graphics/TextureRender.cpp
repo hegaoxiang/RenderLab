@@ -1,5 +1,5 @@
 #include "TextureRender.h"
-#include "d3dUtil.h"
+#include "DXOthers/d3dUtil.h"
 
 #pragma warning(disable: 26812)
 

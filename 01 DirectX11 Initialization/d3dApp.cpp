@@ -1,6 +1,6 @@
 #include "d3dApp.h"
-#include "d3dUtil.h"
-#include "DXTrace.h"
+#include "DXOthers/d3dUtil.h"
+#include "DXOthers/DXTrace.h"
 #include <sstream>
 #include "GUI/GUI.h"
 

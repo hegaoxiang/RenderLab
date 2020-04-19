@@ -151,34 +151,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GUI\Editor.cpp" />
     <ClCompile Include="Graphics\BasicEffect.cpp" />
     <ClCompile Include="Graphics\Buffer.cpp" />
     <ClCompile Include="d3dApp.cpp" />
-    <ClCompile Include="d3dUtil.cpp" />
-    <ClCompile Include="DXTrace.cpp" />
+    <ClCompile Include="DXOthers\d3dUtil.cpp" />
+    <ClCompile Include="DXOthers\DXTrace.cpp" />
     <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="DXOthers\GameTimer.cpp" />
     <ClCompile Include="Graphics\RenderStates.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Logic\LogicSystem.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="TextureRender.cpp" />
+    <ClCompile Include="Graphics\TextureRender.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui.cpp" />
+    <ClCompile Include="Vendor\IMGUI\ImGuizmo.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_demo.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_draw.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_impl_win32.cpp" />
+    <ClCompile Include="Vendor\IMGUI\imgui_stdlib.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GUI\Editor.h" />
     <ClInclude Include="Graphics\Buffer.h" />
     <ClInclude Include="d3dApp.h" />
-    <ClInclude Include="d3dUtil.h" />
-    <ClInclude Include="DXTrace.h" />
+    <ClInclude Include="DXOthers\d3dUtil.h" />
+    <ClInclude Include="DXOthers\DXTrace.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="DXOthers\GameTimer.h" />
     <ClInclude Include="Graphics\EffectHelper.h" />
     <ClInclude Include="Graphics\Effects.h" />
     <ClInclude Include="Graphics\Geometry.h" />
@@ -186,7 +190,7 @@
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="Logic\LogicSystem.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="TextureRender.h" />
+    <ClInclude Include="Graphics\TextureRender.h" />
     <ClInclude Include="Graphics\Vertex.h" />
   </ItemGroup>
   <ItemGroup>

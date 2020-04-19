@@ -1,7 +1,7 @@
 #include "Effects.h"
-#include "../d3dUtil.h"
+#include "DXOthers/d3dUtil.h"
 #include "EffectHelper.h"	// 必须晚于Effects.h和d3dUtil.h包含
-#include "../DXTrace.h"
+#include "DXOthers/DXTrace.h"
 #include "Vertex.h"
 using namespace DirectX;
 

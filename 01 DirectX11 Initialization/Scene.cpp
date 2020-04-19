@@ -1,5 +1,6 @@
 #include "Scene.h"
-
+#include "IMGUI/imgui_stdlib.h"
+#include "IMGUI/ImGuizmo.h"
 
 void Scene::SetMesh(int i, ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)
 {
@@ -19,15 +20,69 @@ void Scene::SetMesh(int i, ID3D11Device* device, const void* vertices, UINT vert
 
 void Scene::OnGUI()
 {
-	ImGui::Begin("Hierarchy");
-	int i = 0;
+
+	ImGui::Begin("Hierarchy",nullptr,ImGuiWindowFlags_MenuBar);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Add"))
+		{
+			if (ImGui::MenuItem("Box"))
+			{
+				
+			}
+			
+			ImGui::EndMenu();
+		}
+		
+		ImGui::EndMenuBar();
+	}
+	UINT i = 0;
 	for (auto& item : names)
 	{
 		if (ImGui::Selectable(item.c_str(), SelectedID == i))
 			SelectedID = i;
 		i++;
 	}
+
 	ImGui::End();
+
+	ImGui::Begin("Inspector");
+	
+	static bool showTransform = false;
+	if (SelectedID != -1)
+	{
+		ImGui::InputText("Name", &names[SelectedID]);
+
+		auto mask = masks[SelectedID];
+
+		if (mask & COMPONENT_TRANSFORM)
+		{
+			showTransform = true;
+		}
+		/*if(mask )*/
+	}
+	ImGui::End();
+
+	if (showTransform)
+	{
+		ImGui::Begin("TransForm");
+
+		ImGui::Text("transform");
+		ImGui::NewLine();
+		
+
+		static float translation[3];
+		static float rotation[3];
+		static float scale[3];
+		ImGuizmo::DecomposeMatrixToComponents((float*)worldMats[SelectedID].m, translation, rotation, scale);
+		ImGui::InputFloat3("Tr", translation, 3);
+		ImGui::InputFloat3("Rt", rotation, 3);
+		ImGui::InputFloat3("Sc", scale, 3);
+		ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, (float*)worldMats[SelectedID].m);
+
+		ImGui::End();
+	}
+	
 }
 
 void Scene::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
@@ -80,7 +135,7 @@ UINT Scene::CreateBox(ID3D11Device* device)
 {
 	UINT i = CreateEnity();
 
-	Name(i) = "test";
+	names[i] = "test" + i;
 	
 	XMStoreFloat4x4(&worldMats[i] ,XMMatrixIdentity());
 

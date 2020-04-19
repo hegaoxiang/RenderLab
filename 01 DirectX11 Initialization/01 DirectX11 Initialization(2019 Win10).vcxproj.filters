@@ -27,15 +27,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="d3dUtil.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="DXTrace.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Vendor\IMGUI\imgui_impl_dx11.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -57,9 +48,6 @@
     <ClCompile Include="GUI\GUI.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="TextureRender.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\Buffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -78,6 +66,27 @@
     <ClCompile Include="Logic\LogicSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Vendor\IMGUI\imgui_stdlib.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\IMGUI\ImGuizmo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\TextureRender.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DXOthers\d3dUtil.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DXOthers\DXTrace.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DXOthers\GameTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Editor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dApp.h">
@@ -86,19 +95,7 @@
     <ClInclude Include="GameApp.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="d3dUtil.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DXTrace.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\GUI.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureRender.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Buffer.h">
@@ -123,6 +120,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Logic\LogicSystem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\TextureRender.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DXOthers\d3dUtil.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DXOthers\DXTrace.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DXOthers\GameTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Editor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

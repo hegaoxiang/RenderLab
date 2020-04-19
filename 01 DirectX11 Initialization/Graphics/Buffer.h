@@ -2,8 +2,8 @@
 #include <wrl/client.h>
 #include <d3d11_1.h>
 #include <string>
-#include "../DXTrace.h"
-#include "../d3dUtil.h"
+#include "DXOthers/DXTrace.h"
+#include "DXOthers/d3dUtil.h"
 
 template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;
