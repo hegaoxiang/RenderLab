@@ -21,6 +21,7 @@ GameApp::GameApp(HINSTANCE hInstance)
 
 GameApp::~GameApp()
 {
+	m_pScene->Serialize();
 }
 
 bool GameApp::Init()
@@ -103,11 +104,8 @@ void GameApp::UpdateScene(float dt)
 
 	// 更新观察矩阵
 	m_pCamera->UpdateViewMatrix();
-/*	XMStoreFloat4(&m_CBFrame.eyePos, m_pCamera->GetPositionXM());*/
 	m_CBuffer.view = (m_pCamera->GetViewXM());
 
-// 	// 重置滚轮值
-// 	m_pMouse->ResetScrollWheelValue();
 	BasicEffect::Get().SetViewMatrix(m_CBuffer.view);
 	BasicEffect::Get().SetProjMatrix(m_CBuffer.proj);
 }
@@ -181,9 +179,9 @@ bool GameApp::InitResource()
 
 	// 初始化仅在窗口大小变动时修改的值
 	m_pCamera->SetFrustum(XM_PI / 3, AspectRatio(), 0.5f, 1000.0f);
-
-
 	m_CBuffer.proj = camera->GetProjXM();
 
+
+	m_pScene->AntiSerialize(m_pd3dDevice.Get());
 	return true;
 }

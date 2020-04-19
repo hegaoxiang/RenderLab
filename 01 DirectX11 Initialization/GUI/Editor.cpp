@@ -1,6 +1,6 @@
 #include "Editor.h"
-#include "IMGUI/imgui_stdlib.h"
-#include "IMGUI/ImGuizmo.h"
+#include <IMGUI/imgui_stdlib.h>
+#include <IMGUI/ImGuizmo.h>
 
 Editor& Editor::Get()
 {
@@ -154,7 +154,11 @@ void Editor::CreateBox(ID3D11Device* device)
 
 	XMStoreFloat4x4(&m_pScene->worldMats[i], XMMatrixIdentity());
 
+	m_pScene->modelParts[i].primary = Geometry::BOX;
+
 	static int q = 0;
+	if (q == 2)
+		m_pScene->Serialize();
 	if (q == 0)
 	{
 		q = 1;
@@ -162,6 +166,7 @@ void Editor::CreateBox(ID3D11Device* device)
 	}
 	else
 	{
+		q = 2;
 		std::vector<VertexPosColor>vertices =
 		{
 			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
@@ -197,5 +202,6 @@ void Editor::CreateBox(ID3D11Device* device)
 		m_pScene->SetMesh(i, device, vertices, indices);
 		//AddComponent(i, COMPONENT_ROTATE);
 	}
+
 	AddComponent(COMPONENT_TRANSFORM);
 }

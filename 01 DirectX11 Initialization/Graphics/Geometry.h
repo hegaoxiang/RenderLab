@@ -8,6 +8,14 @@
 
 namespace Geometry
 {
+	enum PrimaryModel
+	{
+		OTHER,
+		SPHER,
+		BOX,
+		CYLINDER,
+		PLANE 
+	};
 	// 网格数据
 	template<class VertexType = VertexPosNormalTex, class IndexType = DWORD>
 	struct MeshData
