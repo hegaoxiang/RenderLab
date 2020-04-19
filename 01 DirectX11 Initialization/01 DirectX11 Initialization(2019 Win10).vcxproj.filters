@@ -93,6 +93,9 @@
     <ClCompile Include="Vendor\CJSON\cJsonObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Logic\Camera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dApp.h">
@@ -147,6 +150,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\CJSON\cJsonObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

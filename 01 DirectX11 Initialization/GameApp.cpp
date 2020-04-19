@@ -49,6 +49,65 @@ void GameApp::UpdateScene(float dt)
 {
 	LogicSystem::Get().Update(dt);
 
+
+	auto cam1st = std::dynamic_pointer_cast<FirstPersonCamera>(m_pCamera);
+	auto cam3rd = std::dynamic_pointer_cast<ThirdPersonCamera>(m_pCamera);
+
+
+	auto& io = ImGui::GetIO();
+	if (io.MouseDown[1])
+	{
+		// 第一人称/自由摄像机的操作
+		
+		// 方向移动
+		if (ImGui::IsKeyDown(Keys::W))
+		{
+			if (m_CameraMode == CameraMode::FirstPerson)
+				cam1st->Walk(dt * 3.0f);
+			else
+				cam1st->MoveForward(dt * 3.0f);
+		}
+		if (ImGui::IsKeyDown(Keys::S))
+		{
+			if (m_CameraMode == CameraMode::FirstPerson)
+				cam1st->Walk(dt * -3.0f);
+			else
+				cam1st->MoveForward(dt * -3.0f);
+		}
+		if (ImGui::IsKeyDown(Keys::A))
+			cam1st->Strafe(dt * -3.0f);
+		if (ImGui::IsKeyDown(Keys::D))
+			cam1st->Strafe(dt * 3.0f);
+
+		// 将位置限制在[-8.9f, 8.9f]的区域内
+		// 不允许穿地
+		XMFLOAT3 adjustedPos;
+		XMStoreFloat3(&adjustedPos, XMVectorClamp(cam1st->GetPositionXM(), XMVectorSet(-8.9f, 0.0f, -8.9f, 0.0f), XMVectorReplicate(8.9f)));
+		cam1st->SetPosition(adjustedPos);
+
+		// 视野旋转，防止开始的差值过大导致的突然旋转
+		cam1st->Pitch(io.MouseDelta.y * dt * 1.25f);
+		cam1st->RotateY(io.MouseDelta.x * dt * 1.25f);
+	}
+// 	else if (m_CameraMode == CameraMode::ThirdPerson)
+// 	{
+// 		// 第三人称摄像机的操作
+// 
+// 		cam3rd->SetTarget(m_WoodCrate.GetPosition());
+// 
+// 		// 绕物体旋转
+// 		cam3rd->RotateX(mouseState.y * dt * 1.25f);
+// 		cam3rd->RotateY(mouseState.x * dt * 1.25f);
+// 		cam3rd->Approach(-mouseState.scrollWheelValue / 120 * 1.0f);
+// 	}
+
+	// 更新观察矩阵
+	m_pCamera->UpdateViewMatrix();
+/*	XMStoreFloat4(&m_CBFrame.eyePos, m_pCamera->GetPositionXM());*/
+	m_CBuffer.view = (m_pCamera->GetViewXM());
+
+// 	// 重置滚轮值
+// 	m_pMouse->ResetScrollWheelValue();
 	BasicEffect::Get().SetViewMatrix(m_CBuffer.view);
 	BasicEffect::Get().SetProjMatrix(m_CBuffer.proj);
 }
@@ -97,7 +156,7 @@ m_pGameContent->End(m_pd3dImmediateContext.Get());
 	GUI::Get().Render();
 #endif
 
-	HR(m_pSwapChain->Present(0, 0));
+	HR(m_pSwapChain->Present(1, 0));
 }
 
 
@@ -113,14 +172,18 @@ bool GameApp::InitResource()
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	
+	auto camera = std::shared_ptr<FirstPersonCamera>(new FirstPersonCamera);
+	m_pCamera = camera;
 
-	m_CBuffer.world = XMMatrixIdentity();	// 单位矩阵的转置是它本身
-	m_CBuffer.view = (XMMatrixLookAtLH(
-		XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f),
-		XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-		XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-	));
-	m_CBuffer.proj = (XMMatrixPerspectiveFovLH(XM_PIDIV2, AspectRatio(), 1.0f, 1000.0f));
+	camera->SetViewPort(0.0f, 0.0f, (float)m_ClientWidth, (float)m_ClientHeight);
+	camera->LookAt(XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
+		XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
+
+	// 初始化仅在窗口大小变动时修改的值
+	m_pCamera->SetFrustum(XM_PI / 3, AspectRatio(), 0.5f, 1000.0f);
+
+
+	m_CBuffer.proj = camera->GetProjXM();
 
 	return true;
 }

@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Logic\Camera.cpp" />
     <ClCompile Include="Vendor\CJSON\cJsonObject.cpp" />
     <ClCompile Include="Vendor\CJSON\cJSON.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logic\Camera.h" />
     <ClInclude Include="Vendor\CJSON\cJsonObject.h" />
     <ClInclude Include="Vendor\CJSON\cJSON.h" />
     <ClInclude Include="GUI\Editor.h" />

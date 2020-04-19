@@ -3,7 +3,7 @@
 #include "d3dApp.h"
 #include "Graphics/TextureRender.h"
 #include <memory>
-
+#include "Logic/Camera.h"
 #include "Scene.h"
 class GameApp : public D3DApp
 {
@@ -34,6 +34,12 @@ private:
 	std::unique_ptr<TextureRender>	m_pRayTracingContent;
 	std::shared_ptr<Scene>			m_pScene;
 	
+	// 摄像机模式
+	enum class CameraMode { FirstPerson, ThirdPerson, Free };
+
+	std::shared_ptr<Camera>			m_pCamera;
+	CameraMode m_CameraMode;			// 摄像机模式
+
 	CB m_CBuffer;	                    // 用于修改GPU常量缓冲区的变量
 
 };
