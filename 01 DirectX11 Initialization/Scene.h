@@ -15,7 +15,7 @@ enum Component
 	COMPONENT_TRANSFORM = 1 << 0,
 	COMPONENT_ROTATE = 1 << 1
 };
-class Scene:public IDisplay
+class Scene
 {
 	
 	const static UINT Num = 10;
@@ -62,25 +62,16 @@ public:
 		SetMesh(i,device, meshData.vertexVec, meshData.indexVec);
 	}
 
-
-	virtual void OnGUI() override;
-
 	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
-
 
 	
 	UINT CreateBox(ID3D11Device* device);
-	// data
-	//string& Name(UINT i) { return names[i]; }
 
-	
 	void AddComponent(UINT i, Component c) { masks[i] |= c; };
 	void RemoveComponent(UINT i, Component c) { masks[i] &= ~c; }
 
 public:
 	UINT SelectedID = -1;
-
-
 private:
 	vector<XMFLOAT4X4> worldMats;
 	vector<ModelPart> modelParts;

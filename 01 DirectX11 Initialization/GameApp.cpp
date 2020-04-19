@@ -2,6 +2,7 @@
 #include "DXOthers/d3dUtil.h"
 #include "DXOthers/DXTrace.h"
 #include "GUI/GUI.h"
+#include "GUI/Editor.h"
 #include "Graphics/Effects.h"
 #include "Logic/LogicSystem.h"
 
@@ -20,6 +21,7 @@ GameApp::GameApp(HINSTANCE hInstance)
 	m_pScene(new Scene())
 {
 	LogicSystem::Get().SetScene(m_pScene);
+	Editor::Get().SetScene(m_pScene);
 }
 
 GameApp::~GameApp()
@@ -70,19 +72,22 @@ void GameApp::DrawScene()
 
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 
+#ifdef EDITOR
 	m_pGameContent->Begin(m_pd3dImmediateContext.Get(), blue);
 
+#endif
 	m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
 
-	m_pGameContent->End(m_pd3dImmediateContext.Get());
+#ifdef EDITOR
+m_pGameContent->End(m_pd3dImmediateContext.Get());
+#endif
 
-
+#ifdef EDITOR
 	GUI::Get().BeginGUI();
 	{
-		m_pScene->OnGUI();
+		Editor::Get().OnGUI();
 
 		ImGui::Begin("Game");
-		//ImGuiIO& io = ImGui::GetIO();
 		;
 		ImGui::Image(m_pGameContent->GetOutputTexture(), ImGui::GetContentRegionAvail());
 		ImGui::End();
@@ -90,32 +95,12 @@ void GameApp::DrawScene()
 		ImGui::Begin("RayTracing");
 
 		ImGui::End();
-		ImGui::Begin("test");
-
-		if (ImGui::Button("remove 0"))
-		{
-			m_pScene->RemoveComponent(0,COMPONENT_ROTATE);
-		}
-		if (ImGui::Button("remove 1"))
-		{
-			m_pScene->RemoveComponent(1, COMPONENT_ROTATE);
-		}
-
-		if (ImGui::Button("add 0"))
-		{
-			m_pScene->AddComponent(0, COMPONENT_ROTATE);
-		}
-		if (ImGui::Button("add 1"))
-		{
-			m_pScene->AddComponent(1, COMPONENT_ROTATE);
-		}
-
-		ImGui::End();
 	}
 
 	GUI::Get().EndGUI();
 
 	GUI::Get().Render();
+#endif
 
 	HR(m_pSwapChain->Present(0, 0));
 }
