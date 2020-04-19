@@ -8,11 +8,6 @@
 
 using namespace DirectX;
 
-const D3D11_INPUT_ELEMENT_DESC GameApp::VertexPosColor::inputLayout[2] = {
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-};
-
 
 GameApp::GameApp(HINSTANCE hInstance)
 	: D3DApp(hInstance),
@@ -85,7 +80,7 @@ m_pGameContent->End(m_pd3dImmediateContext.Get());
 #ifdef EDITOR
 	GUI::Get().BeginGUI();
 	{
-		Editor::Get().OnGUI();
+		Editor::Get().OnGUI(m_pd3dDevice.Get());
 
 		ImGui::Begin("Game");
 		;
@@ -118,13 +113,6 @@ bool GameApp::InitResource()
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	
-
-	m_pScene->CreateBox(m_pd3dDevice.Get());
-	
-	m_pScene->CreateBox(m_pd3dDevice.Get());
-
-	m_pScene->AddComponent(0, COMPONENT_ROTATE);
-
 
 	m_CBuffer.world = XMMatrixIdentity();	// 单位矩阵的转置是它本身
 	m_CBuffer.view = (XMMatrixLookAtLH(

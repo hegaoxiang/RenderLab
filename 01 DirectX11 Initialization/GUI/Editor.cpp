@@ -2,22 +2,20 @@
 #include "IMGUI/imgui_stdlib.h"
 #include "IMGUI/ImGuizmo.h"
 
-
-
 Editor& Editor::Get()
 {
 	static Editor* impl = new Editor();
 	return *impl;
 }
 
-void Editor::OnGUI()
+void Editor::OnGUI(ID3D11Device* device)
 {
 	// need to choose a scene first 
 	if (!m_pScene)
 		return;
 
 	if (m_ShowHierarchy)
-		ShowHierarchy();
+		ShowHierarchy(device);
 
 	if (m_ShowInspector)
 		ShowInspector();
@@ -65,9 +63,9 @@ void Editor::ShowInspector()
 		{
 			k <<= i;
 			if (toggles[i])
-				m_pScene->AddComponent(SelectedID, (Component)k);
+				AddComponent((Component)k);
 			else
-				m_pScene->RemoveComponent(SelectedID, (Component)k);
+				RemoveComponent((Component)k);
 		}
 		ImGui::EndPopup();
 	}
@@ -76,7 +74,7 @@ void Editor::ShowInspector()
 	ImGui::End();
 }
 
-void Editor::ShowHierarchy()
+void Editor::ShowHierarchy(ID3D11Device* device)
 {
 	auto& SelectedID = m_pScene->SelectedID;
 	auto& names = m_pScene->names;
@@ -88,7 +86,7 @@ void Editor::ShowHierarchy()
 		{
 			if (ImGui::MenuItem("Box"))
 			{
-
+				CreateBox(device);
 			}
 
 			ImGui::EndMenu();
@@ -133,4 +131,71 @@ void Editor::ShowTransForm()
 void Editor::ShowModel()
 {
 
+}
+
+void Editor::CreateEnity()
+{
+	for (size_t i = 0; i < m_pScene->Num; i++)
+	{
+		if (m_pScene->masks[i] == COMPONENT_NONE)
+		{
+			m_pScene->SelectedID = i;
+			return;
+		}
+	}
+}
+
+void Editor::CreateBox(ID3D11Device* device)
+{
+	CreateEnity();
+
+	auto i = m_pScene->SelectedID;
+	m_pScene->names[i] = "test" + i;
+
+	XMStoreFloat4x4(&m_pScene->worldMats[i], XMMatrixIdentity());
+
+	static int q = 0;
+	if (q == 0)
+	{
+		q = 1;
+		m_pScene->SetMesh(i, device, Geometry::CreateBox<VertexPosColor>());
+	}
+	else
+	{
+		std::vector<VertexPosColor>vertices =
+		{
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
+		};
+
+		std::vector<DWORD> indices = {
+			// 正面
+			0, 1, 2,
+			2, 3, 0,
+			// 左面
+			4, 5, 1,
+			1, 0, 4,
+			// 顶面
+			1, 5, 6,
+			6, 2, 1,
+			// 背面
+			7, 6, 5,
+			5, 4, 7,
+			// 右面
+			3, 2, 6,
+			6, 7, 3,
+			// 底面
+			4, 0, 3,
+			3, 7, 4
+		};
+		m_pScene->SetMesh(i, device, vertices, indices);
+		//AddComponent(i, COMPONENT_ROTATE);
+	}
+	AddComponent(COMPONENT_TRANSFORM);
 }

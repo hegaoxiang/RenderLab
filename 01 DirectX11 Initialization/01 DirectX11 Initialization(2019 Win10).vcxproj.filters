@@ -87,6 +87,12 @@
     <ClCompile Include="GUI\Editor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Vendor\CJSON\cJSON.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\CJSON\cJsonObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dApp.h">
@@ -135,6 +141,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GUI\Editor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\CJSON\cJSON.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\CJSON\cJsonObject.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

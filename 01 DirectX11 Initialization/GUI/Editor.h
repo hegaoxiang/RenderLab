@@ -11,7 +11,7 @@ class Editor
 public:
 	static Editor& Get();
 
-	void OnGUI();
+	void OnGUI(ID3D11Device* device);
 
 	void SetScene(shared_ptr<Scene> scene)
 	{
@@ -21,7 +21,7 @@ public:
 protected:
 	void ShowInspector();
 
-	void ShowHierarchy();
+	void ShowHierarchy(ID3D11Device* device);
 	void ShowTransForm();
 	void ShowModel();
 private:
@@ -34,6 +34,21 @@ private:
 		}
 		return false;
 	}
+
+
+	void AddComponent(Component c) { 
+		auto& id = m_pScene->SelectedID;
+		HR(id != -1);
+		m_pScene->masks[id] |= c;
+	};
+	void RemoveComponent(Component c) { 
+		auto& id = m_pScene->SelectedID;
+		HR(id != -1);
+		m_pScene->masks[id] &= ~c;
+	}
+
+	void CreateEnity();
+	void CreateBox(ID3D11Device* device);
 	shared_ptr<Scene> m_pScene;
 private:
 	Editor() {
