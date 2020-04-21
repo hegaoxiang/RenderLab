@@ -72,6 +72,9 @@ void GUI::BeginGUI()
 
 void GUI::EndGUI()
 {
+	static bool w = true;
+	ShowExampleAppLog(&w);
+
 	ImGui::Render();
 }
 

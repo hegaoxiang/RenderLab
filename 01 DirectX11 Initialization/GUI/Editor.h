@@ -4,7 +4,7 @@
 #include <vector>
 
 // Not only Editor Scene,but also Init scene.
-
+class Camera;
 class Editor
 {
 	using CompName = std::string;
@@ -14,7 +14,7 @@ class Editor
 public:
 	static Editor& Get();
 
-	void OnGUI(ID3D11Device* device);
+	void OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const Camera& camera);
 
 	// Also init some Other Helpful Data
 	void SetScene(std::shared_ptr<Scene> scene,ID3D11Device * device)
@@ -31,6 +31,10 @@ protected:
 	void ShowHierarchy();
 	void ShowTransForm();
 	void ShowModel();
+
+	void ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camera);
+	void OnAddComponent(Component c);
+	void InitModelData();
 private:
 	//////////////////////////////////////////////////////////////////////////
 	// data help function
@@ -76,7 +80,7 @@ private:
 		HR(SelectedID != -1);
 		m_pScene->masks[SelectedID] |= c;
 
-		InitAdditionData();
+		OnAddComponent(c);
 	};
 	void RemoveComponent(Component c) { 
 		HR(SelectedID != -1);
@@ -86,6 +90,7 @@ private:
 	void CreateEnity();
 	void CreateBox();
 	std::shared_ptr<Scene> m_pScene;
+	std::shared_ptr<Camera>m_pCamera;
 private:
 	Editor() {
 		NameMap = { {COMPONENT_TRANSFORM,"Transform"},{COMPONENT_MODEL,"Model"},{COMPONENT_ROTATE,"Rotate"} };
@@ -94,6 +99,7 @@ private:
 
 	bool m_ShowInspector = true;
 	bool m_ShowHierarchy = true;
+	bool m_ShowSetting = true;
 
 	template <class T>
 	using ComPtr = Microsoft::WRL::ComPtr<T>;

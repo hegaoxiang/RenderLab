@@ -1,6 +1,9 @@
 #include "Editor.h"
 #include <IMGUI/imgui_stdlib.h>
 #include <IMGUI/ImGuizmo.h>
+#include "../25 Normal Mapping/Camera.h"
+
+#define TRACE(...) GUI::Get().AddLog(__VA_ARGS__ + "\n")
 
 Editor& Editor::Get()
 {
@@ -8,11 +11,13 @@ Editor& Editor::Get()
 	return *impl;
 }
 
-void Editor::OnGUI(ID3D11Device* device)
+void Editor::OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const Camera& camera)
 {
 	// need to choose a scene first 
 	if (!m_pScene)
 		return;
+	
+	ShowGame(gameContent,camera);
 
 	if (m_ShowHierarchy)
 		ShowHierarchy();
@@ -21,7 +26,8 @@ void Editor::OnGUI(ID3D11Device* device)
 		ShowInspector();
 	if (HasComponent(COMPONENT_TRANSFORM))
 		ShowTransForm();
-
+	if (HasComponent(COMPONENT_MODEL))
+		ShowModel();
 
 }
 
@@ -59,9 +65,11 @@ void Editor::ShowInspector()
 		for (UINT i = 0, j = k; i < totalComp; i++)
 		{
 			j =k << i;
-			if (toggles[i])
+			// 如果本身不包含组件，才添加
+			// 或者本身包含组件，才移除
+			if (toggles[i] && !(mask & j))
 				AddComponent((Component)j);
-			else
+			else if(!toggles[i] && mask & j)
 				RemoveComponent((Component)j);
 		}
 		ImGui::EndPopup();
@@ -101,6 +109,7 @@ void Editor::ShowHierarchy()
 	ImGui::End();
 }
 
+
 void Editor::ShowTransForm()
 {
 	auto& worldMats = m_pScene->worldMats;
@@ -131,29 +140,186 @@ void Editor::ShowTransForm()
 
 void Editor::ShowModel()
 {
+	ImGui::Begin("Model");
 
+	ImGui::Text("Model");
+	int i = m_pScene->modelType[SelectedID];
+
+	ImGui::Combo("ModelType", &i, "OTHER\0SPHER\0BOX\0CYLINDER\0PLANE\0");
+	if (i != m_pScene->modelType[SelectedID])
+	{
+		m_pScene->modelType[SelectedID] = UINT(i);
+
+		InitModelData();
+	}
+	ImGui::End();
+}
+
+void EditTransform(const float* cameraView, const float* cameraProjection, float* matrix, ImVec2 startPos, ImVec2 size)
+{
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
+	static bool useSnap = false;
+	static float snap[3] = { 1.f, 1.f, 1.f };
+	static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+	static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+	static bool boundSizing = false;
+	static bool boundSizingSnap = false;
+
+	if (ImGui::IsKeyPressed(90))
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	if (ImGui::IsKeyPressed(69))
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	if (ImGui::IsKeyPressed(82)) // r Key
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	// 	if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+	// 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	// 	ImGui::SameLine();
+	// 	if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+	// 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	// 	ImGui::SameLine();
+	// 	if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+	// 		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	// 	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+	// 	ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
+	// 	ImGui::InputFloat3("Tr", matrixTranslation, 3);
+	// 	ImGui::InputFloat3("Rt", matrixRotation, 3);
+	// 	ImGui::InputFloat3("Sc", matrixScale, 3);
+	// 	ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
+
+	// 	if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+	// 	{
+	// 		if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+	// 			mCurrentGizmoMode = ImGuizmo::LOCAL;
+	// 		ImGui::SameLine();
+	// 		if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+	// 			mCurrentGizmoMode = ImGuizmo::WORLD;
+	// 	}
+	// 	if (ImGui::IsKeyPressed(83))
+	// 		useSnap = !useSnap;
+	// 	ImGui::Checkbox("", &useSnap);
+	// 	ImGui::SameLine();
+
+	// 	switch (mCurrentGizmoOperation)
+	// 	{
+	// 	case ImGuizmo::TRANSLATE:
+	// 		ImGui::InputFloat3("Snap", &snap[0]);
+	// 		break;
+	// 	case ImGuizmo::ROTATE:
+	// 		ImGui::InputFloat("Angle Snap", &snap[0]);
+	// 		break;
+	// 	case ImGuizmo::SCALE:
+	// 		ImGui::InputFloat("Scale Snap", &snap[0]);
+	// 		break;
+	// 	}
+	// 	ImGui::Checkbox("Bound Sizing", &boundSizing);
+	// 	if (boundSizing)
+	// 	{
+	// 		ImGui::PushID(3);
+	// 		ImGui::Checkbox("", &boundSizingSnap);
+	// 		ImGui::SameLine();
+	// 		ImGui::InputFloat3("Snap", boundsSnap);
+	// 		ImGui::PopID();
+	// 	}
+
+		// 微调一下显示框
+/*	ImGuizmo::SetRect(startPos.x + 9, startPos.y + 27, size.x - 18, size.y - 27);*/
+	ImGuizmo::SetRect(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x, ImGui::GetWindowPos().y + 27, ImGui::GetContentRegionAvail().x, ImGui::GetCursorPos().y);
+	ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+}
+
+
+void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camera)
+{
+	ImGui::Begin("Game");
+	ImGui::GetContentRegionAvail();
+	ImGui::Image(gameContent, ImGui::GetContentRegionAvail());
+
+	XMFLOAT4X4 t1;
+	XMStoreFloat4x4(&t1, camera.GetViewXM());
+	XMFLOAT4X4 t2;
+	XMStoreFloat4x4(&t2, camera.GetProjXM());
+
+	if (SelectedID == -1)
+	{
+		return ImGui::End();
+	}
+	auto t = m_pScene->worldMats[SelectedID].data();
+
+	TRACE("winpos x:" + to_string(ImGui::GetWindowPos().x));
+	TRACE("winpos y:" + to_string(ImGui::GetWindowPos().y));
+	TRACE("curpos x:" + to_string(ImGui::GetCursorPos().x));
+	TRACE("curpos y:" + to_string(ImGui::GetCursorPos().y));
+	TRACE("mousepos x:" + to_string(ImGui::GetMousePos().x));
+	TRACE("mousepos y:" + to_string(ImGui::GetMousePos().y));
+	TRACE("size x:" + to_string(ImGui::GetContentRegionAvail().x));
+	TRACE("size y:" + to_string(ImGui::GetContentRegionAvail().y));
+
+	EditTransform((float*)t1.m, (float*)t2.m, t, ImGui::GetWindowPos(), ImGui::GetContentRegionAvail());
+
+	ImGui::End();
+}
+
+void Editor::OnAddComponent(Component c)
+{
+	HR(SelectedID != -1);
+	switch (c)
+	{
+	case COMPONENT_NONE:
+		break;
+	case COMPONENT_TRANSFORM:
+		{
+			array<float, 16>m16 = {
+				1,0,0,0,
+				0,1,0,0,
+				0,0,1,0,
+				0,0,0,1
+			};
+			m_pScene->worldMats[SelectedID] = m16;
+		}
+		break;
+	case COMPONENT_MODEL:
+		InitModelData();
+		break;
+	case COMPONENT_ROTATE:
+		break;
+	default:
+		break;
+	}
+}
+
+void Editor::InitModelData()
+{
+	PrimaryModel p = (PrimaryModel)m_pScene->modelType[SelectedID];
+	switch (p)
+	{
+	case (PrimaryModel::BOX):
+	{
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+	}
+	break;
+	case PrimaryModel::SPHER:
+	{
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere<VertexPosColor>());
+	}
+	default:
+		break;
+	}
 }
 
 void Editor::InitAdditionData()
 {
+	auto lastSelectedID = SelectedID;
 	for (size_t i = 0; i < m_pScene->Num; i++)
 	{
 		if (m_pScene->masks[i] & COMPONENT_MODEL)
 		{
 			SelectedID = i;
-			PrimaryModel p = (PrimaryModel)m_pScene->modelType[i];
-			switch (p)
-			{
-			case (PrimaryModel::BOX):
-			{
-				SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
-			}
-			break;
-			default:
-				break;
-			}
+			InitModelData();
 		}
 	}
+
+	 SelectedID = lastSelectedID;
 }
 
 void Editor::SetMesh( ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)

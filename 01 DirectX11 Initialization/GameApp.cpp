@@ -5,6 +5,7 @@
 #include "GUI/Editor.h"
 #include "Graphics/Effects.h"
 #include "Logic/LogicSystem.h"
+#include <IMGUI/ImGuizmo.h>
 
 using namespace DirectX;
 
@@ -103,10 +104,9 @@ void GameApp::UpdateScene(float dt)
 
 	// 更新观察矩阵
 	m_pCamera->UpdateViewMatrix();
-	m_CBuffer.view = (m_pCamera->GetViewXM());
 
-	BasicEffect::Get().SetViewMatrix(m_CBuffer.view);
-	BasicEffect::Get().SetProjMatrix(m_CBuffer.proj);
+	BasicEffect::Get().SetViewMatrix(m_pCamera->GetViewXM());
+	
 }
 
 void GameApp::DrawScene()
@@ -136,16 +136,7 @@ m_pGameContent->End(m_pd3dImmediateContext.Get());
 #ifdef EDITOR
 	GUI::Get().BeginGUI();
 	{
-		Editor::Get().OnGUI(m_pd3dDevice.Get());
-
-		ImGui::Begin("Game");
-		;
-		ImGui::Image(m_pGameContent->GetOutputTexture(), ImGui::GetContentRegionAvail());
-		ImGui::End();
-
-		ImGui::Begin("RayTracing");
-
-		ImGui::End();
+		Editor::Get().OnGUI(m_pd3dDevice.Get(), m_pGameContent->GetOutputTexture(),*m_pCamera);
 	}
 
 	GUI::Get().EndGUI();
@@ -181,9 +172,8 @@ bool GameApp::InitResource()
 
 	// 初始化仅在窗口大小变动时修改的值
 	m_pCamera->SetFrustum(XM_PI / 3, AspectRatio(), 0.5f, 1000.0f);
-	m_CBuffer.proj = camera->GetProjXM();
 
-
+	BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
 	return true;
 }
 

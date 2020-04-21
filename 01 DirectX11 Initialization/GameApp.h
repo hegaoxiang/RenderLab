@@ -19,14 +19,6 @@ class GameApp : public D3DApp
 {
 public:
 
-	struct CB
-	{
-		DirectX::XMMATRIX world;
-		DirectX::XMMATRIX view;
-		DirectX::XMMATRIX proj;
-	};
-
-
 	GameApp(HINSTANCE hInstance);
 	~GameApp();
 
@@ -50,7 +42,6 @@ private:
 	std::shared_ptr<Camera>			m_pCamera;
 	CameraMode m_CameraMode;			// 摄像机模式
 
-	CB m_CBuffer;	                    // 用于修改GPU常量缓冲区的变量
 
 };
 
