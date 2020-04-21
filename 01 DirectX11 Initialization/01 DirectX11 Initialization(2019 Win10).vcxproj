@@ -73,22 +73,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -99,6 +103,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>EDITOR;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,6 +118,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>EDITOR;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +135,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -147,6 +154,7 @@
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -156,8 +164,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Logic\Camera.cpp" />
-    <ClCompile Include="Vendor\CJSON\cJsonObject.cpp" />
-    <ClCompile Include="Vendor\CJSON\cJSON.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />
     <ClCompile Include="Graphics\BasicEffect.cpp" />
     <ClCompile Include="Graphics\Buffer.cpp" />
@@ -184,8 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logic\Camera.h" />
-    <ClInclude Include="Vendor\CJSON\cJsonObject.h" />
-    <ClInclude Include="Vendor\CJSON\cJSON.h" />
     <ClInclude Include="GUI\Editor.h" />
     <ClInclude Include="Graphics\Buffer.h" />
     <ClInclude Include="d3dApp.h" />
@@ -205,6 +209,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

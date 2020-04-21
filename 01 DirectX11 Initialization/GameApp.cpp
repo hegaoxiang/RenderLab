@@ -16,7 +16,6 @@ GameApp::GameApp(HINSTANCE hInstance)
 	m_pScene(new Scene())
 {
 	LogicSystem::Get().SetScene(m_pScene);
-	Editor::Get().SetScene(m_pScene);
 }
 
 GameApp::~GameApp()
@@ -167,6 +166,9 @@ bool GameApp::InitEffect()
 
 bool GameApp::InitResource()
 {
+	Editor::Get().SetScene(m_pScene,m_pd3dDevice.Get());
+	
+
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	
@@ -182,6 +184,6 @@ bool GameApp::InitResource()
 	m_CBuffer.proj = camera->GetProjXM();
 
 
-	m_pScene->AntiSerialize(m_pd3dDevice.Get());
 	return true;
 }
+

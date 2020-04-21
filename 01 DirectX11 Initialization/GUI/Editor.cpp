@@ -15,7 +15,7 @@ void Editor::OnGUI(ID3D11Device* device)
 		return;
 
 	if (m_ShowHierarchy)
-		ShowHierarchy(device);
+		ShowHierarchy();
 
 	if (m_ShowInspector)
 		ShowInspector();
@@ -27,8 +27,6 @@ void Editor::OnGUI(ID3D11Device* device)
 
 void Editor::ShowInspector()
 {
-	auto& SelectedID = m_pScene->SelectedID;
-
 	ImGui::Begin("Inspector");
 
 	if (SelectedID == -1)
@@ -40,7 +38,7 @@ void Editor::ShowInspector()
 	auto& name = m_pScene->names[SelectedID];
 	auto& mask = m_pScene->masks[SelectedID];
 
-	bool toggles[] = { mask & COMPONENT_TRANSFORM, mask & COMPONENT_ROTATE };
+	bool toggles[] = { mask & COMPONENT_TRANSFORM,mask&COMPONENT_MODEL, mask & COMPONENT_ROTATE };
 
 	if (ImGui::Button("Components"))
 	{
@@ -49,23 +47,22 @@ void Editor::ShowInspector()
 	if (ImGui::BeginPopup("_Comp"))
 	{
 		UINT totalComp = NameMap.size();
-		
 
 		UINT k = 1;
-		for (UINT i = 0; i < totalComp; i++)
+		for (UINT i = 0,j = k; i < totalComp; i++)
 		{
-			k = k << i;
-			ImGui::MenuItem(NameMap[(Component)k].c_str(), "", &toggles[i]);
+			j = k << i;
+			ImGui::MenuItem(NameMap[(Component)j].c_str(), "", &toggles[i]);
 		}
 
 		k = 1;
-		for (UINT i = 0; i < totalComp; i++)
+		for (UINT i = 0, j = k; i < totalComp; i++)
 		{
-			k <<= i;
+			j =k << i;
 			if (toggles[i])
-				AddComponent((Component)k);
+				AddComponent((Component)j);
 			else
-				RemoveComponent((Component)k);
+				RemoveComponent((Component)j);
 		}
 		ImGui::EndPopup();
 	}
@@ -74,9 +71,8 @@ void Editor::ShowInspector()
 	ImGui::End();
 }
 
-void Editor::ShowHierarchy(ID3D11Device* device)
+void Editor::ShowHierarchy()
 {
-	auto& SelectedID = m_pScene->SelectedID;
 	auto& names = m_pScene->names;
 
 	ImGui::Begin("Hierarchy", nullptr, ImGuiWindowFlags_MenuBar);
@@ -86,7 +82,7 @@ void Editor::ShowHierarchy(ID3D11Device* device)
 		{
 			if (ImGui::MenuItem("Box"))
 			{
-				CreateBox(device);
+				CreateBox();
 			}
 
 			ImGui::EndMenu();
@@ -108,7 +104,6 @@ void Editor::ShowHierarchy(ID3D11Device* device)
 void Editor::ShowTransForm()
 {
 	auto& worldMats = m_pScene->worldMats;
-	auto& SelectedID = m_pScene->SelectedID;
 
 	ImGui::Begin("TransForm");
 
@@ -119,11 +114,17 @@ void Editor::ShowTransForm()
 	static float rotation[3];
 	static float scale[3];
 
-	ImGuizmo::DecomposeMatrixToComponents((float*)worldMats[SelectedID].m, translation, rotation, scale);
+	float mat[16];
+	ImGuizmo::DecomposeMatrixToComponents(worldMats[SelectedID].data(), translation, rotation, scale);
 	ImGui::InputFloat3("Tr", translation, 3);
 	ImGui::InputFloat3("Rt", rotation, 3);
 	ImGui::InputFloat3("Sc", scale, 3);
-	ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, (float*)worldMats[SelectedID].m);
+	ImGuizmo::RecomposeMatrixFromComponents(translation, rotation, scale, mat);
+
+	for (size_t i = 0; i < 16; i++)
+	{
+		worldMats[SelectedID][i] = mat[i];
+	}
 
 	ImGui::End();
 }
@@ -133,28 +134,71 @@ void Editor::ShowModel()
 
 }
 
+void Editor::InitAdditionData()
+{
+	for (size_t i = 0; i < m_pScene->Num; i++)
+	{
+		if (m_pScene->masks[i] & COMPONENT_MODEL)
+		{
+			SelectedID = i;
+			PrimaryModel p = (PrimaryModel)m_pScene->modelType[i];
+			switch (p)
+			{
+			case (PrimaryModel::BOX):
+			{
+				SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+			}
+			break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void Editor::SetMesh( ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)
+{
+	HR(SelectedID != -1);
+	auto& m_Model = m_pScene->modelParts[SelectedID];
+	m_Model.vertexStride = vertexSize;
+
+	m_Model.vertexCount = vertexCount;
+	m_Model.indexCount = indexCount;
+	m_Model.indexFormat = indexFormat;
+
+	m_Model.vertexBuffer.Create(device, vertices, vertexSize, vertexCount);
+
+	m_Model.indexBuffer.Create(device, indices, indexCount, indexFormat);
+}
+
 void Editor::CreateEnity()
 {
 	for (size_t i = 0; i < m_pScene->Num; i++)
 	{
 		if (m_pScene->masks[i] == COMPONENT_NONE)
 		{
-			m_pScene->SelectedID = i;
+			SelectedID = i;
 			return;
 		}
 	}
 }
 
-void Editor::CreateBox(ID3D11Device* device)
+void Editor::CreateBox()
 {
 	CreateEnity();
 
-	auto i = m_pScene->SelectedID;
-	m_pScene->names[i] = "test" + i;
+	// Name
+	m_pScene->names[SelectedID] = "testBox" ;
+	// Transform
+	AddComponent(COMPONENT_TRANSFORM);
 
-	XMStoreFloat4x4(&m_pScene->worldMats[i], XMMatrixIdentity());
-
-	m_pScene->modelParts[i].primary = Geometry::BOX;
+	m_pScene->worldMats[SelectedID][0] = 1;
+	m_pScene->worldMats[SelectedID][5] = 1;
+	m_pScene->worldMats[SelectedID][10] = 1;
+	m_pScene->worldMats[SelectedID][15] = 1;
+	// Model
+	AddComponent(COMPONENT_MODEL);
+	m_pScene->modelType[SelectedID]=(UINT)PrimaryModel::BOX;
 
 	static int q = 0;
 	if (q == 2)
@@ -162,7 +206,7 @@ void Editor::CreateBox(ID3D11Device* device)
 	if (q == 0)
 	{
 		q = 1;
-		m_pScene->SetMesh(i, device, Geometry::CreateBox<VertexPosColor>());
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
 	}
 	else
 	{
@@ -199,9 +243,7 @@ void Editor::CreateBox(ID3D11Device* device)
 			4, 0, 3,
 			3, 7, 4
 		};
-		m_pScene->SetMesh(i, device, vertices, indices);
-		//AddComponent(i, COMPONENT_ROTATE);
-	}
+		SetMesh(m_pd3dDevice.Get(), vertices, indices);
 
-	AddComponent(COMPONENT_TRANSFORM);
+	}
 }

@@ -1,29 +1,33 @@
 #include "Scene.h"
-#include <CJSON/cJsonObject.h>
+
 #include <fstream>
+
 using namespace std;
 
-void Scene::SetMesh(int i, ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)
-{
-	auto& m_Model = modelParts[i];
-	m_Model.vertexStride = vertexSize;
 
-	m_Model.vertexCount = vertexCount;
-	m_Model.indexCount = indexCount;
-	m_Model.indexFormat = indexFormat;
+namespace boost {
+	namespace serialization {
 
-	m_Model.vertexBuffer.Create(device, vertices, vertexSize, vertexCount);
+		template<class Archive>
+		void serialize(Archive& ar, Scene& s, const unsigned int version)
+		{
+			// serialize base class information
+			ar& s.masks;
+			ar& s.modelType;
+			ar& s.names;
+			ar& s.worldMats;
+			//ar& s.Num;
+		}
 
-	m_Model.indexBuffer.Create(device, indices, indexCount, indexFormat);
-}
-
+	} // namespace serialization
+} // namespace boost
 
 void Scene::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
 {
 	int i = 0;
 	for (auto& item : masks)
 	{
-		if (item & COMPONENT_TRANSFORM)
+		if (item & COMPONENT_MODEL)
 		{
 			DrawItem(i, deviceContext, effect);
 		}
@@ -31,58 +35,34 @@ void Scene::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
 	}
 }
 
-void Scene::Serialize()
+void Scene::Serialize()const
 {
-	neb::CJsonObject oJson;
-	oJson.AddEmptySubArray("RenderData");
+	std::ofstream fout("file.txt");// 把对象写到file.txt文件中
+	boost::archive::text_oarchive oa(fout); // 文本的输出归档类，使用一个ostream来构造
 
-	for (UINT i = 0;i<Num;i ++)
-	{
-		if (masks[i] == COMPONENT_NONE)
-			continue;
-		decltype(oJson) item;
-		item.Add("Name", names[i]);
-		item.Add("Mask",masks[i]);
-		item.Add("Model", modelParts[i].primary);
-		oJson["RenderData"].Add(item);
+	oa << *this; // 保存obj对象
+	fout.close();// 关闭文件
 
-	}
-	ofstream file("scene.json");
-	file << oJson.ToString();
-	file.close();
 	return;
+
 }
 
-void Scene::AntiSerialize(ID3D11Device* device)
+void Scene::AntiSerialize()
 {
-	ifstream file("scene.json");
-	if (!file.is_open())
+
+	std::ifstream fin("file.txt");
+
+	if (!fin.is_open())
 	{
 		return;
 	}
-	neb::CJsonObject oJson;
-	string s;
-	while (!file.eof())
-	{
-		char c;
-		file >> c;
-		s.append(1, c);
-	}
-	file.close();
+	boost::archive::text_iarchive ia(fin); // 文本的输入归档类
+
+	ia >> *this; // 恢复到newobj对象
+
+	fin.close();
+
 	
-	oJson.Parse(s);
-
-	auto size = oJson["RenderData"].GetArraySize();
-
-	auto& data = oJson["RenderData"];
-	for (int i = 0; i < size; i++)
-	{
-		data[i].Get("Name", names[i]);
-		data[i].Get("Mask", masks[i]);
-		data[i].Get("Model", modelParts[i].primary);
-		if (modelParts[i].primary == Geometry::PrimaryModel::BOX)
-			SetMesh(i, device, Geometry::CreateBox());
-	}
 	return;
 }
 
@@ -99,7 +79,8 @@ void Scene::DrawItem(int i, ID3D11DeviceContext* deviceContext, BasicEffect& eff
 	deviceContext->IASetIndexBuffer(modelPart.indexBuffer.GetBuffer(), modelPart.indexFormat, 0);
 
 	// 更新数据并应用
-	effect.SetWorldMatrix(XMLoadFloat4x4(&worldMat));
+	/*effect.SetWorldMatrix(XMLoadFloat4x4(&worldMat));*/
+	effect.SetWorldMatrix(worldMat);
 
 	effect.Apply(deviceContext);
 

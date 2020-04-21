@@ -2,6 +2,9 @@
 #include "Scene.h"
 #include <unordered_map>
 #include <vector>
+
+// Not only Editor Scene,but also Init scene.
+
 class Editor
 {
 	using CompName = std::string;
@@ -13,23 +16,56 @@ public:
 
 	void OnGUI(ID3D11Device* device);
 
-	void SetScene(shared_ptr<Scene> scene)
+	// Also init some Other Helpful Data
+	void SetScene(std::shared_ptr<Scene> scene,ID3D11Device * device)
 	{
 		m_pScene = scene;
+		m_pd3dDevice = device;
+		m_pScene->AntiSerialize();
+		InitAdditionData();
 	}
 
 protected:
 	void ShowInspector();
 
-	void ShowHierarchy(ID3D11Device* device);
+	void ShowHierarchy();
 	void ShowTransForm();
 	void ShowModel();
 private:
+	//////////////////////////////////////////////////////////////////////////
 	// data help function
+	//////////////////////////////////////////////////////////////////////////
+
+	// merely init vertexbuffer now
+	void InitAdditionData();
+
+	void SetMesh(ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount,
+		const void* indices, UINT indexCount, DXGI_FORMAT indexFormat);
+
+	template<class VertexType, class IndexType>
+	void SetMesh(ID3D11Device* device, const std::vector<VertexType>& vertices, const std::vector<IndexType>& indices)
+	{
+		static_assert(sizeof(IndexType) == 2 || sizeof(IndexType) == 4, "The size of IndexType must be 2 bytes or 4 bytes!");
+		static_assert(std::is_unsigned<IndexType>::value, "IndexType must be unsigned integer!");
+
+		SetMesh(device,
+			vertices.data(), sizeof(VertexType), (UINT)vertices.size(),
+			indices.data(), (UINT)indices.size(),
+			(sizeof(IndexType) == 2) ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT);
+	}
+
+	template<class VertexType, class IndexType>
+	void SetMesh(ID3D11Device* device, const Geometry::MeshData<VertexType, IndexType>& meshData)
+	{
+		SetMesh( device, meshData.vertexVec, meshData.indexVec);
+	}
+
+	UINT SelectedID = -1;
+
 	bool HasComponent(Component c) {
-		if (m_pScene->SelectedID != -1)
+		if (SelectedID != -1)
 		{
-			if (m_pScene->masks[m_pScene->SelectedID] & c)
+			if (m_pScene->masks[SelectedID] & c)
 				return true;
 		}
 		return false;
@@ -37,28 +73,31 @@ private:
 
 
 	void AddComponent(Component c) { 
-		auto& id = m_pScene->SelectedID;
-		HR(id != -1);
-		m_pScene->masks[id] |= c;
+		HR(SelectedID != -1);
+		m_pScene->masks[SelectedID] |= c;
+
+		InitAdditionData();
 	};
 	void RemoveComponent(Component c) { 
-		auto& id = m_pScene->SelectedID;
-		HR(id != -1);
-		m_pScene->masks[id] &= ~c;
+		HR(SelectedID != -1);
+		m_pScene->masks[SelectedID] &= ~c;
 	}
 
 	void CreateEnity();
-	void CreateBox(ID3D11Device* device);
-	shared_ptr<Scene> m_pScene;
+	void CreateBox();
+	std::shared_ptr<Scene> m_pScene;
 private:
 	Editor() {
-		NameMap = { {COMPONENT_TRANSFORM,"Transform"},{COMPONENT_ROTATE,"Rotate"} };
+		NameMap = { {COMPONENT_TRANSFORM,"Transform"},{COMPONENT_MODEL,"Model"},{COMPONENT_ROTATE,"Rotate"} };
 	};
 
 
 	bool m_ShowInspector = true;
-
 	bool m_ShowHierarchy = true;
-/*	bool m_ShowTransform = false;*/
+
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// Direct3D 11
+	ComPtr<ID3D11Device> m_pd3dDevice;                    // D3D11…Ë±∏
 };
 

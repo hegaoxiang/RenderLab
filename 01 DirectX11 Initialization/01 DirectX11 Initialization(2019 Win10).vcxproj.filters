@@ -87,12 +87,6 @@
     <ClCompile Include="GUI\Editor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vendor\CJSON\cJSON.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\CJSON\cJsonObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Logic\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -146,17 +140,14 @@
     <ClInclude Include="GUI\Editor.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vendor\CJSON\cJSON.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\CJSON\cJsonObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Logic\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Text.txt" />
   </ItemGroup>
 </Project>

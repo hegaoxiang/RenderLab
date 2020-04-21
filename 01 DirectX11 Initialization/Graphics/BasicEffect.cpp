@@ -3,6 +3,8 @@
 #include "EffectHelper.h"	// 必须晚于Effects.h和d3dUtil.h包含
 #include "DXOthers/DXTrace.h"
 #include "Vertex.h"
+
+#include <array>
 using namespace DirectX;
 
 
@@ -182,6 +184,19 @@ void BasicEffect::SetRenderDefault(ID3D11DeviceContext * deviceContext)
 }
 
 
+
+void XM_CALLCONV BasicEffect::SetWorldMatrix(std::array<float, 16> W)
+{
+	XMFLOAT4X4 test;
+
+	float* temp = (float*)test.m;
+	for (size_t i = 0; i < 16; i++)
+	{
+		*temp = W[i];
+		temp++;
+	}
+	return SetWorldMatrix(XMLoadFloat4x4(&test));
+}
 
 void XM_CALLCONV BasicEffect::SetWorldMatrix(DirectX::FXMMATRIX W)
 {

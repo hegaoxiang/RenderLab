@@ -22,7 +22,7 @@ void LogicSystem::RotateComp(float dt)
 		{
 			static float phi = 0.0f, theta = 0.0f;
 			phi += 0.0001f, theta += 0.00015f;
-			XMStoreFloat4x4(&m_pScene->worldMats[i], (XMMatrixRotationX(phi) * XMMatrixRotationY(theta) * XMMatrixTranslation(1, 1, 1))); 
+			//XMStoreFloat4x4(&m_pScene->worldMats[i], (XMMatrixRotationX(phi) * XMMatrixRotationY(theta) * XMMatrixTranslation(1, 1, 1))); 
 		}
 		i++;
 	}

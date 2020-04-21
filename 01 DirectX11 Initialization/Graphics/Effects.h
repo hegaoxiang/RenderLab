@@ -63,7 +63,7 @@ public:
 	//
 	// 矩阵设置
 	//
-
+	void XM_CALLCONV SetWorldMatrix(std::array<float,16> W);
 	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W);
 	void XM_CALLCONV SetViewMatrix(DirectX::FXMMATRIX V);
 	void XM_CALLCONV SetProjMatrix(DirectX::FXMMATRIX P);

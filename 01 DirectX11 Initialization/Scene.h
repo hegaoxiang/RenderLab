@@ -1,27 +1,51 @@
 #pragma once
-#include <vector>
+
 #include <memory>
 #include "Graphics/Buffer.h"
 #include "Graphics/Geometry.h"
 #include "Graphics/Effects.h"
 #include "GUI/GUI.h"
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/array.hpp>
+
 using namespace std;
 using namespace DirectX;
 
-
+enum class PrimaryModel
+{
+	OTHER,
+	SPHER,
+	BOX,
+	CYLINDER,
+	PLANE
+};
 enum Component
 {
 	COMPONENT_NONE = 0,
 	COMPONENT_TRANSFORM = 1 << 0,
-	COMPONENT_ROTATE = 1 << 1
+	COMPONENT_MODEL = 1 << 1,
+	COMPONENT_ROTATE = 1 << 2
 };
 
 class Scene
 {
-	const static UINT Num = 10;
+
+	friend class boost::serialization::access;
+
 	struct ModelPart
 	{
-		UINT primary;
+		ModelPart& operator=(const ModelPart& m)
+		{
+			;
+		}
+		ModelPart(const ModelPart& m)
+		{
+			;
+		}
+		ModelPart() {}
 		VertexBuffer vertexBuffer;
 		IndexBuffer indexBuffer;
 		UINT vertexCount;
@@ -32,11 +56,13 @@ class Scene
 	};
 	
 public:
+	const static UINT Num = 10;
 	Scene() :
 		worldMats(Num),
 		modelParts(Num),
 		names(Num),
-		masks(Num)
+		masks(Num),
+		modelType(Num)
 	{}
 
 	friend class Editor;
@@ -45,38 +71,30 @@ public:
 
 	void Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
 
-	void Serialize();
+	void Serialize()const;
 
-	void AntiSerialize(ID3D11Device* device);
+	void AntiSerialize();
 
 protected:
-	void SetMesh(int i, ID3D11Device* device, const void* vertices, UINT vertexSize, UINT vertexCount,
-		const void* indices, UINT indexCount, DXGI_FORMAT indexFormat);
-
-	template<class VertexType, class IndexType>
-	void SetMesh(int i, ID3D11Device* device, const std::vector<VertexType>& vertices, const std::vector<IndexType>& indices)
-	{
-		static_assert(sizeof(IndexType) == 2 || sizeof(IndexType) == 4, "The size of IndexType must be 2 bytes or 4 bytes!");
-		static_assert(std::is_unsigned<IndexType>::value, "IndexType must be unsigned integer!");
-
-		SetMesh(i, device,
-			vertices.data(), sizeof(VertexType), (UINT)vertices.size(),
-			indices.data(), (UINT)indices.size(),
-			(sizeof(IndexType) == 2) ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT);
-	}
-
-	template<class VertexType, class IndexType>
-	void SetMesh(int i, ID3D11Device* device, const Geometry::MeshData<VertexType, IndexType>& meshData)
-	{
-		SetMesh(i, device, meshData.vertexVec, meshData.indexVec);
-	}
-
-	UINT SelectedID = -1;
-private:
-	vector<XMFLOAT4X4> worldMats;
+	Scene& operator =(const Scene& s) 
+ 	{
+ 		this->names = s.names;
+ 		this->masks = s.masks;
+ 		this->modelType = s.modelType;
+ 		this->names = s.names;
+ 		this->worldMats = s.worldMats;
+ 
+ 		return *this;
+ 	}
+	Scene(const Scene& s) = delete;
+	
+	void DrawItem(int i, ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
+public:
+	
+	vector<array<float,16>> worldMats;
 	vector<ModelPart> modelParts;
+	vector<UINT> modelType;
 	vector<string> names;
 	vector<UINT> masks;
 
-	void DrawItem(int i, ID3D11DeviceContext* deviceContext, BasicEffect& effect)const;
 };

@@ -5,6 +5,16 @@
 #include <memory>
 #include "Logic/Camera.h"
 #include "Scene.h"
+
+namespace RenderContext
+{
+	template <class T>
+	using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// Direct3D 11
+	static ComPtr<ID3D11Device> pd3dDevice;                    // D3D11设备
+	static ComPtr<ID3D11DeviceContext> pd3dImmediateContext;   // D3D11设备上下文
+	static ComPtr<IDXGISwapChain> pSwapChain;                  // D3D11交换链
+}
 class GameApp : public D3DApp
 {
 public:
