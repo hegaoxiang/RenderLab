@@ -85,6 +85,7 @@ void GameApp::UpdateScene(float dt)
 		XMFLOAT3 adjustedPos;
 		XMStoreFloat3(&adjustedPos, XMVectorClamp(cam1st->GetPositionXM(), XMVectorSet(-8.9f, 0.0f, -8.9f, 0.0f), XMVectorReplicate(8.9f)));
 		cam1st->SetPosition(adjustedPos);
+		OutputDebugString((L"Y: " + to_wstring(io.MouseDelta.y)).c_str());
 
 		// 视野旋转，防止开始的差值过大导致的突然旋转
 		cam1st->Pitch(io.MouseDelta.y * dt * 1.25f);
@@ -106,7 +107,6 @@ void GameApp::UpdateScene(float dt)
 	m_pCamera->UpdateViewMatrix();
 
 	BasicEffect::Get().SetViewMatrix(m_pCamera->GetViewXM());
-	
 }
 
 void GameApp::DrawScene()
@@ -129,20 +129,24 @@ void GameApp::DrawScene()
 #endif
 	m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
 
+
+	SkyEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
+	m_SkyRender->Draw(m_pd3dImmediateContext.Get(), SkyEffect::Get(), *m_pCamera);
+
 #ifdef EDITOR
 m_pGameContent->End(m_pd3dImmediateContext.Get());
 #endif
 
-#ifdef EDITOR
 	GUI::Get().BeginGUI();
+#ifdef EDITOR
 	{
 		Editor::Get().OnGUI(m_pd3dDevice.Get(), m_pGameContent->GetOutputTexture(),*m_pCamera);
 	}
 
+#endif
 	GUI::Get().EndGUI();
 
 	GUI::Get().Render();
-#endif
 
 	HR(m_pSwapChain->Present(1, 0));
 }
@@ -151,6 +155,8 @@ m_pGameContent->End(m_pd3dImmediateContext.Get());
 bool GameApp::InitEffect()
 {
 	BasicEffect::Get().InitAll(m_pd3dDevice.Get());
+
+	SkyEffect::Get().InitAll(m_pd3dDevice.Get());
 
 	return true;
 }
@@ -173,7 +179,15 @@ bool GameApp::InitResource()
 	// 初始化仅在窗口大小变动时修改的值
 	m_pCamera->SetFrustum(XM_PI / 3, AspectRatio(), 0.5f, 1000.0f);
 
+	m_SkyRender = std::make_unique<SkyRender>();
+	
+	HR(m_SkyRender->InitResource(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(),
+		L"Texture\\daylight.jpg",
+		5000.0f));
+	m_SkyRender->SetDebugObjectName("Light");
+
 	BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
+
 	return true;
 }
 

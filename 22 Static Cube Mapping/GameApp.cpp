@@ -88,6 +88,7 @@ void GameApp::OnResize()
 		m_pCamera->SetViewPort(0.0f, 0.0f, (float)m_ClientWidth, (float)m_ClientHeight);
 		m_BasicEffect.SetProjMatrix(m_pCamera->GetProjXM());
 	}
+
 }
 
 void GameApp::UpdateScene(float dt)
@@ -294,7 +295,7 @@ bool GameApp::InitResource()
 	m_BasicEffect.SetViewMatrix(camera->GetViewXM());
 	m_BasicEffect.SetProjMatrix(camera->GetProjXM());
 
-
+	
 	// ******************
 	// 初始化不会变化的值
 	//

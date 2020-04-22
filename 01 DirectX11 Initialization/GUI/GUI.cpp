@@ -65,15 +65,20 @@ void GUI::BeginGUI()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+#ifdef EDITOR
 	ImGuizmo::BeginFrame();
 
 	Dock();
+#endif
 }
 
 void GUI::EndGUI()
 {
+#ifdef EDITOR
+
 	static bool w = true;
 	ShowExampleAppLog(&w);
+#endif
 
 	ImGui::Render();
 }

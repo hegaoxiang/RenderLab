@@ -68,13 +68,26 @@ ID3D11ShaderResourceView* SkyRender::GetTextureCube()
 
 void SkyRender::Draw(ID3D11DeviceContext* deviceContext, SkyEffect& skyEffect, const Camera& camera)
 {
-	UINT strides[1] = { sizeof(XMFLOAT3) };
+	auto cor = camera.GetCorner();
+
+	auto view = camera.GetViewXM();
+	//decltype(view) as;
+	auto as = XMLoadFloat4x4(&cor);
+	auto inView = XMMatrixInverse(nullptr, view);
+
+	auto test = as * inView;
+
+	XMFLOAT4X4 tes;
+	XMStoreFloat4x4(&tes, test);
+
+	UINT strides[1] = { sizeof(VertexPosTex) };
 	UINT offsets[1] = { 0 };
 	deviceContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), strides, offsets);
 	deviceContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
 	XMFLOAT3 pos = camera.GetPosition();
 	skyEffect.SetWorldViewProjMatrix(XMMatrixTranslation(pos.x, pos.y, pos.z) * camera.GetViewProjXM());
+	skyEffect.SetCorners(tes);
 	skyEffect.SetTextureCube(m_pTextureCubeSRV.Get());
 	skyEffect.Apply(deviceContext);
 	deviceContext->DrawIndexed(m_IndexCount, 0, 0);
@@ -96,27 +109,27 @@ void SkyRender::SetDebugObjectName(const std::string& name)
 
 HRESULT SkyRender::InitResource(ID3D11Device* device, float skySphereRadius)
 {
+
 	HRESULT hr;
-	auto sphere = Geometry::CreateSphere<VertexPos>(skySphereRadius);
+	auto mesh = Geometry::Create2DShow<VertexPosTex>();
 
 	// 顶点缓冲区创建
 	D3D11_BUFFER_DESC vbd;
 	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(XMFLOAT3) * (UINT)sphere.vertexVec.size();
+	vbd.ByteWidth = sizeof(VertexPosTex) * (UINT)mesh.vertexVec.size();
 	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vbd.CPUAccessFlags = 0;
 	vbd.MiscFlags = 0;
 	vbd.StructureByteStride = 0;
-
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = sphere.vertexVec.data();
+	InitData.pSysMem = mesh.vertexVec.data();
 
 	hr = device->CreateBuffer(&vbd, &InitData, &m_pVertexBuffer);
 	if (FAILED(hr))
 		return hr;
 
 	// 索引缓冲区创建
-	m_IndexCount = (UINT)sphere.indexVec.size();
+	m_IndexCount = (UINT)mesh.indexVec.size();
 
 	D3D11_BUFFER_DESC ibd;
 	ibd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -126,7 +139,7 @@ HRESULT SkyRender::InitResource(ID3D11Device* device, float skySphereRadius)
 	ibd.StructureByteStride = 0;
 	ibd.MiscFlags = 0;
 
-	InitData.pSysMem = sphere.indexVec.data();
+	InitData.pSysMem = mesh.indexVec.data();
 
 	return device->CreateBuffer(&ibd, &InitData, &m_pIndexBuffer);
 }

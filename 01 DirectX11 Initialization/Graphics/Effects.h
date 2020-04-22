@@ -108,7 +108,44 @@ private:
 };
 
 
+class SkyEffect : IEffect
+{
+public:
+	SkyEffect();
+	virtual ~SkyEffect() override;
 
+	SkyEffect(SkyEffect&& moveFrom) noexcept;
+	SkyEffect& operator=(SkyEffect&& moveFrom) noexcept;
+
+	// 获取单例
+	static SkyEffect& Get();
+
+	// 初始化所需资源
+	bool InitAll(ID3D11Device* device);
+
+	// 
+	// 渲染模式的变更
+	//
+
+	// 默认状态来绘制
+	void SetRenderDefault(ID3D11DeviceContext* deviceContext);
+
+	//
+	// 矩阵设置
+	//
+	void SetCorners(DirectX::XMFLOAT4X4 corners);
+	//
+	// 纹理立方体映射设置
+	//
+	void SetTextureCube(ID3D11ShaderResourceView* textureCube);
+
+	// 应用常量缓冲区和纹理资源的变更
+	void Apply(ID3D11DeviceContext* deviceContext);
+
+private:
+	class Impl;
+	std::unique_ptr<Impl> pImpl;
+};
 
 
 

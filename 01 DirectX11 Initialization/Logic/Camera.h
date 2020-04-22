@@ -52,6 +52,8 @@ public:
 	void SetViewPort(const D3D11_VIEWPORT& viewPort);
 	void SetViewPort(float topLeftX, float topLeftY, float width, float height, float minDepth = 0.0f, float maxDepth = 1.0f);
 
+	DirectX::XMFLOAT4X4 GetCorner()const;
+
 	// ¸üÐÂ¹Û²ì¾ØÕó
 	virtual void UpdateViewMatrix() = 0;
 protected:

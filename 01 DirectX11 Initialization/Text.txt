@@ -1,1 +1,3 @@
 添加一个component需要改三个地方，nameMap，toggle还有定义
+
+mouse 

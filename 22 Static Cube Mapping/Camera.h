@@ -44,7 +44,7 @@ public:
 	// 获取视口
 	D3D11_VIEWPORT GetViewPort() const;
 
-
+	
 	// 设置视锥体
 	void SetFrustum(float fovY, float aspect, float nearZ, float farZ);
 
@@ -52,6 +52,7 @@ public:
 	void SetViewPort(const D3D11_VIEWPORT& viewPort);
 	void SetViewPort(float topLeftX, float topLeftY, float width, float height, float minDepth = 0.0f, float maxDepth = 1.0f);
 
+	DirectX::XMFLOAT4X4 GetCorner()const;
 	// 更新观察矩阵
 	virtual void UpdateViewMatrix() = 0;
 protected:

@@ -132,6 +132,9 @@ public:
 	// 矩阵设置
 	//
 
+	void SetEyePos(DirectX::XMFLOAT3 eyePos);
+	void SetCorners(DirectX::XMFLOAT4X4 corners);
+
 	void XM_CALLCONV SetWorldViewProjMatrix(DirectX::FXMMATRIX W, DirectX::CXMMATRIX V, DirectX::CXMMATRIX P);
 	void XM_CALLCONV SetWorldViewProjMatrix(DirectX::FXMMATRIX WVP);
 

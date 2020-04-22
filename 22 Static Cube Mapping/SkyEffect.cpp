@@ -16,11 +16,13 @@ public:
 	//
 	// 这些结构体对应HLSL的结构体。需要按16字节对齐
 	//
-
-	struct CBChangesEveryFrame
+	struct CB
 	{
-		DirectX::XMMATRIX worldViewProj;
+		DirectX::XMMATRIX Corners;
+
 	};
+
+
 
 public:
 	// 必须显式指定
@@ -28,7 +30,8 @@ public:
 	~Impl() = default;
 
 public:
-	CBufferObject<0, CBChangesEveryFrame>	m_CBFrame;	        // 每帧绘制的常量缓冲区
+
+	CBufferObject<1, CB>	m_CB;	        // 每帧绘制的常量缓冲区
 
 	BOOL m_IsDirty;										        // 是否有值变更
 	std::vector<CBufferBase*> m_pCBuffers;				        // 统一管理上面所有的常量缓冲区
@@ -101,7 +104,7 @@ bool SkyEffect::InitAll(ID3D11Device * device)
 	HR(CreateShaderFromFile(L"HLSL\\Sky_VS.cso", L"HLSL\\Sky_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, pImpl->m_pSkyVS.GetAddressOf()));
 	// 创建顶点布局
-	HR(device->CreateInputLayout(VertexPos::inputLayout, ARRAYSIZE(VertexPos::inputLayout),
+	HR(device->CreateInputLayout(VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout),
 		blob->GetBufferPointer(), blob->GetBufferSize(), pImpl->m_pVertexPosLayout.GetAddressOf()));
 
 	// ******************
@@ -113,7 +116,7 @@ bool SkyEffect::InitAll(ID3D11Device * device)
 
 
 	pImpl->m_pCBuffers.assign({
-		&pImpl->m_CBFrame,
+		&pImpl->m_CB
 	});
 
 	// 创建常量缓冲区
@@ -123,8 +126,8 @@ bool SkyEffect::InitAll(ID3D11Device * device)
 	}
 
 	// 设置调试对象名
-	D3D11SetDebugObjectName(pImpl->m_pVertexPosLayout.Get(), "SkyEffect.VertexPosLayout");
-	D3D11SetDebugObjectName(pImpl->m_pCBuffers[0]->cBuffer.Get(), "SkyEffect.CBFrame");
+	D3D11SetDebugObjectName(pImpl->m_pVertexPosLayout.Get(), "SkyEffect.VertexPosTexLayout");
+	D3D11SetDebugObjectName(pImpl->m_pCBuffers[0]->cBuffer.Get(), "SkyEffect.CBF");
 	D3D11SetDebugObjectName(pImpl->m_pSkyVS.Get(), "SkyEffect.Sky_VS");
 	D3D11SetDebugObjectName(pImpl->m_pSkyPS.Get(), "SkyEffect.Sky_PS");
 
@@ -139,27 +142,33 @@ void SkyEffect::SetRenderDefault(ID3D11DeviceContext * deviceContext)
 
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	deviceContext->GSSetShader(nullptr, nullptr, 0);
-	deviceContext->RSSetState(RenderStates::RSNoCull.Get());
+	deviceContext->RSSetState(nullptr);
 
 	deviceContext->PSSetSamplers(0, 1, RenderStates::SSLinearWrap.GetAddressOf());
 	deviceContext->OMSetDepthStencilState(RenderStates::DSSLessEqual.Get(), 0);
 	deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 }
 
-void XM_CALLCONV SkyEffect::SetWorldViewProjMatrix(DirectX::FXMMATRIX W, DirectX::CXMMATRIX V, DirectX::CXMMATRIX P)
+void SkyEffect::SetEyePos(DirectX::XMFLOAT3 eyePos)
 {
-	auto& cBuffer = pImpl->m_CBFrame;
-	cBuffer.data.worldViewProj = XMMatrixTranspose(W * V * P);
+
+}
+
+void SkyEffect::SetCorners(DirectX::XMFLOAT4X4 corners)
+{
+	auto& cBuffer = pImpl->m_CB;
+	
+	cBuffer.data.Corners = XMLoadFloat4x4(&corners);
 	pImpl->m_IsDirty = cBuffer.isDirty = true;
 }
 
-void XM_CALLCONV SkyEffect::SetWorldViewProjMatrix(DirectX::FXMMATRIX WVP)
+void XM_CALLCONV SkyEffect::SetWorldViewProjMatrix(DirectX::FXMMATRIX W, DirectX::CXMMATRIX V, DirectX::CXMMATRIX P)
 {
-	auto& cBuffer = pImpl->m_CBFrame;
-	cBuffer.data.worldViewProj = XMMatrixTranspose(WVP);
-	pImpl->m_IsDirty = cBuffer.isDirty = true;
+
 }
+
+void XM_CALLCONV SkyEffect::SetWorldViewProjMatrix(DirectX::FXMMATRIX WVP)
+{}
 
 void SkyEffect::SetTextureCube(ID3D11ShaderResourceView * m_pTextureCube)
 {
@@ -170,8 +179,9 @@ void SkyEffect::Apply(ID3D11DeviceContext * deviceContext)
 {
 	auto& pCBuffers = pImpl->m_pCBuffers;
 	// 将缓冲区绑定到渲染管线上
-	pCBuffers[0]->BindVS(deviceContext);
-	
+ 	pCBuffers[0]->BindVS(deviceContext);
+// 	pCBuffers[1]->BindVS(deviceContext);
+//	pCBuffers[1]->BindPS(deviceContext);
 	// 设置SRV
 	deviceContext->PSSetShaderResources(0, 1, pImpl->m_pTextureCube.GetAddressOf());
 

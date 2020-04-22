@@ -5,6 +5,7 @@
 #include <memory>
 #include "Logic/Camera.h"
 #include "Scene.h"
+#include "Graphics\SkyRender.h"
 
 namespace RenderContext
 {
@@ -42,7 +43,7 @@ private:
 	std::shared_ptr<Camera>			m_pCamera;
 	CameraMode m_CameraMode;			// 摄像机模式
 
-
+	std::unique_ptr<SkyRender> m_SkyRender;
 };
 
 

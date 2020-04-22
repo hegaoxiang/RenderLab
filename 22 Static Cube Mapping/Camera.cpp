@@ -123,6 +123,25 @@ void Camera::SetViewPort(float topLeftX, float topLeftY, float width, float heig
 }
 
 
+DirectX::XMFLOAT4X4 Camera::GetCorner() const
+{
+	DirectX::XMFLOAT4X4 ans = {};
+	ans.m[0][2] = ans.m[1][2] = ans.m[2][2] = ans.m[3][2] = m_NearZ;
+	ans.m[0][0] = -(0.5f) * GetNearWindowWidth();
+	ans.m[0][1] = (0.5f) * GetNearWindowHeight();
+
+	ans.m[1][0] = (0.5f) * GetNearWindowWidth();
+	ans.m[1][1] = (0.5f) * GetNearWindowHeight();
+
+	ans.m[2][0] = -(0.5f) * GetNearWindowWidth();
+	ans.m[2][1] = -(0.5f) * GetNearWindowHeight();
+
+	ans.m[3][0] = (0.5f) * GetNearWindowWidth();
+	ans.m[3][1] = -(0.5f) * GetNearWindowHeight();
+
+	return ans;
+}
+
 // ******************
 // 第一人称/自由视角摄像机
 //

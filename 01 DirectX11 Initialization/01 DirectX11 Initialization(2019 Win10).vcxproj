@@ -73,25 +73,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Configuration)\</IntDir>
-    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Configuration)\</IntDir>
-    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(ProjectDir)</OutDir>
     <IntDir>VS2019_Win10\$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;$(IncludePath)</IncludePath>
+    <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -101,7 +101,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>EDITOR;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>EDITOR;_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -152,7 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>C:\Users\12976\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization\Vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -163,6 +163,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DXOthers\DDSTextureLoader.cpp" />
+    <ClCompile Include="DXOthers\WICTextureLoader.cpp" />
+    <ClCompile Include="Graphics\SkyEffect.cpp" />
+    <ClCompile Include="Graphics\SkyRender.cpp" />
     <ClCompile Include="Logic\Camera.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />
     <ClCompile Include="Graphics\BasicEffect.cpp" />
@@ -206,6 +210,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Graphics\TextureRender.h" />
     <ClInclude Include="Graphics\Vertex.h" />
+    <ClInclude Include="Graphics\SkyRender.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
