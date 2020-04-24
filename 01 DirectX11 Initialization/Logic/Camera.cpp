@@ -245,6 +245,24 @@ void FirstPersonCamera::RotateY(float rad)
 	XMStoreFloat3(&m_Look, XMVector3TransformNormal(XMLoadFloat3(&m_Look), R));
 }
 
+void FirstPersonCamera::Up(float d)
+{
+	XMVECTOR Pos = XMLoadFloat3(&m_Position);
+	XMVECTOR Up = XMLoadFloat3(&m_Up);
+	XMVECTOR Dist = XMVectorReplicate(d);
+	// DestPos = Dist * Right + SrcPos
+	XMStoreFloat3(&m_Position, XMVectorMultiplyAdd(Dist, Up, Pos));
+}
+
+void FirstPersonCamera::Down(float d)
+{
+	XMVECTOR Pos = XMLoadFloat3(&m_Position);
+	XMVECTOR Up = XMLoadFloat3(&m_Up);
+	XMVECTOR Dist = XMVectorReplicate(d);
+	// DestPos = Dist * Right + SrcPos
+	XMStoreFloat3(&m_Position, XMVectorMultiplyAdd(-Dist, Up, Pos));
+}
+
 void FirstPersonCamera::UpdateViewMatrix()
 {
 	XMVECTOR R = XMLoadFloat3(&m_Right);

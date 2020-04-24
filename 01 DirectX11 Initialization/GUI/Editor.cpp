@@ -99,11 +99,22 @@ void Editor::ShowHierarchy()
 	{
 		if (ImGui::BeginMenu("Add"))
 		{
+			if (ImGui::MenuItem("Sphere"))
+			{
+				CreateOBJ(PrimaryModel::SPHER);
+			}
 			if (ImGui::MenuItem("Box"))
 			{
 				CreateOBJ(PrimaryModel::BOX);
 			}
-
+			if (ImGui::MenuItem("Cylinder"))
+			{
+				CreateOBJ(PrimaryModel::CYLINDER);
+			}
+			if (ImGui::MenuItem("Plane"))
+			{
+				CreateOBJ(PrimaryModel::PLANE);
+			}
 			ImGui::EndMenu();
 		}
 
@@ -177,13 +188,6 @@ void EditTransform(const float* cameraView, const float* cameraProjection, float
 	static bool boundSizing = false;
 	static bool boundSizingSnap = false;
 
-	if (ImGui::IsKeyPressed(90))
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	if (ImGui::IsKeyPressed(69))
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	if (ImGui::IsKeyPressed(82)) // r Key
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
- 
 	// 	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 	// 	ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
 	// 	ImGui::InputFloat3("Tr", matrixTranslation, 3);

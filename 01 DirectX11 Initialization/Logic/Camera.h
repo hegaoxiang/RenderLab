@@ -108,7 +108,14 @@ public:
 	// 左右观察
 	void RotateY(float rad);
 
+	
 
+	// 上升
+	void Up(float d);
+
+	// 下降
+	void Down(float d);
+	
 	// 更新观察矩阵
 	void UpdateViewMatrix() override;
 };

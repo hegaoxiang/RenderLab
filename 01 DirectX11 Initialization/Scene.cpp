@@ -37,7 +37,7 @@ void Scene::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
 
 void Scene::Serialize()const
 {
-	std::ofstream fout("file.txt");// 把对象写到file.txt文件中
+	std::ofstream fout("file.data");// 把对象写到file.txt文件中
 	boost::archive::text_oarchive oa(fout); // 文本的输出归档类，使用一个ostream来构造
 
 	oa << *this; // 保存obj对象
@@ -50,7 +50,7 @@ void Scene::Serialize()const
 void Scene::AntiSerialize()
 {
 
-	std::ifstream fin("file.txt");
+	std::ifstream fin("file.data");
 
 	if (!fin.is_open())
 	{

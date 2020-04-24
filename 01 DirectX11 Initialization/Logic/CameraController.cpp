@@ -34,7 +34,10 @@ void CameraController::UpdataCamera(Camera* camera, CameraMode mode, float dt)
 			cam1st->Strafe(dt * -3.0f);
 		if (ImGui::IsKeyDown(Keys::D))
 			cam1st->Strafe(dt * 3.0f);
-
+		if (ImGui::IsKeyDown(Keys::Q))
+			cam1st->Up(dt * 3.0f);
+		if (ImGui::IsKeyDown(Keys::E))
+			cam1st->Down(dt * 3.0f);
 		// 将位置限制在[-8.9f, 8.9f]的区域内
 		// 不允许穿地
 
