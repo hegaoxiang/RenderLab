@@ -107,7 +107,6 @@ GUI::GUI()
 void GUI::Dock()
 {
 	
-	static bool show_demo_window = true;
 
 	static bool opt_fullscreen_persistant = true;
 	bool opt_fullscreen = opt_fullscreen_persistant;
@@ -139,7 +138,7 @@ void GUI::Dock()
 	// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
 	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("DockSpace Demo", &show_demo_window, window_flags);
+	ImGui::Begin("DockSpace Demo",nullptr, window_flags);
 	ImGui::PopStyleVar();
 
 	if (opt_fullscreen)
@@ -176,9 +175,8 @@ void GUI::Dock()
 			if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0))  dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode;
 			if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0))     dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode;
 			if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0))          dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar;
-			ImGui::Separator();
-			if (ImGui::MenuItem("Close DockSpace", NULL, false, show_demo_window != NULL))
-				show_demo_window = false;
+			//ImGui::Separator();
+
 			ImGui::EndMenu();
 		}
 		// 			HelpMarker(
@@ -192,10 +190,10 @@ void GUI::Dock()
 		// 				"ImGui::DockSpace() comes with one hard constraint: it needs to be submitted _before_ any window which may be docked into it. Therefore, if you use a dock spot as the central point of your application, you'll probably want it to be part of the very first window you are submitting to imgui every frame." "\n\n"
 		// 				"(NB: because of this constraint, the implicit \"Debug\" window can not be docked into an explicit DockSpace() node, because that window is submitted as part of the NewFrame() call. An easy workaround is that you can create your own implicit \"Debug##2\" window after calling DockSpace() and leave it in the window stack for anyone to use.)"
 		// 			);
-
 		ImGui::EndMenuBar();
 	}
 
+	
 	ImGui::End();
 
 	

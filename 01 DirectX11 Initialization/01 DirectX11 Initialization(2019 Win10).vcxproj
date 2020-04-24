@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Logic\CameraController.cpp" />
     <ClCompile Include="DXOthers\DDSTextureLoader.cpp" />
     <ClCompile Include="DXOthers\WICTextureLoader.cpp" />
     <ClCompile Include="Graphics\SkyEffect.cpp" />
@@ -193,6 +194,7 @@
     <ClCompile Include="Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logic\CameraController.h" />
     <ClInclude Include="Logic\Camera.h" />
     <ClInclude Include="GUI\Editor.h" />
     <ClInclude Include="Graphics\Buffer.h" />

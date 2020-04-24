@@ -5,6 +5,7 @@
 #include "GUI/GUI.h"
 
 #include <IMGUI/imgui.h>
+#include "GUI/Editor.h"
 namespace
 {
 	// This is just used to forward Windows messages from a global window
@@ -88,6 +89,11 @@ int D3DApp::Run()
 		CalculateFrameStats();
 		UpdateScene(io.DeltaTime);
 		DrawScene();
+
+		if (Editor::Get().m_GWSizeChange)
+		{
+			OnResize();
+		}
 	//	else
 		{
 			m_Timer.Tick();
@@ -232,6 +238,7 @@ LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		// Save the new client area dimensions.
 		m_ClientWidth = LOWORD(lParam);
 		m_ClientHeight = HIWORD(lParam);
+
 		if (m_pd3dDevice)
 		{
 			if (wParam == SIZE_MINIMIZED)

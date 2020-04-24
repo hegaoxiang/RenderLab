@@ -6,6 +6,7 @@
 #include "Graphics/Effects.h"
 #include "Logic/LogicSystem.h"
 #include <IMGUI/ImGuizmo.h>
+#include "Logic/CameraController.h"
 
 using namespace DirectX;
 
@@ -43,6 +44,18 @@ bool GameApp::Init()
 
 void GameApp::OnResize()
 {
+	if (m_pCamera != nullptr)
+	{
+		auto [isResize, width, height] = Editor::Get().IsGameWindowResize();
+
+		if (isResize)
+		{
+			m_pCamera->SetFrustum(XM_PI / 3, width / height, 1.0f, 1000.0f);
+			BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
+
+		}
+	}
+
 	D3DApp::OnResize();
 }
 
@@ -51,61 +64,7 @@ void GameApp::UpdateScene(float dt)
 	LogicSystem::Get().Update(dt);
 
 
-	auto cam1st = std::dynamic_pointer_cast<FirstPersonCamera>(m_pCamera);
-	auto cam3rd = std::dynamic_pointer_cast<ThirdPersonCamera>(m_pCamera);
-
-
-	auto& io = ImGui::GetIO();
-	if (io.MouseDown[1])
-	{
-		// 第一人称/自由摄像机的操作
-		
-		// 方向移动
-		if (ImGui::IsKeyDown(Keys::W))
-		{
-			if (m_CameraMode == CameraMode::FirstPerson)
-				cam1st->Walk(dt * 3.0f);
-			else
-				cam1st->MoveForward(dt * 3.0f);
-		}
-		if (ImGui::IsKeyDown(Keys::S))
-		{
-			if (m_CameraMode == CameraMode::FirstPerson)
-				cam1st->Walk(dt * -3.0f);
-			else
-				cam1st->MoveForward(dt * -3.0f);
-		}
-		if (ImGui::IsKeyDown(Keys::A))
-			cam1st->Strafe(dt * -3.0f);
-		if (ImGui::IsKeyDown(Keys::D))
-			cam1st->Strafe(dt * 3.0f);
-
-		// 将位置限制在[-8.9f, 8.9f]的区域内
-		// 不允许穿地
-		XMFLOAT3 adjustedPos;
-		XMStoreFloat3(&adjustedPos, XMVectorClamp(cam1st->GetPositionXM(), XMVectorSet(-8.9f, 0.0f, -8.9f, 0.0f), XMVectorReplicate(8.9f)));
-		cam1st->SetPosition(adjustedPos);
-		OutputDebugString((L"Y: " + to_wstring(io.MouseDelta.y)).c_str());
-
-		// 视野旋转，防止开始的差值过大导致的突然旋转
-		cam1st->Pitch(io.MouseDelta.y * dt * 1.25f);
-		cam1st->RotateY(io.MouseDelta.x * dt * 1.25f);
-	}
-// 	else if (m_CameraMode == CameraMode::ThirdPerson)
-// 	{
-// 		// 第三人称摄像机的操作
-// 
-// 		cam3rd->SetTarget(m_WoodCrate.GetPosition());
-// 
-// 		// 绕物体旋转
-// 		cam3rd->RotateX(mouseState.y * dt * 1.25f);
-// 		cam3rd->RotateY(mouseState.x * dt * 1.25f);
-// 		cam3rd->Approach(-mouseState.scrollWheelValue / 120 * 1.0f);
-// 	}
-
-	// 更新观察矩阵
-	m_pCamera->UpdateViewMatrix();
-
+	CameraController::UpdataCamera(m_pCamera.get(), m_CameraMode, dt);
 	BasicEffect::Get().SetViewMatrix(m_pCamera->GetViewXM());
 }
 
@@ -164,7 +123,6 @@ bool GameApp::InitEffect()
 bool GameApp::InitResource()
 {
 	Editor::Get().SetScene(m_pScene,m_pd3dDevice.Get());
-	
 
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);

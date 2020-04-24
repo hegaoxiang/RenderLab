@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include <unordered_map>
 #include <vector>
+#include <functional>
 
 // Not only Editor Scene,but also Init scene.
 class Camera;
@@ -25,6 +26,9 @@ public:
 		InitAdditionData();
 	}
 
+	std::tuple<bool,float,float> IsGameWindowResize();
+	bool m_GWSizeChange = false;
+	std::tuple<float, float> m_GameSize;
 protected:
 	void ShowInspector();
 
@@ -88,7 +92,9 @@ private:
 	}
 
 	void CreateEnity();
-	void CreateBox();
+	void CreateOBJ(PrimaryModel type);
+
+
 	std::shared_ptr<Scene> m_pScene;
 	std::shared_ptr<Camera>m_pCamera;
 private:
@@ -100,6 +106,8 @@ private:
 	bool m_ShowInspector = true;
 	bool m_ShowHierarchy = true;
 	bool m_ShowSetting = true;
+
+	
 
 	template <class T>
 	using ComPtr = Microsoft::WRL::ComPtr<T>;

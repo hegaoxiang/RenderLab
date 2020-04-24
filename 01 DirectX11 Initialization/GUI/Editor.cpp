@@ -1,7 +1,7 @@
 #include "Editor.h"
 #include <IMGUI/imgui_stdlib.h>
 #include <IMGUI/ImGuizmo.h>
-#include "../25 Normal Mapping/Camera.h"
+#include "Logic/Camera.h"
 
 #define TRACE(...) GUI::Get().AddLog(__VA_ARGS__ + "\n")
 
@@ -24,11 +24,22 @@ void Editor::OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, 
 
 	if (m_ShowInspector)
 		ShowInspector();
+
 	if (HasComponent(COMPONENT_TRANSFORM))
 		ShowTransForm();
+
 	if (HasComponent(COMPONENT_MODEL))
 		ShowModel();
 
+}
+
+std::tuple<bool,float,float> Editor::IsGameWindowResize()
+{
+	auto ans = m_GWSizeChange;
+
+	m_GWSizeChange = false;
+
+	return {ans,m_GameSize._Myfirst._Val,m_GameSize._Get_rest()._Myfirst._Val};
 }
 
 void Editor::ShowInspector()
@@ -90,7 +101,7 @@ void Editor::ShowHierarchy()
 		{
 			if (ImGui::MenuItem("Box"))
 			{
-				CreateBox();
+				CreateOBJ(PrimaryModel::BOX);
 			}
 
 			ImGui::EndMenu();
@@ -155,9 +166,9 @@ void Editor::ShowModel()
 	ImGui::End();
 }
 
-void EditTransform(const float* cameraView, const float* cameraProjection, float* matrix, ImVec2 startPos, ImVec2 size)
+void EditTransform(const float* cameraView, const float* cameraProjection, float* matrix,ImVec2 startPos, ImVec2 size,ImGuizmo::OPERATION mCurrentGizmoOperation)
 {
-	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	//static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
 	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 	static bool useSnap = false;
 	static float snap[3] = { 1.f, 1.f, 1.f };
@@ -172,14 +183,7 @@ void EditTransform(const float* cameraView, const float* cameraProjection, float
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
 	if (ImGui::IsKeyPressed(82)) // r Key
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	// 	if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
-	// 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	// 	ImGui::SameLine();
-	// 	if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
-	// 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	// 	ImGui::SameLine();
-	// 	if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
-	// 		mCurrentGizmoOperation = ImGuizmo::SCALE;
+ 
 	// 	float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 	// 	ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
 	// 	ImGui::InputFloat3("Tr", matrixTranslation, 3);
@@ -223,8 +227,7 @@ void EditTransform(const float* cameraView, const float* cameraProjection, float
 	// 	}
 
 		// 微调一下显示框
-/*	ImGuizmo::SetRect(startPos.x + 9, startPos.y + 27, size.x - 18, size.y - 27);*/
-	ImGuizmo::SetRect(ImGui::GetWindowPos().x + ImGui::GetCursorPos().x, ImGui::GetWindowPos().y + 27, ImGui::GetContentRegionAvail().x, ImGui::GetCursorPos().y);
+	ImGuizmo::SetRect(startPos.x, startPos.y , size.x , size.y );
 	ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 }
 
@@ -232,8 +235,28 @@ void EditTransform(const float* cameraView, const float* cameraProjection, float
 void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camera)
 {
 	ImGui::Begin("Game");
-	ImGui::GetContentRegionAvail();
-	ImGui::Image(gameContent, ImGui::GetContentRegionAvail());
+
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+
+	static auto size = ImGui::GetContentRegionAvail();
+	
+	if ((size.x != ImGui::GetContentRegionAvail().x) || (size.y != ImGui::GetContentRegionAvail().y))
+	{
+		m_GWSizeChange = true;
+		size = ImGui::GetContentRegionAvail();
+		m_GameSize = {size.x, size.y};
+		
+	}
+	auto imageStartPos = ImGui::GetCursorPos();
+	ImGui::Image(gameContent,size);
 
 	XMFLOAT4X4 t1;
 	XMStoreFloat4x4(&t1, camera.GetViewXM());
@@ -245,19 +268,22 @@ void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camer
 		return ImGui::End();
 	}
 	auto t = m_pScene->worldMats[SelectedID].data();
+// 
+// 	TRACE("winposSize x:" + to_string(ImGui::GetWindowSize().x));
+// 	TRACE("winposSize y:" + to_string(ImGui::GetWindowSize().y));
+// 	TRACE("winpos x:" + to_string(ImGui::GetWindowPos().x));
+// 	TRACE("winpos y:" + to_string(ImGui::GetWindowPos().y));
+// 	TRACE("before curpos x:" + to_string(ImGui::GetCursorPos().x));
+// 	TRACE("before curpos y:" + to_string(ImGui::GetCursorPos().y));
+// 	
+// 	TRACE("mousepos x:" + to_string(ImGui::GetMousePos().x));
+// 	TRACE("mousepos y:" + to_string(ImGui::GetMousePos().y));
+// 	TRACE("size x:" + to_string(ImGui::GetContentRegionAvail().x));
+// 	TRACE("size y:" + to_string(ImGui::GetContentRegionAvail().y));
 
-	TRACE("winpos x:" + to_string(ImGui::GetWindowPos().x));
-	TRACE("winpos y:" + to_string(ImGui::GetWindowPos().y));
-	TRACE("curpos x:" + to_string(ImGui::GetCursorPos().x));
-	TRACE("curpos y:" + to_string(ImGui::GetCursorPos().y));
-	TRACE("mousepos x:" + to_string(ImGui::GetMousePos().x));
-	TRACE("mousepos y:" + to_string(ImGui::GetMousePos().y));
-	TRACE("size x:" + to_string(ImGui::GetContentRegionAvail().x));
-	TRACE("size y:" + to_string(ImGui::GetContentRegionAvail().y));
+	EditTransform((float*)t1.m, (float*)t2.m, t, { ImGui::GetWindowPos().x + imageStartPos.x,ImGui::GetWindowPos().y	 + imageStartPos.y }, size, mCurrentGizmoOperation);
 
-	EditTransform((float*)t1.m, (float*)t2.m, t, ImGui::GetWindowPos(), ImGui::GetContentRegionAvail());
-
-	ImGui::End();
+	ImGui::End();	
 }
 
 void Editor::OnAddComponent(Component c)
@@ -293,18 +319,24 @@ void Editor::InitModelData()
 	PrimaryModel p = (PrimaryModel)m_pScene->modelType[SelectedID];
 	switch (p)
 	{
-	case (PrimaryModel::BOX):
-	{
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
-	}
-	break;
+	case PrimaryModel::OTHER:
+		break;
 	case PrimaryModel::SPHER:
-	{
 		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere<VertexPosColor>());
-	}
+		break;
+	case PrimaryModel::BOX:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+		break;
+	case PrimaryModel::CYLINDER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder<VertexPosColor>());
+		break;
+	case PrimaryModel::PLANE:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane<VertexPosColor>());
+		break;
 	default:
 		break;
 	}
+
 }
 
 void Editor::InitAdditionData()
@@ -349,12 +381,12 @@ void Editor::CreateEnity()
 	}
 }
 
-void Editor::CreateBox()
+void Editor::CreateOBJ(PrimaryModel type)
 {
 	CreateEnity();
 
 	// Name
-	m_pScene->names[SelectedID] = "testBox" ;
+	m_pScene->names[SelectedID] = "Obj" + to_string(SelectedID);
 	// Transform
 	AddComponent(COMPONENT_TRANSFORM);
 
@@ -364,52 +396,26 @@ void Editor::CreateBox()
 	m_pScene->worldMats[SelectedID][15] = 1;
 	// Model
 	AddComponent(COMPONENT_MODEL);
-	m_pScene->modelType[SelectedID]=(UINT)PrimaryModel::BOX;
+	m_pScene->modelType[SelectedID] = (UINT)type;
 
-	static int q = 0;
-	if (q == 2)
-		m_pScene->Serialize();
-	if (q == 0)
+	switch (type)
 	{
-		q = 1;
+	case PrimaryModel::OTHER:
+		break;
+	case PrimaryModel::SPHER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere<VertexPosColor>());
+		break;
+	case PrimaryModel::BOX:
 		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+		break;
+	case PrimaryModel::CYLINDER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder<VertexPosColor>());
+		break;
+	case PrimaryModel::PLANE:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane<VertexPosColor>());
+		break;
+	default:
+		break;
 	}
-	else
-	{
-		q = 2;
-		std::vector<VertexPosColor>vertices =
-		{
-			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, -1.0f), XMFLOAT4(1.0f, 1.0f, 0.0f, 1.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f) },
-			{ XMFLOAT3(-1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 0.0f, 1.0f, 1.0f) },
-			{ XMFLOAT3(1.0f, 1.0f, 1.0f), XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f) },
-			{ XMFLOAT3(1.0f, -1.0f, 1.0f), XMFLOAT4(0.0f, 1.0f, 1.0f, 1.0f) }
-		};
-
-		std::vector<DWORD> indices = {
-			// 正面
-			0, 1, 2,
-			2, 3, 0,
-			// 左面
-			4, 5, 1,
-			1, 0, 4,
-			// 顶面
-			1, 5, 6,
-			6, 2, 1,
-			// 背面
-			7, 6, 5,
-			5, 4, 7,
-			// 右面
-			3, 2, 6,
-			6, 7, 3,
-			// 底面
-			4, 0, 3,
-			3, 7, 4
-		};
-		SetMesh(m_pd3dDevice.Get(), vertices, indices);
-
-	}
+	
 }

@@ -37,8 +37,7 @@ private:
 	std::unique_ptr<TextureRender>	m_pRayTracingContent;
 	std::shared_ptr<Scene>			m_pScene;
 	
-	// 摄像机模式
-	enum class CameraMode { FirstPerson, ThirdPerson, Free };
+	
 
 	std::shared_ptr<Camera>			m_pCamera;
 	CameraMode m_CameraMode;			// 摄像机模式
