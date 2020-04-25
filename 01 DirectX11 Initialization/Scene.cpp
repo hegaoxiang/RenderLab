@@ -52,7 +52,7 @@ void Scene::AntiSerialize()
 
 	std::ifstream fin("file.data");
 
-	if (!fin.is_open())
+	if (!fin.is_open() || fin.eof())
 	{
 		return;
 	}

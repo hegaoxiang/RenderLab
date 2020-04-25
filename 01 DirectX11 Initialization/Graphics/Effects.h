@@ -87,8 +87,6 @@ public:
 
 	void XM_CALLCONV SetEyePos(DirectX::FXMVECTOR eyePos);
 
-
-
 	//
 	// 状态设置
 	//

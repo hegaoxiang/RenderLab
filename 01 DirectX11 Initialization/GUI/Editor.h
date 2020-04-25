@@ -92,7 +92,7 @@ private:
 	}
 
 	void CreateEnity();
-	void CreateOBJ(PrimaryModel type);
+	void CreateOBJ(Shape type);
 
 
 	std::shared_ptr<Scene> m_pScene;

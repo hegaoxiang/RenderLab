@@ -101,19 +101,19 @@ void Editor::ShowHierarchy()
 		{
 			if (ImGui::MenuItem("Sphere"))
 			{
-				CreateOBJ(PrimaryModel::SPHER);
+				CreateOBJ(Shape::SPHER);
 			}
 			if (ImGui::MenuItem("Box"))
 			{
-				CreateOBJ(PrimaryModel::BOX);
+				CreateOBJ(Shape::BOX);
 			}
 			if (ImGui::MenuItem("Cylinder"))
 			{
-				CreateOBJ(PrimaryModel::CYLINDER);
+				CreateOBJ(Shape::CYLINDER);
 			}
 			if (ImGui::MenuItem("Plane"))
 			{
-				CreateOBJ(PrimaryModel::PLANE);
+				CreateOBJ(Shape::PLANE);
 			}
 			ImGui::EndMenu();
 		}
@@ -167,7 +167,7 @@ void Editor::ShowModel()
 	ImGui::Text("Model");
 	int i = m_pScene->modelType[SelectedID];
 
-	ImGui::Combo("ModelType", &i, "OTHER\0SPHER\0BOX\0CYLINDER\0PLANE\0");
+	ImGui::Combo("ModelType", &i, "SPHER\0BOX\0CYLINDER\0PLANE\0OTHER\0");
 	if (i != m_pScene->modelType[SelectedID])
 	{
 		m_pScene->modelType[SelectedID] = UINT(i);
@@ -309,7 +309,10 @@ void Editor::OnAddComponent(Component c)
 		}
 		break;
 	case COMPONENT_MODEL:
+	{
+		m_pScene->modelType[SelectedID] = 0;
 		InitModelData();
+	}
 		break;
 	case COMPONENT_ROTATE:
 		break;
@@ -320,22 +323,24 @@ void Editor::OnAddComponent(Component c)
 
 void Editor::InitModelData()
 {
-	PrimaryModel p = (PrimaryModel)m_pScene->modelType[SelectedID];
+	Shape p = (Shape)m_pScene->modelType[SelectedID];
 	switch (p)
 	{
-	case PrimaryModel::OTHER:
+	case Shape::SPHER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere());
 		break;
-	case PrimaryModel::SPHER:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere<VertexPosColor>());
+	case Shape::BOX:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox());
 		break;
-	case PrimaryModel::BOX:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+	case Shape::CYLINDER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder());
 		break;
-	case PrimaryModel::CYLINDER:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder<VertexPosColor>());
+	case Shape::PLANE:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane());
 		break;
-	case PrimaryModel::PLANE:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane<VertexPosColor>());
+	case Shape::OTHER:
+		// todo
+		RemoveComponent(COMPONENT_MODEL);
 		break;
 	default:
 		break;
@@ -385,7 +390,7 @@ void Editor::CreateEnity()
 	}
 }
 
-void Editor::CreateOBJ(PrimaryModel type)
+void Editor::CreateOBJ(Shape type)
 {
 	CreateEnity();
 
@@ -404,19 +409,22 @@ void Editor::CreateOBJ(PrimaryModel type)
 
 	switch (type)
 	{
-	case PrimaryModel::OTHER:
+	case Shape::OTHER:
+		// TODO load model
+		// temporary solution
+		RemoveComponent(COMPONENT_MODEL);
 		break;
-	case PrimaryModel::SPHER:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere<VertexPosColor>());
+	case Shape::SPHER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateSphere());
 		break;
-	case PrimaryModel::BOX:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox<VertexPosColor>());
+	case Shape::BOX:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateBox());
 		break;
-	case PrimaryModel::CYLINDER:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder<VertexPosColor>());
+	case Shape::CYLINDER:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreateCylinder());
 		break;
-	case PrimaryModel::PLANE:
-		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane<VertexPosColor>());
+	case Shape::PLANE:
+		SetMesh(m_pd3dDevice.Get(), Geometry::CreatePlane());
 		break;
 	default:
 		break;

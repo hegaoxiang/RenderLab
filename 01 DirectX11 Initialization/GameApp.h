@@ -42,6 +42,8 @@ private:
 	std::shared_ptr<Camera>			m_pCamera;
 	CameraMode m_CameraMode;			// 摄像机模式
 
+	ComPtr<ID3D11ShaderResourceView> m_pWoodCrate;
+
 	std::unique_ptr<SkyRender> m_SkyRender;
 };
 

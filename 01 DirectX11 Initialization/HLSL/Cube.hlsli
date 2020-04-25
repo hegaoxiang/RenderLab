@@ -6,15 +6,18 @@ cbuffer ConstantBuffer : register(b0)
     matrix g_Proj;  // 该教程往后将使用默认的列主矩阵，但需要在C++代码端预先将矩阵进行转置。
 }
 
+Texture2D g_Tex : register(t0);
+SamplerState g_Sam : register(s0);
+
 
 struct VertexIn
 {
 	float3 posL : POSITION;
-	float4 color : COLOR;
+    float2 uv : TEXCOORD;
 };
 
 struct VertexOut
 {
 	float4 posH : SV_POSITION;
-	float4 color : COLOR;
+    float2 uv : TEXCOORD;
 };

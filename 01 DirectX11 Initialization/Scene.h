@@ -14,13 +14,13 @@
 using namespace std;
 using namespace DirectX;
 
-enum class PrimaryModel
+enum class Shape
 {
-	OTHER,
 	SPHER,
 	BOX,
 	CYLINDER,
-	PLANE
+	PLANE,
+	OTHER
 };
 enum Component
 {
@@ -37,15 +37,6 @@ class Scene
 
 	struct ModelPart
 	{
-		ModelPart& operator=(const ModelPart& m)
-		{
-			;
-		}
-		ModelPart(const ModelPart& m)
-		{
-			;
-		}
-		ModelPart() {}
 		VertexBuffer vertexBuffer;
 		IndexBuffer indexBuffer;
 		UINT vertexCount;

@@ -19,7 +19,6 @@ cbuffer PSConstantBuffer : register(b1)
 }
 
 
-
 struct VertexIn
 {
 	float3 PosL : POSITION;

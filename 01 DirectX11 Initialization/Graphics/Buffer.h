@@ -41,6 +41,8 @@ class VertexBuffer :public Buffer
 public:
 	void Create(ID3D11Device* device,const void* vertices, UINT vertexSize, UINT vertexCount)
 	{
+		m_Buffer.Reset();
+
 		D3D11_BUFFER_DESC vbd;
 		ZeroMemory(&vbd, sizeof(vbd));
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -64,6 +66,8 @@ class IndexBuffer :public Buffer
 public:
 	void Create(ID3D11Device* device, const void* indices, UINT indexCount, DXGI_FORMAT indexFormat)
 	{
+		m_Buffer.Reset();
+
 		D3D11_BUFFER_DESC ibd;
 		ZeroMemory(&ibd, sizeof(ibd));
 		ibd.Usage = D3D11_USAGE_IMMUTABLE;
