@@ -2,8 +2,10 @@
 #include <IMGUI/imgui_stdlib.h>
 #include <IMGUI/ImGuizmo.h>
 #include "Logic/Camera.h"
+#include "DXOthers/TextureManage.h"
 
 #define TRACE(...) GUI::Get().AddLog(__VA_ARGS__ + "\n")
+
 
 Editor& Editor::Get()
 {
@@ -165,14 +167,50 @@ void Editor::ShowModel()
 	ImGui::Begin("Model");
 
 	ImGui::Text("Model");
-	int i = m_pScene->modelType[SelectedID];
+	
+	auto& material = m_pScene->materials[SelectedID];
 
-	ImGui::Combo("ModelType", &i, "SPHER\0BOX\0CYLINDER\0PLANE\0OTHER\0");
+	int i = m_pScene->modelType[SelectedID];
+	ImGui::Combo("Shape", &i, "SPHER\0BOX\0CYLINDER\0PLANE\0OTHER\0");
 	if (i != m_pScene->modelType[SelectedID])
 	{
 		m_pScene->modelType[SelectedID] = UINT(i);
 
 		InitModelData();
+	}
+	
+	ImGui::Text("Diffuse Texture");
+
+	if (ImGui::ImageButton(TextureManage::Get().GetTexture(material.diffuse), ImVec2(ImGui::GetContentRegionAvail().x / 2, ImGui::GetContentRegionAvail().y / 2)))
+	{
+		ImGui::OpenPopup("ChooseTexture");
+	}
+
+	static int columns_count = 4;
+	ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
+
+	if (ImGui::BeginPopupModal("ChooseTexture", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::DragInt("##columns_count", &columns_count, 0.1f, 2, 10, "%d columns");
+		ImGui::Columns(columns_count);
+		
+		auto texNum = TextureManage::Get().m_TexNames.size();
+		for (int i = 0; i < texNum; i++)
+		{
+			if (ImGui::ImageButton(TextureManage::Get().m_Textures[i].Get(), ImVec2(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().x)))
+			{
+				material.diffuse = TextureManage::Get().m_TexNames[i];
+
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::NextColumn();
+		}
+		ImGui::Columns();
+		if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+		ImGui::EndPopup();
 	}
 	ImGui::End();
 }

@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include <fstream>
+#include "DXOthers/TextureManage.h"
 
 using namespace std;
 
@@ -16,7 +17,14 @@ namespace boost {
 			ar& s.modelType;
 			ar& s.names;
 			ar& s.worldMats;
-			//ar& s.Num;
+			ar& s.materials;
+		}
+
+		template<class Archive>
+		void serialize(Archive& ar, Scene::Material& m, const unsigned int version)
+		{
+			// serialize base class information
+			ar& m.diffuse;
 		}
 
 	} // namespace serialization
@@ -70,9 +78,11 @@ void Scene::DrawItem(int i, ID3D11DeviceContext* deviceContext, BasicEffect& eff
 {
 	auto& modelPart = modelParts[i];
 	auto& worldMat = worldMats[i];
+	auto& material = materials[i];
 
 	UINT strides = modelPart.vertexStride;
 	UINT offsets = 0;
+
 
 	// 设置顶点/索引缓冲区
 	deviceContext->IASetVertexBuffers(0, 1, modelPart.vertexBuffer.GetBufferAddress(), &strides, &offsets);
@@ -80,6 +90,7 @@ void Scene::DrawItem(int i, ID3D11DeviceContext* deviceContext, BasicEffect& eff
 
 	// 更新数据并应用
 	/*effect.SetWorldMatrix(XMLoadFloat4x4(&worldMat));*/
+	effect.SetTextureDiffuse(TextureManage::Get().GetTexture(material.diffuse));
 	effect.SetWorldMatrix(worldMat);
 
 	effect.Apply(deviceContext);

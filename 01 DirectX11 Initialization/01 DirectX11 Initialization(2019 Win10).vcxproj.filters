@@ -105,6 +105,9 @@
     <ClCompile Include="Logic\CameraController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DXOthers\TextureManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dApp.h">
@@ -162,6 +165,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Logic\CameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DXOthers\TextureManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

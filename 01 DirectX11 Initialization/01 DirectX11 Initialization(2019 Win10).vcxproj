@@ -183,6 +183,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Graphics\TextureRender.cpp" />
+    <ClCompile Include="DXOthers\TextureManage.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui.cpp" />
     <ClCompile Include="Vendor\IMGUI\ImGuizmo.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui_demo.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="Graphics\TextureRender.h" />
     <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="Graphics\SkyRender.h" />
+    <ClInclude Include="DXOthers\TextureManage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

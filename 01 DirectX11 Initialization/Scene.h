@@ -45,7 +45,10 @@ class Scene
 
 		UINT vertexStride;
 	};
-	
+	struct Material
+	{
+		std::string diffuse;
+	};
 public:
 	const static UINT Num = 10;
 	Scene() :
@@ -53,7 +56,8 @@ public:
 		modelParts(Num),
 		names(Num),
 		masks(Num),
-		modelType(Num)
+		modelType(Num),
+		materials(Num)
 	{}
 
 	friend class Editor;
@@ -74,7 +78,8 @@ protected:
  		this->modelType = s.modelType;
  		this->names = s.names;
  		this->worldMats = s.worldMats;
- 
+		this->materials = s.materials;
+
  		return *this;
  	}
 	Scene(const Scene& s) = delete;
@@ -87,5 +92,5 @@ public:
 	vector<UINT> modelType;
 	vector<string> names;
 	vector<UINT> masks;
-
+	vector<Material> materials;
 };

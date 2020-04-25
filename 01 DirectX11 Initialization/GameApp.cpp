@@ -7,6 +7,7 @@
 #include "Logic/LogicSystem.h"
 #include <IMGUI/ImGuizmo.h>
 #include "Logic/CameraController.h"
+#include "DXOthers/TextureManage.h"
 
 using namespace DirectX;
 
@@ -28,6 +29,9 @@ GameApp::~GameApp()
 bool GameApp::Init()
 {
 	if (!D3DApp::Init())
+		return false;
+
+	if (!TextureManage::Get().LoadAllTexture(m_pd3dDevice.Get()))
 		return false;
 
 	if (!GUI::Get().Init(m_hMainWnd, m_pd3dDevice.Get(), m_pd3dImmediateContext.Get()))
@@ -79,10 +83,7 @@ void GameApp::DrawScene()
 	m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), blue);
 	m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
-	
-	
-   
-	BasicEffect::Get().SetTextureDiffuse(m_pWoodCrate.Get());
+
 
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 
@@ -147,9 +148,6 @@ bool GameApp::InitResource()
 		L"Texture\\daylight.jpg",
 		5000.0f));
 	m_SkyRender->SetDebugObjectName("Light");
-
-	HR(CreateDDSTextureFromFile(m_pd3dDevice.Get(), L"Texture\\floor.dds", nullptr, m_pWoodCrate.GetAddressOf()));
-
 
 	BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
 

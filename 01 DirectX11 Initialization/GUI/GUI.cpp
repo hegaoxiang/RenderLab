@@ -2,7 +2,8 @@
 #include <IMGUI/imgui.h>
 #include <IMGUI/imgui_impl_win32.h>
 #include <IMGUI/imgui_impl_dx11.h>
-#include "IMGUI/ImGuizmo.h"
+#include <IMGUI/ImGuizmo.h>
+
 
 
 GUI& GUI::Get()
@@ -46,6 +47,12 @@ bool GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* deviceConte
 	ImGui_ImplWin32_Init(hwnd);
 	ImGui_ImplDX11_Init(device, deviceContext);
 
+// 	fileDialog = new ImGui::FileBrowser();
+// 
+// 	// (optional) set browser properties
+// 	fileDialog->SetTitle("title");
+// 	fileDialog->SetTypeFilters({ ".dds" });
+
 	return true;
 }
 // Forward declare message handler from imgui_impl_win32.cpp
@@ -70,6 +77,22 @@ void GUI::BeginGUI()
 
 	Dock();
 #endif
+
+// 	if (ImGui::Begin("dummy window"))
+// 	{
+// 		// open file dialog when user clicks this button
+// 		if (ImGui::Button("open file dialog"))
+// 			fileDialog->Open();
+// 	}
+// 	ImGui::End();
+// 
+// 	fileDialog->Display();
+// 
+// 	if (fileDialog->HasSelected())
+// 	{
+// 		AddLog("Selected filename" + fileDialog->GetSelected().string());
+// 		fileDialog->ClearSelected();
+// 	}
 }
 
 void GUI::EndGUI()
