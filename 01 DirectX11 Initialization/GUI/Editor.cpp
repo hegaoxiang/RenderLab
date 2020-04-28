@@ -35,13 +35,30 @@ void Editor::OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, 
 
 }
 
-std::tuple<bool,float,float> Editor::IsGameWindowResize()
+bool Editor::IsGameWindowResize()
 {
 	auto ans = m_GWSizeChange;
 
 	m_GWSizeChange = false;
+	return  ans;
+}
 
-	return {ans,m_GameSize._Myfirst._Val,m_GameSize._Get_rest()._Myfirst._Val};
+std::tuple<float, float> Editor::GetWindowSize()
+{
+	return { m_GameSize._Myfirst._Val,m_GameSize._Get_rest()._Myfirst._Val };
+}
+
+void Editor::RayCheck(const Camera& camera)
+{
+	auto& io = ImGui::GetIO();
+
+	// cause start pos is the left_right corner of the game window
+	auto location = { io.MousePos.x - get<0>(m_StartPos),io.MousePos.x - get<1>(m_StartPos) };
+
+	camera.GetCorner();
+// 	for ()
+// 	{
+// 	}
 }
 
 void Editor::ShowInspector()
@@ -297,7 +314,8 @@ void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camer
 		m_GameSize = {size.x, size.y};
 		
 	}
-	auto imageStartPos = ImGui::GetCursorPos();
+
+	auto imageStartPos = ImVec2{ ImGui::GetWindowPos().x + ImGui::GetCursorPos().x,ImGui::GetWindowPos().y + ImGui::GetCursorPos().y };
 	ImGui::Image(gameContent,size);
 
 	XMFLOAT4X4 t1;
@@ -323,7 +341,9 @@ void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camer
 // 	TRACE("size x:" + to_string(ImGui::GetContentRegionAvail().x));
 // 	TRACE("size y:" + to_string(ImGui::GetContentRegionAvail().y));
 
-	EditTransform((float*)t1.m, (float*)t2.m, t, { ImGui::GetWindowPos().x + imageStartPos.x,ImGui::GetWindowPos().y	 + imageStartPos.y }, size, mCurrentGizmoOperation);
+	EditTransform((float*)t1.m, (float*)t2.m, t, imageStartPos, size, mCurrentGizmoOperation);
+
+	m_StartPos = { imageStartPos.x,imageStartPos.y };
 
 	ImGui::End();	
 }

@@ -76,11 +76,12 @@ public:
 	// 各种类型灯光允许的最大数目
 	static const int maxLights = 5;
 // 
-// 	void SetDirLight(size_t pos, const DirectionalLight& dirLight);
+//	void SetDirLight(size_t pos, const DirectionalLight& dirLight);
 // 	void SetPointLight(size_t pos, const PointLight& pointLight);
 // 	void SetSpotLight(size_t pos, const SpotLight& spotLight);
 // 
 // 	void SetMaterial(const Material& material);
+	//void SetDir(const )
 
 	void SetTextureDiffuse(ID3D11ShaderResourceView * textureDiffuse);
 	
@@ -146,8 +147,30 @@ private:
 };
 
 
+class LightEffect :public IEffect
+{
 
+	LightEffect();
+public:
 
+	virtual ~LightEffect() override;
+
+	static LightEffect& Get();
+
+	bool InitAll(ID3D11Device* device);
+
+	void SetRenderState(ID3D11DeviceContext* deviceContext);
+
+	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W);
+	void XM_CALLCONV SetViewMatrix(DirectX::FXMMATRIX V);
+	void XM_CALLCONV SetProjMatrix(DirectX::FXMMATRIX P);
+
+	virtual void Apply(ID3D11DeviceContext* deviceContext) override;
+
+private:
+	class Impl;
+	std::unique_ptr<Impl> pImpl;
+};
 
 
 

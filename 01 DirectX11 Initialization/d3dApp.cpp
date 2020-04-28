@@ -90,7 +90,7 @@ int D3DApp::Run()
 		UpdateScene(io.DeltaTime);
 		DrawScene();
 
-		if (Editor::Get().m_GWSizeChange)
+		if (Editor::Get().IsGameWindowResize())
 		{
 			OnResize();
 		}

@@ -163,6 +163,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DXOthers\GameObject.cpp" />
+    <ClCompile Include="Graphics\LightEffect.cpp" />
     <ClCompile Include="Logic\CameraController.cpp" />
     <ClCompile Include="DXOthers\DDSTextureLoader.cpp" />
     <ClCompile Include="DXOthers\WICTextureLoader.cpp" />

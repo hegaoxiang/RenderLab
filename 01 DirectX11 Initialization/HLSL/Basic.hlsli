@@ -13,6 +13,7 @@ SamplerState g_Sam : register(s0);
 struct VertexIn
 {
 	float3 posL : POSITION;
+    float3 norL : NORMAL;
     float2 uv : TEXCOORD;
 };
 

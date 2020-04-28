@@ -31,7 +31,7 @@ void XM_CALLCONV GameObject::SetWorldMatrix(DirectX::FXMMATRIX world)
 }
 
 
-void GameObject::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)const
+void GameObject::Draw(ID3D11DeviceContext* deviceContext, LightEffect& effect)const
 {
 	UINT strides = m_Model.vertexStride;
 	UINT offsets = 0;
@@ -44,8 +44,6 @@ void GameObject::Draw(ID3D11DeviceContext* deviceContext, BasicEffect& effect)co
 
 		// 更新数据并应用
 		effect.SetWorldMatrix(XMLoadFloat4x4(&m_WorldMatrix));
-// 		effect.SetTextureDiffuse(part.texDiffuse.Get());
-// 		effect.SetMaterial(part.material);
 
 		effect.Apply(deviceContext);
 

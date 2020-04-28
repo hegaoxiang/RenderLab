@@ -26,9 +26,12 @@ public:
 		InitAdditionData();
 	}
 
-	std::tuple<bool,float,float> IsGameWindowResize();
-	bool m_GWSizeChange = false;
-	std::tuple<float, float> m_GameSize;
+	// use for game window size change
+	bool IsGameWindowResize();
+	std::tuple<float, float> GetWindowSize();
+
+	// changing selected one
+	void RayCheck(const Camera& camera);
 protected:
 	void ShowInspector();
 
@@ -68,7 +71,6 @@ private:
 		SetMesh( device, meshData.vertexVec, meshData.indexVec);
 	}
 
-	UINT SelectedID = -1;
 
 	bool HasComponent(Component c) {
 		if (SelectedID != -1)
@@ -95,6 +97,17 @@ private:
 	void CreateOBJ(Shape type);
 
 
+	// Edited one  
+	UINT SelectedID = -1;
+
+	// use for ray check
+	std::tuple<float, float> m_StartPos;
+
+	bool m_ShowInspector = true;
+	bool m_ShowHierarchy = true;
+	bool m_ShowSetting = true;
+
+
 	std::shared_ptr<Scene> m_pScene;
 	std::shared_ptr<Camera>m_pCamera;
 private:
@@ -103,11 +116,9 @@ private:
 	};
 
 
-	bool m_ShowInspector = true;
-	bool m_ShowHierarchy = true;
-	bool m_ShowSetting = true;
-
 	
+	bool m_GWSizeChange = false;
+	std::tuple<float, float> m_GameSize;
 
 	template <class T>
 	using ComPtr = Microsoft::WRL::ComPtr<T>;

@@ -8,6 +8,9 @@
 #include <IMGUI/ImGuizmo.h>
 #include "Logic/CameraController.h"
 #include "DXOthers/TextureManage.h"
+#include <DXOthers\GameObject.h>
+
+#include "Graphics\Geometry.h"
 
 using namespace DirectX;
 
@@ -48,19 +51,16 @@ bool GameApp::Init()
 
 void GameApp::OnResize()
 {
+	D3DApp::OnResize();
+
 	if (m_pCamera != nullptr)
 	{
-		auto [isResize, width, height] = Editor::Get().IsGameWindowResize();
+		auto [width, height] = Editor::Get().GetWindowSize();
 
-		if (isResize)
-		{
-			m_pCamera->SetFrustum(XM_PI / 3, width / height, 1.0f, 1000.0f);
-			BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
-
-		}
+		m_pGameContent->InitResource(m_pd3dDevice.Get(), width, height);
+		m_pCamera->SetFrustum(XM_PI / 3, width / height, 1.0f, 1000.0f);
+		BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
 	}
-
-	D3DApp::OnResize();
 }
 
 void GameApp::UpdateScene(float dt)
@@ -69,11 +69,21 @@ void GameApp::UpdateScene(float dt)
 
 
 	CameraController::UpdataCamera(m_pCamera.get(), m_CameraMode, dt);
+
+	Editor::Get().RayCheck(*m_pCamera);
+
 	BasicEffect::Get().SetViewMatrix(m_pCamera->GetViewXM());
+
+	/// test
+	LightEffect::Get().SetViewMatrix(m_pCamera->GetViewXM());
+	LightEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
 }
 
 void GameApp::DrawScene()
 {
+	
+
+
 	assert(m_pd3dImmediateContext);
 	assert(m_pSwapChain);
 	static float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };	// RGBA = (0,0,255,255)
@@ -85,12 +95,19 @@ void GameApp::DrawScene()
 	
 
 
-	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 
 #ifdef EDITOR
 	m_pGameContent->Begin(m_pd3dImmediateContext.Get(), blue);
 
 #endif
+	auto mesh = Geometry::CreateBox();
+
+	GameObject a;
+	a.SetMesh(m_pd3dDevice.Get(), mesh);
+	
+	a.Draw(m_pd3dImmediateContext.Get(), LightEffect::Get());
+
+	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 	m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
 
 
@@ -121,6 +138,8 @@ bool GameApp::InitEffect()
 	BasicEffect::Get().InitAll(m_pd3dDevice.Get());
 
 	SkyEffect::Get().InitAll(m_pd3dDevice.Get());
+
+	LightEffect::Get().InitAll(m_pd3dDevice.Get());
 
 	return true;
 }

@@ -5,7 +5,7 @@ SamplerState g_Sam : register(s0);
 cbuffer CBChangesEveryFrame : register(b0)
 {
     matrix g_WorldViewProj;
-}
+};
 
 cbuffer CB : register(b1)
 {
