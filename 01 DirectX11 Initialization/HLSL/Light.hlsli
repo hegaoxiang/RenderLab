@@ -6,12 +6,12 @@ cbuffer MVP : register(b0)
     matrix g_Proj;
 };
 
-struct VSIn
+struct VertexIn
 {
-    float3 posL : POSITIONT;
+    float3 posL : POSITION;
 };
 
-struct VSOut
+struct VertexOut
 {
-    float4 posH : SV_Position;
+    float4 posH : SV_POSITION;
 };

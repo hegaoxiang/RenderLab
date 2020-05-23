@@ -43,6 +43,14 @@ private:
 	CameraMode m_CameraMode;			// 摄像机模式
 
 	std::unique_ptr<SkyRender> m_SkyRender;
+
+
+	// test
+
+	ComPtr<ID3D11VertexShader> m_pVS;
+	ComPtr<ID3D11PixelShader> m_pPS;
+
+	ComPtr<ID3D11InputLayout> m_pPosInputLayout;
 };
 
 

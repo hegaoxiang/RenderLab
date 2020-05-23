@@ -16,6 +16,8 @@ public:
 		XMMATRIX proj;
 	};
 public:
+	Impl() {};
+	~Impl() = default;
 	CBufferObject<0, MVP> m_pBuffer;
 
 	ComPtr<ID3D11VertexShader> m_pVS;

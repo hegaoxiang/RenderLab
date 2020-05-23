@@ -104,7 +104,8 @@ void GameApp::DrawScene()
 
 	GameObject a;
 	a.SetMesh(m_pd3dDevice.Get(), mesh);
-	
+	a.SetWorldMatrix(XMMATRIX(XMMatrixIdentity()));
+	LightEffect::Get().SetRenderState(m_pd3dImmediateContext.Get());
 	a.Draw(m_pd3dImmediateContext.Get(), LightEffect::Get());
 
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
@@ -140,6 +141,19 @@ bool GameApp::InitEffect()
 	SkyEffect::Get().InitAll(m_pd3dDevice.Get());
 
 	LightEffect::Get().InitAll(m_pd3dDevice.Get());
+	
+
+// 	ComPtr<ID3DBlob> blob;
+// 	// 创建顶点着色器
+// 	HR(CreateShaderFromFile(L"HLSL\\VertexShader.cso", L"HLSL\\VertexShader.hlsl", "main", "vs_5_0", blob.ReleaseAndGetAddressOf()));
+// 	HR(m_pd3dDevice->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pVS.GetAddressOf()));
+// 	// 创建顶点布局
+// 	HR(m_pd3dDevice->CreateInputLayout(VertexPos::inputLayout, ARRAYSIZE(VertexPos::inputLayout),
+// 		blob->GetBufferPointer(), blob->GetBufferSize(), m_pPosInputLayout.GetAddressOf()));
+// 
+// 	// 创建像素着色器
+// 	HR(CreateShaderFromFile(L"HLSL\\PixelShader.cso", L"HLSL\\PixelShader.hlsl", "PS", "ps_5_0", blob.ReleaseAndGetAddressOf()));
+// 	HR(m_pd3dDevice->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pPS.GetAddressOf()));
 
 	return true;
 }
@@ -169,6 +183,7 @@ bool GameApp::InitResource()
 	m_SkyRender->SetDebugObjectName("Light");
 
 	BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
+
 
 	return true;
 }

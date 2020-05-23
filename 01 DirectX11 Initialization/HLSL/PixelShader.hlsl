@@ -1,5 +1,8 @@
 #include"Light.hlsli"
-float4 PS(VSOut vOut) : SV_Target
+
+
+// ÏñËØ×ÅÉ«Æ÷
+float4 PS(VertexOut pIn) : SV_Target
 {
-    return float4(1.0);
+    return float4(1.0f,1.0f,1.0f,1.0f);
 }
