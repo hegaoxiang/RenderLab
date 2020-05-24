@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+#include "GEngine/GScene.h"
 
 class LogicSystem
 {
@@ -8,12 +8,12 @@ public:
 
 	void Update(float dt);
 
-	void SetScene(shared_ptr<Scene> scene)
+	void SetScene(shared_ptr<GScene> GScene)
 	{
-		m_pScene = scene;
+		m_pScene = GScene;
 	}
 private:
-	shared_ptr<Scene> m_pScene;
+	shared_ptr<GScene> m_pScene;
 	void RotateComp(float dt);
 	LogicSystem() {};
 

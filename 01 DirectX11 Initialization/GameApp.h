@@ -3,9 +3,9 @@
 #include "d3dApp.h"
 #include "Graphics/TextureRender.h"
 #include <memory>
-#include "Logic/Camera.h"
-#include "Scene.h"
-#include "Graphics\SkyRender.h"
+#include "GRendererInfra/GRiCamera.h"
+#include "GEngine\GScene.h"
+/*#include "Graphics\SkyRender.h"*/
 
 namespace RenderContext
 {
@@ -35,14 +35,14 @@ private:
 private:
 	std::unique_ptr<TextureRender>	m_pGameContent;
 	std::unique_ptr<TextureRender>	m_pRayTracingContent;
-	std::shared_ptr<Scene>			m_pScene;
+	std::shared_ptr<GScene>			m_pScene;
 	
 	
 
-	std::shared_ptr<Camera>			m_pCamera;
+	std::shared_ptr<GRiCamera>			m_pCamera;
 	CameraMode m_CameraMode;			// 摄像机模式
 
-	std::unique_ptr<SkyRender> m_SkyRender;
+	//std::unique_ptr<SkyRender> m_SkyRender;
 
 
 	// test

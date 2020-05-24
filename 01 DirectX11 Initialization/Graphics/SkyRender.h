@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 #include "Effects.h"
-#include "Logic/Camera.h"
+#include "GRendererInfra/GRiCamera.h"
 
 class SkyRender
 {
@@ -45,7 +45,7 @@ public:
 
 	ID3D11ShaderResourceView* GetTextureCube();
 
-	void Draw(ID3D11DeviceContext* deviceContext, SkyEffect& skyEffect, const Camera& camera);
+	void Draw(ID3D11DeviceContext* deviceContext, SkyEffect& skyEffect, const GRiCamera& GRiCamera);
 
 	// 设置调试对象名
 	void SetDebugObjectName(const std::string& name);

@@ -51,13 +51,7 @@
     <ClCompile Include="Graphics\Buffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Graphics\Vertex.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\BasicEffect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Graphics\RenderStates.cpp">
@@ -81,13 +75,7 @@
     <ClCompile Include="DXOthers\DXTrace.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DXOthers\GameTimer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GUI\Editor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DXOthers\WICTextureLoader.cpp">
@@ -96,22 +84,61 @@
     <ClCompile Include="DXOthers\DDSTextureLoader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\SkyEffect.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Graphics\SkyRender.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Logic\CameraController.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="DXOthers\TextureManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\LightEffect.cpp">
+    <ClCompile Include="DXOthers\GameObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DXOthers\GameObject.cpp">
+    <ClCompile Include="GEngine\GCore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiTimer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\GDxRenderer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiCamera.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine\GCameraController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiRendererFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiTextureLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\GDxRendererFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GRendererInfra\GRiTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\GDxTexture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\GDxTextureLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine\GScene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\Effect\BasicEffect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\Effect\SkyEffect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GDX11Renderer\Effect\LightEffect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngineDLL\EGCore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,19 +155,10 @@
     <ClInclude Include="Graphics\Buffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Graphics\Geometry.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Vertex.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\EffectHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Graphics\Effects.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\RenderStates.h">
@@ -158,22 +176,61 @@
     <ClInclude Include="DXOthers\DXTrace.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DXOthers\GameTimer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\Editor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Logic\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\SkyRender.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Logic\CameraController.h">
+    <ClInclude Include="DXOthers\TextureManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DXOthers\TextureManage.h">
+    <ClInclude Include="GEngine\GCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\GDxRenderer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiCamera.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GEngine\GCameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiRendererFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiTextureLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\GDxRendererFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GRendererInfra\GRiTexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\GDxTexture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\GDxTextureLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GEngine\GScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\Effect\Effects.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GDX11Renderer\Effect\EffectHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GEngineDLL\EGCore.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

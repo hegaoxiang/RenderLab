@@ -1,11 +1,11 @@
 #pragma once
-#include "Scene.h"
+#include "GEngine/GScene.h"
 #include <unordered_map>
 #include <vector>
 #include <functional>
 
-// Not only Editor Scene,but also Init scene.
-class Camera;
+// Not only Editor GScene,but also Init GScene.
+class GRiCamera;
 class Editor
 {
 	using CompName = std::string;
@@ -15,14 +15,14 @@ class Editor
 public:
 	static Editor& Get();
 
-	void OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const Camera& camera);
+	void OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const GRiCamera& GRiCamera);
 
 	// Also init some Other Helpful Data
-	void SetScene(std::shared_ptr<Scene> scene,ID3D11Device * device)
+	void SetScene(GScene* gScene,ID3D11Device * device)
 	{
-		m_pScene = scene;
+		m_pScene = gScene;
 		m_pd3dDevice = device;
-		m_pScene->AntiSerialize();
+		m_pScene->AntiSerialize(L"file.data");
 		InitAdditionData();
 	}
 
@@ -31,7 +31,7 @@ public:
 	std::tuple<float, float> GetWindowSize();
 
 	// changing selected one
-	void RayCheck(const Camera& camera);
+	void RayCheck(const GRiCamera& GRiCamera);
 protected:
 	void ShowInspector();
 
@@ -39,7 +39,7 @@ protected:
 	void ShowTransForm();
 	void ShowModel();
 
-	void ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camera);
+	void ShowGame(ID3D11ShaderResourceView* gameContent, const GRiCamera& GRiCamera);
 	void OnAddComponent(Component c);
 	void InitModelData();
 private:
@@ -108,8 +108,8 @@ private:
 	bool m_ShowSetting = true;
 
 
-	std::shared_ptr<Scene> m_pScene;
-	std::shared_ptr<Camera>m_pCamera;
+	GScene* m_pScene;
+	std::shared_ptr<GRiCamera>m_pCamera;
 private:
 	Editor() {
 		NameMap = { {COMPONENT_TRANSFORM,"Transform"},{COMPONENT_MODEL,"Model"},{COMPONENT_ROTATE,"Rotate"} };

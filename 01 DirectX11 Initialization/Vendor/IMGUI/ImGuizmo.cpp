@@ -730,12 +730,12 @@ namespace ImGuizmo
    {
       vec_t startOfSegment = start;
       startOfSegment.TransformPoint(gContext.mMVP);
-      if (fabsf(startOfSegment.w)> FLT_EPSILON) // check for axis aligned with camera direction
+      if (fabsf(startOfSegment.w)> FLT_EPSILON) // check for axis aligned with GRiCamera direction
          startOfSegment *= 1.f / startOfSegment.w;
 
       vec_t endOfSegment = end;
       endOfSegment.TransformPoint(gContext.mMVP);
-      if (fabsf(endOfSegment.w)> FLT_EPSILON) // check for axis aligned with camera direction
+      if (fabsf(endOfSegment.w)> FLT_EPSILON) // check for axis aligned with GRiCamera direction
          endOfSegment *= 1.f / endOfSegment.w;
 
       vec_t clipSpaceAxis = endOfSegment - startOfSegment;
@@ -750,7 +750,7 @@ namespace ImGuizmo
       for (unsigned int i = 0; i < 3; i++)
       {
          pts[i].TransformPoint(gContext.mMVP);
-         if (fabsf(pts[i].w)> FLT_EPSILON) // check for axis aligned with camera direction
+         if (fabsf(pts[i].w)> FLT_EPSILON) // check for axis aligned with GRiCamera direction
             pts[i] *= 1.f / pts[i].w;
       }
       vec_t segA = pts[1] - pts[0];
@@ -901,7 +901,7 @@ namespace ImGuizmo
       gContext.mCameraRight = viewInverse.v.right;
       gContext.mCameraUp = viewInverse.v.up;
 
-     // compute scale from the size of camera right vector projected on screen at the matrix position
+     // compute scale from the size of GRiCamera right vector projected on screen at the matrix position
      vec_t pointRight = viewInverse.v.right;
      pointRight.TransformPoint(gContext.mViewProjection);
      gContext.mScreenFactor = gGizmoSizeClipSpace / (pointRight.x / pointRight.w - gContext.mMVP.v.position.x / gContext.mMVP.v.position.w);
@@ -1959,7 +1959,7 @@ namespace ImGuizmo
       if (deltaMatrix)
          ((matrix_t*)deltaMatrix)->SetToIdentity();
 
-      // behind camera
+      // behind GRiCamera
       vec_t camSpacePosition;
       camSpacePosition.TransformPoint(makeVect(0.f, 0.f, 0.f), gContext.mMVP);
       if (!gContext.mIsOrthographic && camSpacePosition.z < 0.001f)

@@ -3,10 +3,10 @@
 #include "DXOthers/DXTrace.h"
 #include "GUI/GUI.h"
 #include "GUI/Editor.h"
-#include "Graphics/Effects.h"
+#include "GDX11Renderer/Effect/Effects.h"
 #include "Logic/LogicSystem.h"
 #include <IMGUI/ImGuizmo.h>
-#include "Logic/CameraController.h"
+#include "GEngine/GCameraController.h"
 #include "DXOthers/TextureManage.h"
 #include <DXOthers\GameObject.h>
 
@@ -19,14 +19,14 @@ GameApp::GameApp(HINSTANCE hInstance)
 	: D3DApp(hInstance),
 	m_pGameContent(new TextureRender()),
 	m_pRayTracingContent(new TextureRender()),
-	m_pScene(new Scene())
+	m_pScene(new GScene())
 {
 	LogicSystem::Get().SetScene(m_pScene);
 }
 
 GameApp::~GameApp()
 {
-	m_pScene->Serialize();
+	m_pScene->Serialize(L"file.data");
 }
 
 bool GameApp::Init()
@@ -37,7 +37,7 @@ bool GameApp::Init()
 	if (!TextureManage::Get().LoadAllTexture(m_pd3dDevice.Get()))
 		return false;
 
-	if (!GUI::Get().Init(m_hMainWnd, m_pd3dDevice.Get(), m_pd3dImmediateContext.Get()))
+	if (!GUI::Get().Init(mhMainWnd, m_pd3dDevice.Get(), m_pd3dImmediateContext.Get()))
 		return false;
 
 	if (!InitEffect())
@@ -68,7 +68,7 @@ void GameApp::UpdateScene(float dt)
 	LogicSystem::Get().Update(dt);
 
 
-	CameraController::UpdataCamera(m_pCamera.get(), m_CameraMode, dt);
+	GCameraController::UpdataCamera(m_pCamera.get(), m_CameraMode, dt);
 
 	Editor::Get().RayCheck(*m_pCamera);
 
@@ -109,11 +109,11 @@ void GameApp::DrawScene()
 	a.Draw(m_pd3dImmediateContext.Get(), LightEffect::Get());
 
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
-	m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
+	//m_pScene->Draw(m_pd3dImmediateContext.Get(),BasicEffect::Get());
 
 
 	SkyEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
-	m_SkyRender->Draw(m_pd3dImmediateContext.Get(), SkyEffect::Get(), *m_pCamera);
+	/*m_SkyRender->Draw(m_pd3dImmediateContext.Get(), SkyEffect::Get(), *m_pCamera);*/
 
 #ifdef EDITOR
 m_pGameContent->End(m_pd3dImmediateContext.Get());
@@ -160,27 +160,27 @@ bool GameApp::InitEffect()
 
 bool GameApp::InitResource()
 {
-	Editor::Get().SetScene(m_pScene,m_pd3dDevice.Get());
+	//Editor::Get().SetScene(m_pScene,m_pd3dDevice.Get());
 
 	m_pGameContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	m_pRayTracingContent->InitResource(m_pd3dDevice.Get(), m_ClientWidth, m_ClientHeight);
 	
-	auto camera = std::shared_ptr<FirstPersonCamera>(new FirstPersonCamera);
-	m_pCamera = camera;
+	auto GRiCamera = std::shared_ptr<FirstPersonCamera>(new FirstPersonCamera);
+	m_pCamera = GRiCamera;
 
-	camera->SetViewPort(0.0f, 0.0f, (float)m_ClientWidth, (float)m_ClientHeight);
-	camera->LookAt(XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
+	GRiCamera->SetViewPort(0.0f, 0.0f, (float)m_ClientWidth, (float)m_ClientHeight);
+	GRiCamera->LookAt(XMVectorSet(0.0f, 0.0f, -5.0f, 0.0f), XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
 		XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 
 	// 初始化仅在窗口大小变动时修改的值
 	m_pCamera->SetFrustum(XM_PI / 3, AspectRatio(), 0.5f, 1000.0f);
 
-	m_SkyRender = std::make_unique<SkyRender>();
+	//m_SkyRender = std::make_unique<SkyRender>();
 	
-	HR(m_SkyRender->InitResource(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(),
-		L"Texture\\daylight.jpg",
-		5000.0f));
-	m_SkyRender->SetDebugObjectName("Light");
+// 	HR(m_SkyRender->InitResource(m_pd3dDevice.Get(), m_pd3dImmediateContext.Get(),
+// 		L"Texture\\daylight.jpg",
+// 		5000.0f));
+// 	m_SkyRender->SetDebugObjectName("Light");
 
 	BasicEffect::Get().SetProjMatrix(m_pCamera->GetProjXM());
 

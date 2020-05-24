@@ -1,7 +1,7 @@
 ﻿ #pragma once
 #include <Graphics\Buffer.h>
 #include "Graphics\Geometry.h"
-#include <Graphics\Effects.h>
+#include <GDX11Renderer\Effect\Effects.h>
 
 
 class GameObject

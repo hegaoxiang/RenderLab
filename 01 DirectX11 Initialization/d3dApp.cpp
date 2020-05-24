@@ -18,7 +18,7 @@ LRESULT CALLBACK
 MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	// Forward hwnd on because we can get messages (e.g., WM_CREATE)
-	// before CreateWindow returns, and thus before m_hMainWnd is valid.
+	// before CreateWindow returns, and thus before mhMainWnd is valid.
 	return g_pd3dApp->MsgProc(hwnd, msg, wParam, lParam);
 }
 
@@ -27,7 +27,7 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 	m_MainWndCaption(L"DirectX11 Initialization"),
 	m_ClientWidth(800),
 	m_ClientHeight(600),
-	m_hMainWnd(nullptr),
+	mhMainWnd(nullptr),
 	m_AppPaused(false),
 	m_Minimized(false),
 	m_Maximized(false),
@@ -63,7 +63,7 @@ HINSTANCE D3DApp::AppInst()const
 
 HWND D3DApp::MainWnd()const
 {
-	return m_hMainWnd;
+	return mhMainWnd;
 }
 
 float D3DApp::AspectRatio()const
@@ -366,16 +366,16 @@ bool D3DApp::InitMainWindow()
 	int width = R.right - R.left;
 	int height = R.bottom - R.top;
 
-	m_hMainWnd = CreateWindow(L"D3DWndClassName", m_MainWndCaption.c_str(),
+	mhMainWnd = CreateWindow(L"D3DWndClassName", m_MainWndCaption.c_str(),
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, m_hAppInst, 0);
-	if (!m_hMainWnd)
+	if (!mhMainWnd)
 	{
 		MessageBox(0, L"CreateWindow Failed.", 0, 0);
 		return false;
 	}
 
-	ShowWindow(m_hMainWnd, SW_SHOWDEFAULT);
-	UpdateWindow(m_hMainWnd);
+	ShowWindow(mhMainWnd, SW_SHOWDEFAULT);
+	UpdateWindow(mhMainWnd);
 
 	return true;
 }
@@ -493,7 +493,7 @@ bool D3DApp::InitDirect3D()
 		fd.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		fd.Windowed = TRUE;
 		// 为当前窗口创建交换链
-		HR(dxgiFactory2->CreateSwapChainForHwnd(m_pd3dDevice.Get(), m_hMainWnd, &sd, &fd, nullptr, m_pSwapChain1.GetAddressOf()));
+		HR(dxgiFactory2->CreateSwapChainForHwnd(m_pd3dDevice.Get(), mhMainWnd, &sd, &fd, nullptr, m_pSwapChain1.GetAddressOf()));
 		HR(m_pSwapChain1.As(&m_pSwapChain));
 	}
 	else
@@ -521,7 +521,7 @@ bool D3DApp::InitDirect3D()
 		}
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 1;
-		sd.OutputWindow = m_hMainWnd;
+		sd.OutputWindow = mhMainWnd;
 		sd.Windowed = TRUE;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags = 0;
@@ -531,7 +531,7 @@ bool D3DApp::InitDirect3D()
 	
 
 	// 可以禁止alt+enter全屏
-	dxgiFactory1->MakeWindowAssociation(m_hMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
+	dxgiFactory1->MakeWindowAssociation(mhMainWnd, DXGI_MWA_NO_ALT_ENTER | DXGI_MWA_NO_WINDOW_CHANGES);
 
 	// 设置调试对象名
 	D3D11SetDebugObjectName(m_pd3dImmediateContext.Get(), "ImmediateContext");
@@ -562,7 +562,7 @@ void D3DApp::CalculateFrameStats()
 		outs << m_MainWndCaption << L"    "
 			<< L"FPS: " << fps << L"    "
 			<< L"Frame Time: " << mspf << L" (ms)";
-		SetWindowText(m_hMainWnd, outs.str().c_str());
+		SetWindowText(mhMainWnd, outs.str().c_str());
 
 		// Reset for next average.
 		frameCnt = 0;

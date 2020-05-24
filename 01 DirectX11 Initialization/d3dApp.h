@@ -5,7 +5,7 @@
 #include <string>
 #include <d3d11_1.h>
 #include <DirectXMath.h>
-#include "DXOthers/GameTimer.h"
+#include "GRendererInfra/GRiTimer.h"
 #include "Graphics/Buffer.h"
 
 // 添加所有要引用的库
@@ -43,7 +43,7 @@ protected:
 protected:
 
 	HINSTANCE m_hAppInst;        // 应用实例句柄
-	HWND      m_hMainWnd;        // 主窗口句柄
+	HWND      mhMainWnd;        // 主窗口句柄
 	bool      m_AppPaused;       // 应用是否暂停
 	bool      m_Minimized;       // 应用是否最小化
 	bool      m_Maximized;       // 应用是否最大化
@@ -52,7 +52,7 @@ protected:
 	UINT      m_4xMsaaQuality;   // MSAA支持的质量等级
 
 
-	GameTimer m_Timer;           // 计时器
+	GRiTimer m_Timer;           // 计时器
 
 	// 使用模板别名(C++11)简化类型名
 	template <class T>

@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,16 +71,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(ProjectDir)</OutDir>
+    <OutDir>..\GEditor\bin\Debug</OutDir>
     <IntDir>VS2019_Win10\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>Core1</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(ProjectDir)</OutDir>
+    <OutDir>..\GEditor\bin\Debug</OutDir>
     <IntDir>VS2019_Win10\$(Configuration)\</IntDir>
     <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;D:\Documents\Tencent Files\1297695247\FileRecv\DirectX11-With-Windows-SDK-v1.27.1\DirectX11-With-Windows-SDK\01 DirectX11 Initialization;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <TargetName>Core1</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(ProjectDir)</OutDir>
@@ -163,27 +165,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GEngineDLL\EGCore.cpp" />
+    <ClCompile Include="GDX11Renderer\GDxRenderer.cpp" />
+    <ClCompile Include="GDX11Renderer\GDxRendererFactory.cpp" />
+    <ClCompile Include="GDX11Renderer\GDxTexture.cpp" />
+    <ClCompile Include="GDX11Renderer\GDxTextureLoader.cpp" />
+    <ClCompile Include="GEngine\GCore.cpp" />
     <ClCompile Include="DXOthers\GameObject.cpp" />
-    <ClCompile Include="Graphics\LightEffect.cpp" />
-    <ClCompile Include="Logic\CameraController.cpp" />
+    <ClCompile Include="GDX11Renderer\Effect\LightEffect.cpp" />
+    <ClCompile Include="GRendererInfra\GRiRenderer.cpp" />
+    <ClCompile Include="GEngine\GCameraController.cpp" />
     <ClCompile Include="DXOthers\DDSTextureLoader.cpp" />
     <ClCompile Include="DXOthers\WICTextureLoader.cpp" />
-    <ClCompile Include="Graphics\SkyEffect.cpp" />
-    <ClCompile Include="Graphics\SkyRender.cpp" />
-    <ClCompile Include="Logic\Camera.cpp" />
+    <ClCompile Include="GDX11Renderer\Effect\SkyEffect.cpp" />
+    <ClCompile Include="GRendererInfra\GRiCamera.cpp" />
+    <ClCompile Include="GRendererInfra\GRiRendererFactory.cpp" />
+    <ClCompile Include="GRendererInfra\GRiTextureLoader.cpp" />
+    <ClCompile Include="GRendererInfra\GRiTexture.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />
-    <ClCompile Include="Graphics\BasicEffect.cpp" />
+    <ClCompile Include="GDX11Renderer\Effect\BasicEffect.cpp" />
     <ClCompile Include="Graphics\Buffer.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="DXOthers\d3dUtil.cpp" />
     <ClCompile Include="DXOthers\DXTrace.cpp" />
     <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="DXOthers\GameTimer.cpp" />
+    <ClCompile Include="GRendererInfra\GRiTimer.cpp" />
     <ClCompile Include="Graphics\RenderStates.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Logic\LogicSystem.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="GEngine\GScene.cpp" />
     <ClCompile Include="Graphics\TextureRender.cpp" />
     <ClCompile Include="DXOthers\TextureManage.cpp" />
     <ClCompile Include="Vendor\IMGUI\imgui.cpp" />
@@ -197,22 +208,32 @@
     <ClCompile Include="Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Logic\CameraController.h" />
-    <ClInclude Include="Logic\Camera.h" />
+    <ClInclude Include="GEngineDLL\EGCore.h" />
+    <ClInclude Include="GDX11Renderer\GDxRenderer.h" />
+    <ClInclude Include="GDX11Renderer\GDxRendererFactory.h" />
+    <ClInclude Include="GDX11Renderer\GDxTexture.h" />
+    <ClInclude Include="GDX11Renderer\GDxTextureLoader.h" />
+    <ClInclude Include="GEngine\GCore.h" />
+    <ClInclude Include="GRendererInfra\GRiRenderer.h" />
+    <ClInclude Include="GEngine\GCameraController.h" />
+    <ClInclude Include="GRendererInfra\GRiCamera.h" />
+    <ClInclude Include="GRendererInfra\GRiRendererFactory.h" />
+    <ClInclude Include="GRendererInfra\GRiTextureLoader.h" />
+    <ClInclude Include="GRendererInfra\GRiTexture.h" />
     <ClInclude Include="GUI\Editor.h" />
     <ClInclude Include="Graphics\Buffer.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="DXOthers\d3dUtil.h" />
     <ClInclude Include="DXOthers\DXTrace.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="DXOthers\GameTimer.h" />
-    <ClInclude Include="Graphics\EffectHelper.h" />
-    <ClInclude Include="Graphics\Effects.h" />
+    <ClInclude Include="GRendererInfra\GRiTimer.h" />
+    <ClInclude Include="GDX11Renderer\Effect\EffectHelper.h" />
+    <ClInclude Include="GDX11Renderer\Effect\Effects.h" />
     <ClInclude Include="Graphics\Geometry.h" />
     <ClInclude Include="Graphics\RenderStates.h" />
     <ClInclude Include="GUI\GUI.h" />
     <ClInclude Include="Logic\LogicSystem.h" />
-    <ClInclude Include="Scene.h" />
+    <ClInclude Include="GEngine\GScene.h" />
     <ClInclude Include="Graphics\TextureRender.h" />
     <ClInclude Include="Graphics\Vertex.h" />
     <ClInclude Include="Graphics\SkyRender.h" />

@@ -1,7 +1,7 @@
 #include "Editor.h"
 #include <IMGUI/imgui_stdlib.h>
 #include <IMGUI/ImGuizmo.h>
-#include "Logic/Camera.h"
+#include "GRendererInfra/GRiCamera.h"
 #include "DXOthers/TextureManage.h"
 
 #define TRACE(...) GUI::Get().AddLog(__VA_ARGS__ + "\n")
@@ -13,13 +13,13 @@ Editor& Editor::Get()
 	return *impl;
 }
 
-void Editor::OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const Camera& camera)
+void Editor::OnGUI(ID3D11Device* device, ID3D11ShaderResourceView* gameContent, const GRiCamera& GRiCamera)
 {
-	// need to choose a scene first 
+	// need to choose a GScene first 
 	if (!m_pScene)
 		return;
 	
-	ShowGame(gameContent,camera);
+	ShowGame(gameContent,GRiCamera);
 
 	if (m_ShowHierarchy)
 		ShowHierarchy();
@@ -48,14 +48,14 @@ std::tuple<float, float> Editor::GetWindowSize()
 	return { m_GameSize._Myfirst._Val,m_GameSize._Get_rest()._Myfirst._Val };
 }
 
-void Editor::RayCheck(const Camera& camera)
+void Editor::RayCheck(const GRiCamera& GRiCamera)
 {
 	auto& io = ImGui::GetIO();
 
 	// cause start pos is the left_right corner of the game window
 	auto location = { io.MousePos.x - get<0>(m_StartPos),io.MousePos.x - get<1>(m_StartPos) };
 
-	camera.GetCorner();
+	GRiCamera.GetCorner();
 // 	for ()
 // 	{
 // 	}
@@ -291,7 +291,7 @@ void EditTransform(const float* cameraView, const float* cameraProjection, float
 }
 
 
-void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camera)
+void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const GRiCamera& GRiCamera)
 {
 	ImGui::Begin("Game");
 
@@ -319,9 +319,9 @@ void Editor::ShowGame(ID3D11ShaderResourceView* gameContent, const Camera& camer
 	ImGui::Image(gameContent,size);
 
 	XMFLOAT4X4 t1;
-	XMStoreFloat4x4(&t1, camera.GetViewXM());
+	XMStoreFloat4x4(&t1, GRiCamera.GetViewXM());
 	XMFLOAT4X4 t2;
-	XMStoreFloat4x4(&t2, camera.GetProjXM());
+	XMStoreFloat4x4(&t2, GRiCamera.GetProjXM());
 
 	if (SelectedID == -1)
 	{

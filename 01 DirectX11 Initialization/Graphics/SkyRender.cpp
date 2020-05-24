@@ -66,10 +66,10 @@ ID3D11ShaderResourceView* SkyRender::GetTextureCube()
 	return m_pTextureCubeSRV.Get();
 }
 
-void SkyRender::Draw(ID3D11DeviceContext* deviceContext, SkyEffect& skyEffect, const Camera& camera)
+void SkyRender::Draw(ID3D11DeviceContext* deviceContext, SkyEffect& skyEffect, const GRiCamera& GRiCamera)
 {
-	auto cor = camera.GetCorner();
-	auto view = camera.GetViewXM();
+	auto cor = GRiCamera.GetCorner();
+	auto view = GRiCamera.GetViewXM();
 	auto corMat = XMLoadFloat4x4(&cor);
 	auto inView = XMMatrixInverse(nullptr, view);
 	auto corDirMat = corMat * inView;
