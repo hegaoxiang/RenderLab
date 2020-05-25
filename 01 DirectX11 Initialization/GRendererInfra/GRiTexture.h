@@ -3,7 +3,8 @@
 class GRiTexture
 {
 public:
-	std::wstring UniqueFileName;
-	std::wstring Name;
+	virtual ~GRiTexture() {};
+	std::string UniqueFileName;
+	std::string Name;
 };
 

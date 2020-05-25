@@ -11,6 +11,12 @@ public:
 
 	virtual GRiTextureLoader* CreateTextureLoader() override;
 
+
+	virtual GRiMaterial* CreateMaterial() override;
+
+
+	virtual GRiMesh* CreateMesh(std::vector<GRiMeshData> meshData) override;
+
 private:
 
 	ID3D11Device* mpDevice;

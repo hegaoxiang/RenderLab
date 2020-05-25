@@ -15,5 +15,5 @@ DLLEXPORT int __stdcall RenderFrame(void)
 DLLEXPORT void __stdcall MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	
-	return  GCore::GetCore().MsgProc(hwnd,msg,wParam,lParam);
+	 GCore::GetCore().MsgProc(hwnd,msg,wParam,lParam);
 }

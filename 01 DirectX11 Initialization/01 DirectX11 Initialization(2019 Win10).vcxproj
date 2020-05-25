@@ -165,6 +165,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GDX11Renderer\GDxMesh.cpp" />
+    <ClCompile Include="GDX11Renderer\GDxVertexIndexBuffer.cpp" />
     <ClCompile Include="GEngineDLL\EGCore.cpp" />
     <ClCompile Include="GDX11Renderer\GDxRenderer.cpp" />
     <ClCompile Include="GDX11Renderer\GDxRendererFactory.cpp" />
@@ -173,6 +175,7 @@
     <ClCompile Include="GEngine\GCore.cpp" />
     <ClCompile Include="DXOthers\GameObject.cpp" />
     <ClCompile Include="GDX11Renderer\Effect\LightEffect.cpp" />
+    <ClCompile Include="GGenericInfra\GGiEngineUtil.cpp" />
     <ClCompile Include="GRendererInfra\GRiRenderer.cpp" />
     <ClCompile Include="GEngine\GCameraController.cpp" />
     <ClCompile Include="DXOthers\DDSTextureLoader.cpp" />
@@ -182,13 +185,17 @@
     <ClCompile Include="GRendererInfra\GRiRendererFactory.cpp" />
     <ClCompile Include="GRendererInfra\GRiTextureLoader.cpp" />
     <ClCompile Include="GRendererInfra\GRiTexture.cpp" />
+    <ClCompile Include="GRendererInfra\GRiMesh.cpp" />
+    <ClCompile Include="GRendererInfra\GRiSubmesh.cpp" />
+    <ClCompile Include="GRendererInfra\GRiMaterial.cpp" />
+    <ClCompile Include="GRendererInfra\GRiVertex.cpp" />
+    <ClCompile Include="GRendererInfra\GRiGeometryGenerator.cpp" />
+    <ClCompile Include="GRendererInfra\GRiMeshData.cpp" />
+    <ClCompile Include="GRendererInfra\GRiSceneObject.cpp" />
     <ClCompile Include="GUI\Editor.cpp" />
     <ClCompile Include="GDX11Renderer\Effect\BasicEffect.cpp" />
-    <ClCompile Include="Graphics\Buffer.cpp" />
-    <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="DXOthers\d3dUtil.cpp" />
     <ClCompile Include="DXOthers\DXTrace.cpp" />
-    <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GRendererInfra\GRiTimer.cpp" />
     <ClCompile Include="Graphics\RenderStates.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
@@ -208,18 +215,31 @@
     <ClCompile Include="Graphics\Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GDX11Renderer\GDXBuffer.h" />
+    <ClInclude Include="GDX11Renderer\GDxMesh.h" />
+    <ClInclude Include="GDX11Renderer\GDxPreInclude.h" />
+    <ClInclude Include="GDX11Renderer\GDxVertexIndexBuffer.h" />
     <ClInclude Include="GEngineDLL\EGCore.h" />
     <ClInclude Include="GDX11Renderer\GDxRenderer.h" />
     <ClInclude Include="GDX11Renderer\GDxRendererFactory.h" />
     <ClInclude Include="GDX11Renderer\GDxTexture.h" />
     <ClInclude Include="GDX11Renderer\GDxTextureLoader.h" />
     <ClInclude Include="GEngine\GCore.h" />
+    <ClInclude Include="GGenericInfra\GGiEngineUtil.h" />
     <ClInclude Include="GRendererInfra\GRiRenderer.h" />
     <ClInclude Include="GEngine\GCameraController.h" />
     <ClInclude Include="GRendererInfra\GRiCamera.h" />
     <ClInclude Include="GRendererInfra\GRiRendererFactory.h" />
     <ClInclude Include="GRendererInfra\GRiTextureLoader.h" />
     <ClInclude Include="GRendererInfra\GRiTexture.h" />
+    <ClInclude Include="GRendererInfra\GRiMesh.h" />
+    <ClInclude Include="GRendererInfra\GRiSubmesh.h" />
+    <ClInclude Include="GRendererInfra\GRiMaterial.h" />
+    <ClInclude Include="GRendererInfra\PreInclude.h" />
+    <ClInclude Include="GRendererInfra\GRiVertex.h" />
+    <ClInclude Include="GRendererInfra\GRiGeometryGenerator.h" />
+    <ClInclude Include="GRendererInfra\GRiMeshData.h" />
+    <ClInclude Include="GRendererInfra\GRiSceneObject.h" />
     <ClInclude Include="GUI\Editor.h" />
     <ClInclude Include="Graphics\Buffer.h" />
     <ClInclude Include="d3dApp.h" />

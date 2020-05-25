@@ -208,7 +208,7 @@ void D3DApp::OnResize()
 LRESULT D3DApp::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	
-	if (GUI::Get().CallBack(hwnd, msg, wParam, lParam))
+	//if (GUI::Get().CallBack(hwnd, msg, wParam, lParam))
 	{
 		//OnResize();
 		return true;

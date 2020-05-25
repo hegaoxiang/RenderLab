@@ -21,6 +21,10 @@ void GRiRenderer::SetClientHeight(int height)
 {
 	mClientHeight = height;
 }
+bool GRiRenderer::IsRunning() const
+{
+	return mIsRunning;
+}
 void GRiRenderer::SetCamera(GRiCamera* cam)
 {
 	pCamera = cam;
@@ -36,20 +40,56 @@ GRiRendererFactory* GRiRenderer::GetFactory()
 void GRiRenderer::SyncTextures(std::unordered_map<std::string, std::unique_ptr<GRiTexture>>& mTextures)
 {
 	pTextures.clear();
-
 	std::unordered_map<std::string, std::unique_ptr<GRiTexture>>::iterator i;
-
 	for (i = mTextures.begin(); i != mTextures.end(); i++)
 	{
 		pTextures[i->first] = i->second.get();
 	}
 }
-int GRiRenderer::GetClientWidth()
+
+void GRiRenderer::SyncMaterials(std::unordered_map<std::string, std::unique_ptr<GRiMaterial>>& mMaterials)
+{
+	pMaterials.clear();
+	std::unordered_map<std::string, std::unique_ptr<GRiMaterial>>::iterator i;
+	for (i = mMaterials.begin(); i != mMaterials.end(); i++)
+	{
+		pMaterials[i->first] = i->second.get();
+	}
+}
+
+void GRiRenderer::SyncMeshes(std::unordered_map<std::string, std::unique_ptr<GRiMesh>>& mMeshes)
+{
+	pMeshes.clear();
+	std::unordered_map<std::string, std::unique_ptr<GRiMesh>>::iterator i;
+	for (i = mMeshes.begin(); i != mMeshes.end(); i++)
+	{
+		pMeshes[i->first] = i->second.get();
+	}
+}
+
+void GRiRenderer::SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects/*, std::vector<GRiSceneObject*>* mSceneObjectLayer*/)
+{
+	pSceneObjects.clear();
+	std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>::iterator i;
+	for (i = mSceneObjects.begin(); i != mSceneObjects.end(); i++)
+	{
+		pSceneObjects[i->first] = i->second.get();
+	}
+// 	for (size_t layer = 0; layer != (size_t)(RenderLayer::Count); layer++)
+// 	{
+// 		pSceneObjectLayer[layer].clear();
+// 		for (auto pSObj : mSceneObjectLayer[layer])
+// 		{
+// 			pSceneObjectLayer[layer].push_back(pSObj);
+// 		}
+// 	}
+}
+int GRiRenderer::GetClientWidth()const
 {
 	return mClientWidth;
 }
 
-int GRiRenderer::GetClientHeight()
+int GRiRenderer::GetClientHeight()const
 {
 	return mClientHeight;
 }

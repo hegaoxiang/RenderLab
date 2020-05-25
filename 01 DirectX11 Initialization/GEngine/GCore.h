@@ -6,6 +6,7 @@
 #include "GRendererInfra/GRiTexture.h"
 #include <unordered_map>
 #include "GScene.h"
+#include <GRendererInfra\GRiMesh.h>
 
 class GCore
 {
@@ -41,6 +42,9 @@ private:
 
 	// Texture
 	std::unordered_map<std::string, std::unique_ptr<GRiTexture>> mTextures;
+	std::unordered_map<std::string, std::unique_ptr<GRiMaterial>> mMaterials;
+	std::unordered_map<std::string, std::unique_ptr<GRiMesh>> mMeshes;
+	std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>> mSceneObjects;
 // 
 // 	std::vector<std::string> m_TexNames;
 // 	std::unordered_map<std::string, int> m_NameMap;
@@ -58,6 +62,12 @@ protected:
 	void Draw();
 
 	bool LoadAllTexture();
+
+	void LoadMaterials();
+
+	void LoadMeshes();
+
+	void LoadSceneObjects();
 
 	void LoadCamera();
 

@@ -5,6 +5,7 @@
 #include "GRiRendererFactory.h"
 #include "GRiCamera.h"
 #include <GEngine/GScene.h>
+#define USE_IMGUI
 
 class GRiRenderer
 {
@@ -23,10 +24,12 @@ public:
 	virtual float AspectRatio() const;
 	HWND MainWnd() const;
 
-	int GetClientWidth();
-	int GetClientHeight();
+	int GetClientWidth()const;
+	int GetClientHeight()const;
 	void SetClientWidth(int width);
 	void SetClientHeight(int height);
+
+	bool IsRunning()const;
 
 	void SetCamera(GRiCamera* cam);
 	void SetScene(GScene* scene);
@@ -44,13 +47,25 @@ protected:
 	int mClientWidth = 800;
 	int mClientHeight = 600;
 
+	bool mIsRunning = false;
+
 	std::unique_ptr<GRiRendererFactory> mFactory;
 
 public:
 
 	virtual void SyncTextures(std::unordered_map<std::string, std::unique_ptr<GRiTexture>>& mTextures);
+	virtual void SyncMaterials(std::unordered_map<std::string, std::unique_ptr<GRiMaterial>>& mMaterials);
+	virtual void SyncMeshes(std::unordered_map<std::string, std::unique_ptr<GRiMesh>>& mMeshes);
+	virtual void SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects/*, std::vector<GRiSceneObject*>* mSceneObjectLayer*/);
+
+
 
 	std::unordered_map<std::string, GRiTexture* > pTextures;
+	std::unordered_map<std::string, GRiMaterial*> pMaterials;
+	std::unordered_map<std::string, GRiMesh*> pMeshes;
+	std::unordered_map<std::string, GRiSceneObject*> pSceneObjects;
+
+
 
 	//GRiTimer* mTimer;
 };

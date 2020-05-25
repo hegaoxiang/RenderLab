@@ -7,7 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid Background="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}">
-        <WindowsFormsHost x:Name="wfHost" HorizontalAlignment="Left" Height="215" Margin="190,115,0,0" VerticalAlignment="Top" Width="405" ChildChanged="wfHost_ChildChanged" Background="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="151*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel HorizontalAlignment="Left" Height="412" LastChildFill="False" Margin="0,0,0,0.5" VerticalAlignment="Bottom" Width="795" RenderTransformOrigin="0.85,0.62" Grid.ColumnSpan="2"/>
+        <WindowsFormsHost x:Name="wfHost" Width="681" ChildChanged="wfHost_ChildChanged" Background="{DynamicResource {x:Static SystemColors.MenuTextBrushKey}}" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Center" Margin="65,53,10,37.5" Height="334"/>
 
     </Grid>
 </Window>

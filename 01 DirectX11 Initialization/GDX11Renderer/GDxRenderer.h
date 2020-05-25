@@ -45,6 +45,9 @@ protected:
 	bool InitDirect3D();        // Direct3D初始化
 
 	bool InitEffect();
+
+	void DrawSceneObject(/*GRiSceneObject* sObject, bool bSetObjCb, bool bSetSubmeshCb, bool bCheckCullState = false*/);
+
 protected:
 protected:
 	// 使用模板别名(C++11)简化类型名

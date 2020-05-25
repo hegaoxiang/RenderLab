@@ -29,11 +29,21 @@ namespace GEditor
 
         bool isInit = false;
 
-        void dt_Tick(object sender, EventArgs e)
+
+        System.Timers.Timer t = new System.Timers.Timer(30);
+
+        //实例化Timer类，设置间隔时间为10000毫秒；   
+
+       
+        public void theout(object source, System.Timers.ElapsedEventArgs e)
         {
-            //要执行的任务
-            IGCore.RenderFrame();
+            while(true)
+            {
+                IGCore.RenderFrame();
+            }
         }
+
+    
         public MainWindow()
         {
             InitializeComponent();
@@ -52,15 +62,20 @@ namespace GEditor
             double w = this.wfHost.Width;
             IGCore.InitD3D(hwnd, w, h);
 
-            dt.Interval = TimeSpan.FromMilliseconds(1000);
-            dt.Tick += new EventHandler(dt_Tick);
-            dt.Start();
+            t.Elapsed += new System.Timers.ElapsedEventHandler(theout);
 
-            
+            //到达时间的时候执行事件； 
+
+            t.AutoReset = false;
+
+            //设置是执行一次（false）还是一直执行(true)；   
+
+            t.Enabled = true;
+            //需要调用 timer.Start()或者timer.Enabled = true来启动它， timer.Start()的内部原理还是设置timer.Enabled = true;
         }
 
 
 
- 
+
     }
 }

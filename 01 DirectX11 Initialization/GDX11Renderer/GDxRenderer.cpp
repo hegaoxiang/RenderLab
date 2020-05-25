@@ -5,6 +5,8 @@
 #include "Graphics/Geometry.h"
 #include <DXOthers\GameObject.h>
 #include "GUI/Editor.h"
+#include "GDxMesh.h"
+#include "GDxTexture.h"
 using namespace DirectX;
 
 GDxRenderer& GDxRenderer::GetRenderer()
@@ -24,6 +26,8 @@ void GDxRenderer::Initialize()
 	BasicEffect::Get().SetProjMatrix(pCamera->GetProjXM());
 
 	Editor::Get().SetScene(pScene, m_pd3dDevice.Get());
+
+	mIsRunning = true;
 }
 
 void GDxRenderer::PreInitialize(HWND OutputWindow, double width, double height)
@@ -72,6 +76,23 @@ void GDxRenderer::Draw(const float gt)
 	BasicEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 	
 	pScene->Draw(this,m_pd3dImmediateContext.Get(), BasicEffect::Get());
+
+	DrawSceneObject();
+	{
+		GUI::Get().BeginGUI();
+
+		
+		#ifdef USE_IMGUI
+		ImGui::Begin("1",nullptr,ImGuiWindowFlags_NoTitleBar| ImGuiWindowFlags_AlwaysAutoResize);
+		auto& io = ImGui::GetIO();
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::End();
+		#endif
+
+		GUI::Get().EndGUI();
+
+		GUI::Get().Render();
+	}
 
 	HR(m_pSwapChain->Present(1, 0));
 }
@@ -312,4 +333,44 @@ bool GDxRenderer::InitEffect()
 	LightEffect::Get().InitAll(m_pd3dDevice.Get());
 
 	return true;
+}
+
+void GDxRenderer::DrawSceneObject()
+{
+
+
+	auto& effect = BasicEffect::Get();
+
+	auto so = pSceneObjects["TestBox"];
+
+	GDxMesh* dxMesh = dynamic_cast<GDxMesh*>(so->Mesh);
+
+	HR(dxMesh != nullptr);
+	UINT strides = dxMesh->mVIBuffer->VertexByteStride;
+	UINT offsets = 0;
+
+	for (auto& part : dxMesh->Submeshes)
+	{
+		auto& submesh = part.second;
+
+		// 设置顶点/索引缓冲区
+		m_pd3dImmediateContext->IASetVertexBuffers(0,1, dxMesh->mVIBuffer->VBuffer.GetBufferAddress() , &strides, &offsets);
+		m_pd3dImmediateContext->IASetIndexBuffer(dxMesh->mVIBuffer->IBuffer.GetBuffer(), dxMesh->mVIBuffer->IndexFormat,0);
+
+		// 更新数据并应用
+		effect.SetWorldMatrix(XMLoadFloat4x4(&so->World));
+
+		auto texName = submesh.GetMaterial()->pTextures[0];
+		auto tex = pTextures[texName];
+
+		GDxTexture* texSrv = dynamic_cast<GDxTexture*>(tex);
+
+		effect.SetTextureDiffuse(texSrv->mSRV.Get());
+
+		effect.Apply(m_pd3dImmediateContext.Get());
+
+		m_pd3dImmediateContext->DrawIndexed(submesh.IndexCount, submesh.StartIndexLocation, submesh.BaseVertexLocation);
+	}
+
+
 }

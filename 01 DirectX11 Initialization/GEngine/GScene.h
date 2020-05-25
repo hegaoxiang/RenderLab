@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "Graphics/Buffer.h"
+#include "GDX11Renderer/GDXBuffer.h"
 #include "Graphics/Geometry.h"
 
 #include "GDX11Renderer/Effect/Effects.h"
