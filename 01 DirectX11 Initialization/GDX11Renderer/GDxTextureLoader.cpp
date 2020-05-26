@@ -10,10 +10,24 @@ using namespace std::filesystem;
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-GRiTexture* GDxTextureLoader::LoadTexture(std::wstring fileName)
+
+GRiTexture* GDxTextureLoader::LoadTexture(std::wstring fileName, bool isCubeMap)
 {
 	GDxTexture* tex = new GDxTexture();
+
+	if (isCubeMap)
+	{
+		(CreateWICTexture2DCubeFromFile(mpDevice,
+			mpDeviceContext,
+			fileName,
+			nullptr,
+			tex->mSRV.ReleaseAndGetAddressOf(),
+			false));
+		
+		return tex;
+	}
 	
+
 	// only dds has the s in the last location
 	if (fileName[fileName.size() - 1] == 's')
 	{

@@ -42,7 +42,7 @@ public:
 	///<summary>
 	/// Creates a quad aligned with the screen.  This is useful for postprocessing and screen effects.
 	///</summary>
-	GRiMeshData CreateQuad(float x, float y, float w, float h, float depth);
+	GRiMeshData CreateQuad(float x = 0, float y = 0, float w = 1, float h = 1 , float depth = 0);
 
 private:
 	void Subdivide(GRiMeshData& meshData);

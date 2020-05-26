@@ -113,7 +113,7 @@ void GameApp::DrawScene()
 
 
 	SkyEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
-	/*m_SkyRender->Draw(m_pd3dImmediateContext.Get(), SkyEffect::Get(), *m_pCamera);*/
+	m_SkyRender->Draw(m_pd3dImmediateContext.Get(), SkyEffect::Get(), *m_pCamera);*/
 
 #ifdef EDITOR
 m_pGameContent->End(m_pd3dImmediateContext.Get());

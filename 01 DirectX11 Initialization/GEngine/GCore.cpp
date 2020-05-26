@@ -46,7 +46,7 @@ void GCore::Initialize(HWND OutputWindow, double width, double height)
 	mRenderer->SyncMeshes(mMeshes);
 
 	LoadSceneObjects();
-	mRenderer->SyncSceneObjects(mSceneObjects);
+	mRenderer->SyncSceneObjects(mSceneObjects,mSceneObjectLayer);
 
 	LoadCamera();
 	mRenderer->SetCamera(m_pCamera.get());
@@ -230,7 +230,14 @@ bool GCore::LoadAllTexture()
 		wstring file(L"Texture\\");
 		file += it.path().filename().generic_wstring();
 
-		auto tex = texloader->LoadTexture(file);
+		
+		GRiTexture* tex;
+		if (it.path().stem().generic_string() == "daylight")
+		{
+
+			tex = texloader->LoadTexture(file,true);
+		}
+		else tex = texloader->LoadTexture(file);
 		tex->Name = it.path().stem().generic_string();
 		//tex->UniqueFileName = (m_TexNames[i]);
 		unique_ptr<GRiTexture> temp(tex);
@@ -263,16 +270,26 @@ void GCore::LoadMeshes()
 	unique_ptr<GRiGeometryGenerator> geo(mFactory->CreateGeometryGenerator());
 
 	vector<GRiMeshData> meshData;
-	GRiMeshData boxMeshData = geo->CreateBox(2, 2, 2, 0);
-	meshData.push_back(boxMeshData);
+	{
+		GRiMeshData cMeshData = geo->CreateBox(2, 2, 2, 0);
+		meshData.push_back(cMeshData);
 		auto mesh = mFactory->CreateMesh(meshData);
-	mesh->UniqueName = "Box";
-	mesh->Submeshes[boxMeshData.MeshDataName].SetMaterial(mMaterials["Default"].get());
+		mesh->UniqueName = "Box";
+		mesh->Submeshes[cMeshData.MeshDataName].SetMaterial(mMaterials["Default"].get());
+		unique_ptr<GRiMesh> temp1(mesh);
+		mMeshes[mesh->UniqueName] = move(temp1);
+	}
 
-	unique_ptr<GRiMesh> temp1(mesh);
-	mMeshes[mesh->UniqueName] = move(temp1);
-
-
+	meshData.clear();
+	{
+		GRiMeshData cMeshData = geo->CreateQuad();
+		meshData.push_back(cMeshData);
+		auto mesh = mFactory->CreateMesh(meshData);
+		mesh->UniqueName = "Quad";
+		mesh->Submeshes[cMeshData.MeshDataName].SetMaterial(mMaterials["Default"].get());
+		unique_ptr<GRiMesh> temp1(mesh);
+		mMeshes[mesh->UniqueName] = move(temp1);
+	}
 
 }
 
@@ -284,8 +301,14 @@ void GCore::LoadSceneObjects()
 	so->UniqueName = "TestBox";
 	so->Mesh = mMeshes["Box"].get();
 	XMStoreFloat4x4(&so->World,XMMatrixIdentity());
-
 	mSceneObjects[so->UniqueName] = move(so);
+	
+
+	unique_ptr<GRiSceneObject> skySo(mFactory->CreateSceneObjet());
+	skySo->UniqueName = "Sky";
+	skySo->Mesh = mMeshes["Quad"].get();
+	mSceneObjectLayer[(int)RenderLayer::Sky].push_back(skySo.get());
+	mSceneObjects[skySo->UniqueName] = move(skySo);
 }
 
 void GCore::LoadCamera()

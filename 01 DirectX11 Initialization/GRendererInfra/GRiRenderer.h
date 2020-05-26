@@ -56,7 +56,7 @@ public:
 	virtual void SyncTextures(std::unordered_map<std::string, std::unique_ptr<GRiTexture>>& mTextures);
 	virtual void SyncMaterials(std::unordered_map<std::string, std::unique_ptr<GRiMaterial>>& mMaterials);
 	virtual void SyncMeshes(std::unordered_map<std::string, std::unique_ptr<GRiMesh>>& mMeshes);
-	virtual void SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects/*, std::vector<GRiSceneObject*>* mSceneObjectLayer*/);
+	virtual void SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects, std::vector<GRiSceneObject*>* mSceneObjectLayer);
 
 
 
@@ -64,7 +64,7 @@ public:
 	std::unordered_map<std::string, GRiMaterial*> pMaterials;
 	std::unordered_map<std::string, GRiMesh*> pMeshes;
 	std::unordered_map<std::string, GRiSceneObject*> pSceneObjects;
-
+	std::vector<GRiSceneObject*> pSceneObjectLayer[(int)RenderLayer::Count];
 
 
 	//GRiTimer* mTimer;

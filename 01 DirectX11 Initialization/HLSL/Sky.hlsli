@@ -12,9 +12,13 @@ cbuffer CB : register(b1)
     float4 Corners[4];
     float4 eyePos;
 };
-struct VertexPos
+
+
+struct VertexIn
 {
-    float3 PosL : POSITION;
+    float3 posL : POSITION;
+    float3 norL : NORMAL;
+    float4 tan : TANGENT;
     float2 uv : TEXCOORD;
 };
 

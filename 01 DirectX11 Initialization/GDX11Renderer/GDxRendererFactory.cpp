@@ -2,15 +2,17 @@
 #include "GDxTextureLoader.h"
 #include "GDxMesh.h"
 
-GDxRendererFactory::GDxRendererFactory(ID3D11Device* device)
+
+
+GDxRendererFactory::GDxRendererFactory(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	mpDevice = device;
+	mpDeviceContext = deviceContext;
 }
-
 
 GRiTextureLoader* GDxRendererFactory::CreateTextureLoader()
 {
-	GRiTextureLoader* texloader = new GDxTextureLoader(mpDevice);
+	GRiTextureLoader* texloader = new GDxTextureLoader(mpDevice,mpDeviceContext);
 	return texloader;
 }
 

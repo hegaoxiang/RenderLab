@@ -3,6 +3,7 @@
 class GRiTextureLoader
 {
 public:
-	virtual GRiTexture* LoadTexture(std::wstring fileName) = 0;
+	virtual GRiTexture* LoadTexture(std::wstring fileName,bool isCubeMap = false) = 0;
+
 };
 

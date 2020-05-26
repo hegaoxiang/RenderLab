@@ -46,6 +46,7 @@ protected:
 
 	bool InitEffect();
 
+	
 	void DrawSceneObject(/*GRiSceneObject* sObject, bool bSetObjCb, bool bSetSubmeshCb, bool bCheckCullState = false*/);
 
 protected:

@@ -23,9 +23,15 @@ void GDxRenderer::Initialize()
 
 	InitEffect();
 
+
 	BasicEffect::Get().SetProjMatrix(pCamera->GetProjXM());
 
 	Editor::Get().SetScene(pScene, m_pd3dDevice.Get());
+
+	auto tex = pTextures["daylight"];
+	GDxTexture* t = dynamic_cast<GDxTexture*>(tex);
+
+	SkyEffect::Get().SetTextureCube(t->mSRV.Get());
 
 	mIsRunning = true;
 }
@@ -44,7 +50,7 @@ void GDxRenderer::PreInitialize(HWND OutputWindow, double width, double height)
 
 void GDxRenderer::CreateRendererFactory()
 {
-	GDxRendererFactory fac(m_pd3dDevice1.Get());
+	GDxRendererFactory fac(m_pd3dDevice1.Get(),m_pd3dImmediateContext.Get());
 
 	mFactory = std::make_unique<GDxRendererFactory>(fac);
 }
@@ -52,6 +58,18 @@ void GDxRenderer::CreateRendererFactory()
 void GDxRenderer::Update(const float gt)
 {
 	BasicEffect::Get().SetViewMatrix(pCamera->GetViewXM());
+
+	auto cor = pCamera->GetCorner();
+	auto view = pCamera->GetViewXM();
+	auto corMat = XMLoadFloat4x4(&cor);
+	auto inView = XMMatrixInverse(nullptr, view);
+	auto corDirMat = corMat * inView;
+	XMFLOAT4X4 corDir;
+	XMStoreFloat4x4(&corDir, corDirMat);
+
+
+	SkyEffect::Get().SetCorners(corDir);
+	
 }
 
 void GDxRenderer::Draw(const float gt)
@@ -93,6 +111,11 @@ void GDxRenderer::Draw(const float gt)
 
 		GUI::Get().Render();
 	}
+
+	SkyEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
+	SkyEffect::Get().Apply(m_pd3dImmediateContext.Get());
+	
+	m_pd3dImmediateContext->DrawIndexed(pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].IndexCount, pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].StartIndexLocation, pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].BaseVertexLocation);
 
 	HR(m_pSwapChain->Present(1, 0));
 }
@@ -337,8 +360,6 @@ bool GDxRenderer::InitEffect()
 
 void GDxRenderer::DrawSceneObject()
 {
-
-
 	auto& effect = BasicEffect::Get();
 
 	auto so = pSceneObjects["TestBox"];

@@ -200,7 +200,6 @@
     <ClCompile Include="Graphics\RenderStates.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Logic\LogicSystem.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="GEngine\GScene.cpp" />
     <ClCompile Include="Graphics\TextureRender.cpp" />
     <ClCompile Include="DXOthers\TextureManage.cpp" />
@@ -235,7 +234,7 @@
     <ClInclude Include="GRendererInfra\GRiMesh.h" />
     <ClInclude Include="GRendererInfra\GRiSubmesh.h" />
     <ClInclude Include="GRendererInfra\GRiMaterial.h" />
-    <ClInclude Include="GRendererInfra\PreInclude.h" />
+    <ClInclude Include="GRendererInfra\GRiPreInclude.h" />
     <ClInclude Include="GRendererInfra\GRiVertex.h" />
     <ClInclude Include="GRendererInfra\GRiGeometryGenerator.h" />
     <ClInclude Include="GRendererInfra\GRiMeshData.h" />

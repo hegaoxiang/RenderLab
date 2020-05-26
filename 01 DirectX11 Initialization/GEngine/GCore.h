@@ -45,6 +45,7 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<GRiMaterial>> mMaterials;
 	std::unordered_map<std::string, std::unique_ptr<GRiMesh>> mMeshes;
 	std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>> mSceneObjects;
+	std::vector<GRiSceneObject*>mSceneObjectLayer[(int)RenderLayer::Count];
 // 
 // 	std::vector<std::string> m_TexNames;
 // 	std::unordered_map<std::string, int> m_NameMap;
@@ -52,14 +53,10 @@ private:
 
 	std::unique_ptr<GScene> mScene;
 
-	
 protected:
+#pragma region Initialize Func
 
-	void OnResize();
-
-	void Update();
-
-	void Draw();
+	void LoadScene();
 
 	bool LoadAllTexture();
 
@@ -71,7 +68,18 @@ protected:
 
 	void LoadCamera();
 
-	void LoadScene();
+
+#pragma endregion Initialize
+	
+protected:
+
+	void OnResize();
+
+	void Update();
+
+	void Draw();
+
+
 
 	//void SaveScene();
 private:

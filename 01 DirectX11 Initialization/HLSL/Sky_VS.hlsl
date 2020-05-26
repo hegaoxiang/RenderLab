@@ -1,6 +1,6 @@
 #include "Sky.hlsli"
 
-VertexPosHL VS(VertexPos vIn)
+VertexPosHL VS(VertexIn vIn)
 {
     VertexPosHL vOut;
     
@@ -8,7 +8,7 @@ VertexPosHL VS(VertexPos vIn)
    // float4 posH = mul(float4(vIn.PosL, 1.0f), g_WorldViewProj);
    // vOut.PosH = posH.xyww;
    // vOut.PosL = vIn.PosL;
-    vOut.PosH = float4(vIn.PosL.x,vIn.PosL.y,1.0f, 1.0f);
+    vOut.PosH = float4(vIn.posL.x, vIn.posL.y, 1.0f, 1.0f);
     vOut.PosL = Corners[vIn.uv.x + vIn.uv.y*2].xyz;
     return vOut;
 }

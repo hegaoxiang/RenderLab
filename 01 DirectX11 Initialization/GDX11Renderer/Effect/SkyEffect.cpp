@@ -104,7 +104,7 @@ bool SkyEffect::InitAll(ID3D11Device* device)
 	HR(CreateShaderFromFile(L"HLSL\\Sky_VS.cso", L"HLSL\\Sky_VS.hlsl", "VS", "vs_5_0", blob.ReleaseAndGetAddressOf()));
 	HR(device->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, pImpl->m_pSkyVS.GetAddressOf()));
 	// 创建顶点布局
-	HR(device->CreateInputLayout(VertexPosTex::inputLayout, ARRAYSIZE(VertexPosTex::inputLayout),
+	HR(device->CreateInputLayout(VertexPosNormalTangentTex::inputLayout, ARRAYSIZE(VertexPosNormalTangentTex::inputLayout),
 		blob->GetBufferPointer(), blob->GetBufferSize(), pImpl->m_pVertexPosLayout.GetAddressOf()));
 
 	// ******************

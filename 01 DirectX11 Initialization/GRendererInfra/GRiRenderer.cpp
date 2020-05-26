@@ -67,7 +67,7 @@ void GRiRenderer::SyncMeshes(std::unordered_map<std::string, std::unique_ptr<GRi
 	}
 }
 
-void GRiRenderer::SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects/*, std::vector<GRiSceneObject*>* mSceneObjectLayer*/)
+void GRiRenderer::SyncSceneObjects(std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>& mSceneObjects, std::vector<GRiSceneObject*>* mSceneObjectLayer)
 {
 	pSceneObjects.clear();
 	std::unordered_map<std::string, std::unique_ptr<GRiSceneObject>>::iterator i;
@@ -75,14 +75,14 @@ void GRiRenderer::SyncSceneObjects(std::unordered_map<std::string, std::unique_p
 	{
 		pSceneObjects[i->first] = i->second.get();
 	}
-// 	for (size_t layer = 0; layer != (size_t)(RenderLayer::Count); layer++)
-// 	{
-// 		pSceneObjectLayer[layer].clear();
-// 		for (auto pSObj : mSceneObjectLayer[layer])
-// 		{
-// 			pSceneObjectLayer[layer].push_back(pSObj);
-// 		}
-// 	}
+	for (size_t layer = 0; layer != (size_t)(RenderLayer::Count); layer++)
+	{
+		pSceneObjectLayer[layer].clear();
+		for (auto pSObj : mSceneObjectLayer[layer])
+		{
+			pSceneObjectLayer[layer].push_back(pSObj);
+ 		}
+	}
 }
 int GRiRenderer::GetClientWidth()const
 {

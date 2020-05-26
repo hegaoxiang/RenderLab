@@ -20,3 +20,10 @@
 #include <fstream>
 #include <sstream>
 #include <cassert>
+
+enum class RenderLayer : int
+{
+	
+	Sky = 0,
+	Count
+};

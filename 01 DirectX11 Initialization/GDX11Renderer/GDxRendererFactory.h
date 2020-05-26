@@ -7,7 +7,7 @@ class GDxRendererFactory:public GRiRendererFactory
 {
 
 public:
-	GDxRendererFactory(ID3D11Device* device);
+	GDxRendererFactory(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 	virtual GRiTextureLoader* CreateTextureLoader() override;
 
@@ -20,5 +20,6 @@ public:
 private:
 
 	ID3D11Device* mpDevice;
+	ID3D11DeviceContext* mpDeviceContext;
 };
 

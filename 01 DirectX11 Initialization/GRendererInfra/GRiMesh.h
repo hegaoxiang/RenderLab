@@ -1,5 +1,5 @@
 #pragma once
-#include "PreInclude.h"
+#include "GRiPreInclude.h"
 #include "GRiSubmesh.h"
 #include "GRiMeshData.h"
 
