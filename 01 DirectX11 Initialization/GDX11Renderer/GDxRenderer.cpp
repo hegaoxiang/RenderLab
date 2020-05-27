@@ -23,17 +23,7 @@ void GDxRenderer::Initialize()
 
 	InitEffect();
 
-
-	BasicEffect::Get().SetProjMatrix(pCamera->GetProjXM());
-
-	Editor::Get().SetScene(pScene, m_pd3dDevice.Get());
-
-	auto tex = pTextures["daylight"];
-	GDxTexture* t = dynamic_cast<GDxTexture*>(tex);
-
-	SkyEffect::Get().SetTextureCube(t->mSRV.Get());
-
-	mIsRunning = true;
+	InitResource();
 }
 
 void GDxRenderer::PreInitialize(HWND OutputWindow, double width, double height)
@@ -59,6 +49,8 @@ void GDxRenderer::Update(const float gt)
 {
 	BasicEffect::Get().SetViewMatrix(pCamera->GetViewXM());
 
+
+#pragma region SkyPassCB
 	auto cor = pCamera->GetCorner();
 	auto view = pCamera->GetViewXM();
 	auto corMat = XMLoadFloat4x4(&cor);
@@ -67,8 +59,8 @@ void GDxRenderer::Update(const float gt)
 	XMFLOAT4X4 corDir;
 	XMStoreFloat4x4(&corDir, corDirMat);
 
-
 	SkyEffect::Get().SetCorners(corDir);
+#pragma endregion SkyPassCB
 	
 }
 
@@ -358,6 +350,21 @@ bool GDxRenderer::InitEffect()
 	return true;
 }
 
+void GDxRenderer::InitResource()
+{
+
+	BasicEffect::Get().SetProjMatrix(pCamera->GetProjXM());
+
+	Editor::Get().SetScene(pScene, m_pd3dDevice.Get());
+
+	auto tex = pTextures["daylight"];
+	GDxTexture* t = dynamic_cast<GDxTexture*>(tex);
+
+	SkyEffect::Get().SetTextureCube(t->mSRV.Get());
+
+	mIsRunning = true;
+}
+
 void GDxRenderer::DrawSceneObject()
 {
 	auto& effect = BasicEffect::Get();
@@ -392,6 +399,5 @@ void GDxRenderer::DrawSceneObject()
 
 		m_pd3dImmediateContext->DrawIndexed(submesh.IndexCount, submesh.StartIndexLocation, submesh.BaseVertexLocation);
 	}
-
 
 }

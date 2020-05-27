@@ -56,20 +56,6 @@ bool GUI::Init(HWND hwnd, ID3D11Device* device, ID3D11DeviceContext* deviceConte
 
 	return true;
 }
-// Forward declare message handler from imgui_impl_win32.cpp
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
-bool GUI::CallBack(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	if (!isInit)
-	{
-		return false;
-	}
-	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
-		return true;
-	else
-		return false;
-}
 
 void GUI::BeginGUI()
 {

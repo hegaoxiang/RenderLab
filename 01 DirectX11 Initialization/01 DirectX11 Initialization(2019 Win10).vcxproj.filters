@@ -78,9 +78,6 @@
     <ClCompile Include="DXOthers\GameObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GEngine\GCore.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="GRendererInfra\GRiTimer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -91,9 +88,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GRendererInfra\GRiCamera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GEngine\GCameraController.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GRendererInfra\GRiRendererFactory.cpp">
@@ -112,9 +106,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GDX11Renderer\GDxTextureLoader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GEngine\GScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GDX11Renderer\Effect\BasicEffect.cpp">
@@ -157,6 +148,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GRendererInfra\GRiSceneObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine\GCameraController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine\GCore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GEngine\GScene.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -203,9 +203,6 @@
     <ClInclude Include="DXOthers\TextureManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GEngine\GCore.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="GRendererInfra\GRiTimer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -216,9 +213,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GRendererInfra\GRiCamera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GEngine\GCameraController.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GRendererInfra\GRiRendererFactory.h">
@@ -237,9 +231,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GDX11Renderer\GDxTextureLoader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GEngine\GScene.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="GDX11Renderer\Effect\Effects.h">
@@ -290,11 +281,21 @@
     <ClInclude Include="GRendererInfra\GRiPreInclude.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GEngine\GCameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GEngine\GCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GEngine\GScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Text.txt" />
+    <Text Include="TODO.txt" />
   </ItemGroup>
 </Project>
