@@ -75,7 +75,7 @@
     <IntDir>$(SolutionDir)Debug\Intermediate</IntDir>
     <IncludePath>D:\迅雷下载\boost_1_72_0\boost_1_72_0;$(SolutionDir)GEngine;$(SolutionDir)GEngine\Vendor;$(IncludePath)</IncludePath>
     <LibraryPath>D:\迅雷下载\boost_1_72_0\boost_1_72_0\stage\lib;$(LibraryPath)</LibraryPath>
-    <TargetName>$(ProjectName）</TargetName>
+    <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>..\GEditor\bin\Debug</OutDir>

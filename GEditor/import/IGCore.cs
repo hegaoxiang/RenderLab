@@ -9,10 +9,10 @@ namespace GEditor.import
 {
     class IGCore
     {
-        [DllImport(@"Core1.dll")]
+        [DllImport(@"Build\GEngine.dll")]
         public static extern void InitD3D(IntPtr hwnd, double width, double height);
 
-        [DllImport(@"Core1.dll")]
+        [DllImport(@"Build\GEngine.dll")]
         public static extern int RenderFrame();
 // 
 //         [DllImport(@"Core.dll")]

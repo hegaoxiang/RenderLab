@@ -88,26 +88,28 @@ void GDxRenderer::Draw(const float gt)
 	pScene->Draw(this,m_pd3dImmediateContext.Get(), BasicEffect::Get());
 
 	DrawSceneObject();
-	{
-		GUI::Get().BeginGUI();
-
-		
-		#ifdef USE_IMGUI
-		ImGui::Begin("1",nullptr,ImGuiWindowFlags_NoTitleBar| ImGuiWindowFlags_AlwaysAutoResize);
-		auto& io = ImGui::GetIO();
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-		ImGui::End();
-		#endif
-
-		GUI::Get().EndGUI();
-
-		GUI::Get().Render();
-	}
+	
 
 	SkyEffect::Get().SetRenderDefault(m_pd3dImmediateContext.Get());
 	SkyEffect::Get().Apply(m_pd3dImmediateContext.Get());
 	
 	m_pd3dImmediateContext->DrawIndexed(pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].IndexCount, pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].StartIndexLocation, pSceneObjectLayer[(int)RenderLayer::Sky][0]->Mesh->Submeshes["Quad"].BaseVertexLocation);
+
+	{
+		GUI::Get().BeginGUI();
+
+
+#ifdef USE_IMGUI
+		ImGui::Begin("1", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_AlwaysAutoResize);
+		auto& io = ImGui::GetIO();
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+		ImGui::End();
+#endif
+
+		GUI::Get().EndGUI();
+
+		GUI::Get().Render();
+	}
 
 	HR(m_pSwapChain->Present(1, 0));
 }
@@ -357,7 +359,7 @@ void GDxRenderer::InitResource()
 
 	Editor::Get().SetScene(pScene, m_pd3dDevice.Get());
 
-	auto tex = pTextures["daylight"];
+	auto tex = pTextures["SkyCube"];
 	GDxTexture* t = dynamic_cast<GDxTexture*>(tex);
 
 	SkyEffect::Get().SetTextureCube(t->mSRV.Get());

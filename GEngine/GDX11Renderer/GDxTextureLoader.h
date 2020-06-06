@@ -11,7 +11,7 @@ public:
 
 	virtual GRiTexture* LoadTexture(std::wstring fileName, bool isCubeMap = false) override;
 
-
+	virtual GRiTexture* LoadTexture(std::string fileName, bool isCubeMap = false) override;
 private:
 
 	ID3D11Device* mpDevice;

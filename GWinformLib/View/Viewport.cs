@@ -21,20 +21,7 @@ namespace GWinformLib
         }
 
 
-        public void Application_Idle(object sender, EventArgs e)
-        {
-            try
-            {
-                MessageBox.Show("qwe");
-                // Render the scene if we are idle
-                IGCore.RenderFrame();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-           
-        }
+       
         protected override void WndProc(ref Message m)
         {
             

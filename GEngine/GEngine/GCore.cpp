@@ -18,6 +18,39 @@ GCore& GCore::GetCore()
 	return *instance;
 }
 
+void GCore::Run()
+{
+	MSG msg = { 0 };
+
+	mTimer->Reset();
+
+	while (msg.message != WM_QUIT)
+	{
+		// If there are Window messages then process them.
+		if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		// Otherwise, do animation/game stuff.
+		else
+		{
+			mTimer->Tick();
+
+			if (!mAppPaused)
+			{
+				
+				Update();
+				Draw();
+			}
+			else
+			{
+				Sleep(100);
+			}
+		}
+	}
+}
+
 void GCore::RenderFrame()
 {
 	Update();
@@ -188,6 +221,44 @@ void GCore::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 }
 
+std::vector<std::string> GCore::FindFileInFolder(const std::string& relPath, const std::vector<std::string>& formats, bool bCheckFormat)
+{
+	vector<string> files;
+
+	string fullPath = WorkDir + relPath;
+
+	path str(fullPath);
+	if (!exists(str))		//必须先检测目录是否存在才能使用文件入口.
+		return files;
+	directory_entry entry(str);		//文件入口
+	assert (entry.status().type() == file_type::directory);
+
+	directory_iterator list(str);	        //文件入口容器
+	
+	for (auto& it : list)
+	{
+		if (it.is_directory())
+		{
+			vector<string> temp = move(FindFileInFolder(relPath + "\\" + it.path().filename().string(), formats, bCheckFormat));
+			files.insert(files.end(), temp.begin(), temp.end());
+		}
+		else
+		{
+			for (auto& fm:formats)
+			{
+				if (it.path().extension().string() == fm)
+				{
+					files.emplace_back(it.path().relative_path().string());
+					break;
+				}
+			}
+		}
+		
+	}
+
+	return files;
+}
+
 void GCore::OnResize()
 {
 	mRenderer->OnResize();
@@ -215,40 +286,34 @@ bool GCore::LoadAllTexture()
 {
 	unique_ptr<GRiTextureLoader> texloader(mFactory->CreateTextureLoader());
 
-	path str("Texture");
-	if (!exists(str))		//必须先检测目录是否存在才能使用文件入口.
-		return 1;
-	directory_entry entry(str);		//文件入口
-	if (entry.status().type() == file_type::directory)	//这里用了C++11的强枚举类型
-		;// cout << "该路径是一个目录" << endl;
-	directory_iterator list(str);	        //文件入口容器
+	WorkDir = "Project\\";
 
+	vector<string> formats{".dds",".png"};
+
+	decltype(formats) files = move(FindFileInFolder("Content\\Textures", formats, true));
 	
-	int i = 0;
-	for (auto& it : list)
+	GRiTexture* tex;
+	for (auto& fileName : files)
 	{
-		wstring file(L"Texture\\");
-		file += it.path().filename().generic_wstring();
-
 		
-		GRiTexture* tex;
-		if (it.path().stem().generic_string() == "daylight")
-		{
+		tex = texloader->LoadTexture(fileName);
+		tex->UniqueFileName = fileName;
 
-			tex = texloader->LoadTexture(file,true);
-		}
-		else tex = texloader->LoadTexture(file);
-		tex->Name = it.path().stem().generic_string();
-		//tex->UniqueFileName = (m_TexNames[i]);
 		unique_ptr<GRiTexture> temp(tex);
 
-		mTextures.insert(std::pair<string, unique_ptr<GRiTexture>>(tex->Name, move(temp)));
-// 		m_TexNames.emplace_back(it.path().stem().generic_string());
-// 		m_NameMap.insert(std::pair<string, int>(m_TexNames[i], i));
-// 
-// 		
-// 		m_Textures.push_back(move(temp));
+		mTextures.insert(std::pair<string, unique_ptr<GRiTexture>>(tex->UniqueFileName, move(temp)));
+
 	}
+
+	// SkyCubeMap
+	mSkyCubeFileName = "Project\\Content\\Textures\\daylight.jpg";
+	
+	tex = texloader->LoadTexture(mSkyCubeFileName,true);	
+	tex->UniqueFileName = "SkyCube";
+	unique_ptr<GRiTexture> temp(tex);
+
+	mTextures.insert(std::pair<string, unique_ptr<GRiTexture>>(tex->UniqueFileName, move(temp)));
+
 
 	return true;
 }
@@ -257,7 +322,7 @@ void GCore::LoadMaterials()
 {
 	auto defaultMat = std::make_unique<GRiMaterial>(*mFactory->CreateMaterial());
 
-	defaultMat->AddTexture(mTextures["floor"].get());
+	defaultMat->AddTexture(mTextures["Project\\Content\\Textures\\floor.dds"].get());
 	defaultMat->Name = "Default";
 
 	mMaterials[defaultMat->Name] = move(defaultMat);

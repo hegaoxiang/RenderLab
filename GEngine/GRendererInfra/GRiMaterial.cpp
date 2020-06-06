@@ -2,7 +2,7 @@
 
 void GRiMaterial::AddTexture(GRiTexture* tex)
 {
-	pTextures.push_back(tex->Name);
+	pTextures.push_back(tex->UniqueFileName);
 }
 
 void GRiMaterial::AddTexture(std::string tex)

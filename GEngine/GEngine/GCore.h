@@ -17,7 +17,8 @@ public:
 
 	static GCore& GetCore();
 
-	
+	void Run();
+
 	void RenderFrame();
 
 	void Initialize(HWND OutputWindow, double width, double height);
@@ -71,6 +72,9 @@ protected:
 
 #pragma endregion Initialize
 	
+	std::string WorkDir;
+	std::string mSkyCubeFileName;
+	std::vector<std::string> FindFileInFolder(const std::string& relPath,const std::vector<std::string>& formats,bool bCheckFormat = false);
 protected:
 
 	void OnResize();

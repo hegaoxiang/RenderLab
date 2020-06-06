@@ -9,10 +9,8 @@ namespace GWinformLib
 {
     class IGCore
     {
-        [DllImport("Core1.dll")]
+        [DllImport(@"Build\GEngine.dll")]
         public static extern void MsgProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam);
 
-        [DllImport(@"Core1.dll")]
-        public static extern int RenderFrame();
     }
 }

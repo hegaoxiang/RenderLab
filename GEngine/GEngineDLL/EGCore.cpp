@@ -8,8 +8,8 @@ DLLEXPORT void __stdcall InitD3D(HWND hWnd, double width, double height)
 
 DLLEXPORT int __stdcall RenderFrame(void)
 {
-	GCore::GetCore().RenderFrame();
-	return 1;
+	GCore::GetCore().Run();
+	return 0;
 }
 
 DLLEXPORT void __stdcall MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)

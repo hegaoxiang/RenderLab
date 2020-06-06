@@ -5,6 +5,5 @@ class GRiTexture
 public:
 	virtual ~GRiTexture() {};
 	std::string UniqueFileName;
-	std::string Name;
 };
 
